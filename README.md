@@ -1,9 +1,8 @@
-# Offline_JUDGE_PKU_CXSJSX
+# PKU Offline Judge
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+**本仓库是北京大学程序设计实习课程大作业的代码仓库**
+目前仍处于开发阶段
 
 #### 软件架构
 软件架构说明
@@ -11,9 +10,10 @@ Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN�
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+解压即可，需求：
+1. Qt版本高于6.8.2
+2. 安装了对应版本的Qt PDF
+3. 安装了Qt Creator及Qt Linguist
 
 #### 使用说明
 
