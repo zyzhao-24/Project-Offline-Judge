@@ -53,6 +53,8 @@ private slots:
 
     void on_closepdfbtn_clicked();
 
+    void on_resfaddbtn_clicked();
+
 private:
     Ui::ProblemEditor *ui;
 };

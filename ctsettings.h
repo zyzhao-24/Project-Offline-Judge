@@ -61,6 +61,14 @@ public:
         }
         return true;
     }
+    static bool isValidFileName(const QString& Str) {
+        if(Str.isEmpty()) return false;
+        for(int _index=0;_index<Str.size();_index++) {
+            if(Str[_index].isLetterOrNumber()||Str[_index]=='_'||Str[_index]=='.') continue;
+            else return false;
+        }
+        return true;
+    }
 };
 
 //class for folder operation(create,remove,rename and duplicate)
