@@ -130,3 +130,10 @@ void ProblemEditor::on_closepdfbtn_clicked()
     closePDF();
 }
 
+
+void ProblemEditor::on_resfaddbtn_clicked()
+{
+    QString filename=ui->filenametext->text();
+    QString filetype=ui->filetypetext->text();
+}
+
