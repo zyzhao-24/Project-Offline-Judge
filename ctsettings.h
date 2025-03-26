@@ -200,12 +200,63 @@ public:
         communicative=5
     } type = ProblemType::custom;
 
+    struct Utility {
+        QString filename;
+        enum class FileCategory{
+            resource=0,
+            testdata=1,
+            submission=2,
+            compiled=3,
+            builtin=4
+        } category;
+        enum class FileType{
+            plain=0,
+            code_cpl=1,
+            code_int=2,
+            templ_cpl=3,
+            templ_int=4,
+            snippet=5,
+            executable=6
+        } filetype;
+    };
+
+    struct CompileSetting {
+        QString compiler;
+        QVector<QString> inputs;
+        QString output_cmd;
+        QString output;
+        QString params;
+    };
+
+    QMap<QString,Utility> utils;
+    QMap<QString,CompileSetting> cpl_settings;
+
     QJsonObject JsonProblemObj() {
         QJsonObject ProblemObj;
         ProblemObj.insert("name",name);
         ProblemObj.insert("time_limit_ms",time_limit_ms);
         ProblemObj.insert("mem_limit_MiB",mem_limit_MiB);
         ProblemObj.insert("type",ProbTypeName[(int) type]);
+        QJsonArray Utilities;
+        QVector<Utility> utilsvec(utils.values());
+        QJsonArray CompileSettings;
+        QVector<CompileSetting> cplvec(cpl_settings.values());
+        for(int _index=0;_index<utilsvec.size();_index++) {
+            QJsonObject util;
+            util.insert("filename",utilsvec[_index].filename);
+            util.insert("category",(int) utilsvec[_index].category);
+            util.insert("type",(int) utilsvec[_index].filetype);
+            Utilities.append(util);
+        }
+        for(int _index=0;_index<cplvec.size();_index++) {
+            QJsonObject cpls;
+            cpls.insert("compiler",cplvec[_index].compiler);
+            cpls.insert("inputs",cplvec[_index].inputs.join(','));
+            cpls.insert("outcmd",cplvec[_index].output_cmd);
+            cpls.insert("output",cplvec[_index].output);
+            cpls.insert("params",cplvec[_index].params);
+            Utilities.append(cpls);
+        }
         return ProblemObj;
     }
     int loadJsonObj(const QJsonObject& ProblemObj) {
