@@ -10,6 +10,7 @@
 #include <QPagedPaintDevice>
 #include <QPainter>
 #include <QPaintEvent>
+#include <QListWidget>
 #include "ctsettings.h"
 
 namespace Ui {
@@ -54,6 +55,8 @@ private slots:
     void on_closepdfbtn_clicked();
 
     void on_resfaddbtn_clicked();
+
+    void on_resfwid_itemActivated(QListWidgetItem *item);
 
 private:
     Ui::ProblemEditor *ui;

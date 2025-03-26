@@ -134,6 +134,12 @@ void ProblemEditor::on_closepdfbtn_clicked()
 void ProblemEditor::on_resfaddbtn_clicked()
 {
     QString filename=ui->filenametext->text();
-    QString filetype=ui->filetypetext->text();
+}
+
+
+void ProblemEditor::on_resfwid_itemActivated(QListWidgetItem *item)
+{
+    ui->testdatawid->clearSelection();
+    ui->pasubwid->clearSelection();
 }
 

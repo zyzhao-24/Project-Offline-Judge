@@ -25,7 +25,8 @@ HEADERS += \
     contesteditor.h \
     ctsettings.h \
     mainwindow.h \
-    problemeditor.h
+    problemeditor.h \
+    testlib/testlib.h
 
 FORMS += \
     contesteditor.ui \
