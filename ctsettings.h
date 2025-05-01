@@ -53,10 +53,18 @@ public:
     static bool isValidIsoDate(const QString& Str) {
         return QDateTime::fromString(Str,Qt::DateFormat::ISODate).isValid();
     }
+    static bool isValidUsername(const QString& Str) {
+        if(Str.isEmpty()) return false;
+        for(int _index=0;_index<Str.size();_index++) {
+            if(Str[_index].isLetterOrNumber()||Str[_index]=='_'||Str[_index]=='.'||Str[_index]=='@') continue;
+            else return false;
+        }
+        return true;
+    }
     static bool isValidPwd(const QString& Str) {
         if(Str.isEmpty()) return true;
         for(int _index=0;_index<Str.size();_index++) {
-            if(Str[_index].isLetterOrNumber()||Str[_index]=='_') continue;
+            if(Str[_index].isLetterOrNumber()||Str[_index]=='_'||Str[_index]=='.'||Str[_index]=='@'||Str[_index]=='~'||Str[_index]=='%'||Str[_index]=='$'||Str[_index]=='#'||Str[_index]=='!'||Str[_index]=='*') continue;
             else return false;
         }
         return true;
