@@ -55,7 +55,7 @@ void ContestEditor::setPa() {
         Contest::Participant dat={"",""};
         if(ui->patabwid->item(index,0)) dat.id=ui->patabwid->item(index,0)->text();
         if(ui->patabwid->item(index,1)) dat.pwd=ui->patabwid->item(index,1)->text();
-        if(!StrVal::isValidName(dat.id))
+        if(!StrVal::isValidUsername(dat.id))
             continue;
         if(!StrVal::isValidPwd(dat.pwd))
             continue;
@@ -178,7 +178,7 @@ void ContestEditor::on_impbtn_clicked()
             skipped++;
             continue;
         }
-        if(!StrVal::isValidName(info[0])) {
+        if(!StrVal::isValidUsername(info[0])) {
             skipped++;
             continue;
         }
@@ -217,7 +217,7 @@ void ContestEditor::on_expbtn_clicked()
         Contest::Participant dat={"",""};
         if(ui->patabwid->item(index,0)) dat.id=ui->patabwid->item(index,0)->text();
         if(ui->patabwid->item(index,1)) dat.pwd=ui->patabwid->item(index,1)->text();
-        if(!StrVal::isValidName(dat.id))
+        if(!StrVal::isValidUsername(dat.id))
             continue;
         if(!StrVal::isValidPwd(dat.pwd))
             continue;
