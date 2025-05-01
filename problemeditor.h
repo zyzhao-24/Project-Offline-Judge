@@ -11,7 +11,10 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QListWidget>
+#include <QLineEdit>
 #include "ctsettings.h"
+
+const int max_cplsrc=5;
 
 namespace Ui {
 class ProblemEditor;
@@ -31,9 +34,14 @@ public:
     QPdfView* pdfview=nullptr;
     QPdfDocument* pdfdoc=nullptr;
     QPdfDocument* docnull=nullptr;
+
+    QLineEdit cplsrc[max_cplsrc];//src file name input widget,to be modified to combo box
+    int cplsrc_cnt=0;
+
     void loadBasic();
     void closePDF();
     void loadPDF();
+    void loadUtils();
     void refresh();
 private slots:
     void on_refreshbtn_clicked();
@@ -54,9 +62,17 @@ private slots:
 
     void on_closepdfbtn_clicked();
 
-    void on_resfaddbtn_clicked();
+    void on_srcaddbtn_clicked();
 
-    void on_resfwid_itemActivated(QListWidgetItem *item);
+    void on_srcrembtn_clicked();
+
+    void on_jutilswid_itemClicked(QListWidgetItem *item);
+
+    void on_jutilsaddbtn_clicked();
+
+    void on_jutilsrembtn_clicked();
+
+
 
 private:
     Ui::ProblemEditor *ui;
