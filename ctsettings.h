@@ -85,6 +85,7 @@ public:
     }
     static bool copy(const QString& fromDir, const QString& toDir, bool coverFileIfExist)
     {
+        if(fromDir==toDir) return true;
         QDir sourceDir(fromDir);
         QDir targetDir(toDir);
 
@@ -119,15 +120,15 @@ public:
         }
         return true;
     }
-    static void rename(const QString& oldPath, const QString& newPath)
+    static bool rename(const QString& oldPath, const QString& newPath)
     {
         QDir dirOld(oldPath);
-        dirOld.rename(oldPath, newPath);
+        return dirOld.rename(oldPath, newPath);
     }
-    static void remove(const QString& dirPath)
+    static bool remove(const QString& dirPath)
     {
         QDir dirItem(dirPath);
-        dirItem.removeRecursively();
+        return dirItem.removeRecursively();
     }
     static bool exists(const QString& dirPath)
     {
@@ -144,7 +145,7 @@ public:
     {
         QFileInfo fromFile(fromDir);
         QFileInfo targetFile(toDir);
-        if(fromFile==targetFile) return false;
+        if(fromFile==targetFile) return true;
         if(!fromFile.isFile()) return false;
         if(targetFile.isFile()) {
             if(coverFileIfExist) {
@@ -160,6 +161,9 @@ public:
     static bool exists(const QString& dirPath) {
         QFileInfo fileItem(dirPath);
         return fileItem.isFile();
+    }
+    static bool remove(const QString& dirPath) {
+        return QFile::remove(dirPath);
     }
 };
 
@@ -206,17 +210,13 @@ public:
             resource=0,
             testdata=1,
             submission=2,
-            compiled=3,
-            builtin=4
+            builtin=3
         } category;
         enum class FileType{
             plain=0,
-            code_cpl=1,
-            code_int=2,
-            templ_cpl=3,
-            templ_int=4,
-            snippet=5,
-            executable=6
+            code=1,
+            templ=2,
+            snippet=3
         } filetype;
     };
 
@@ -248,6 +248,7 @@ public:
             util.insert("type",(int) utilsvec[_index].filetype);
             Utilities.append(util);
         }
+        if(!Utilities.isEmpty()) ProblemObj.insert("utils",Utilities);
         for(int _index=0;_index<cplvec.size();_index++) {
             QJsonObject cpls;
             cpls.insert("compiler",cplvec[_index].compiler);
@@ -255,8 +256,9 @@ public:
             cpls.insert("outcmd",cplvec[_index].output_cmd);
             cpls.insert("output",cplvec[_index].output);
             cpls.insert("params",cplvec[_index].params);
-            Utilities.append(cpls);
+            CompileSettings.append(cpls);
         }
+        if(!CompileSettings.isEmpty()) ProblemObj.insert("cpl_settings",CompileSettings);
         return ProblemObj;
     }
     int loadJsonObj(const QJsonObject& ProblemObj) {
@@ -269,6 +271,21 @@ public:
         time_limit_ms=ProblemObj["time_limit_ms"].toInt(1000);
         mem_limit_MiB=ProblemObj["mem_limit_MiB"].toInt(1000);
         type=ProblemType(ProbTypeID[ProblemObj["type"].toString()]);
+
+        if(ProblemObj.contains("utils")) {
+            QJsonArray Utilities=ProblemObj["utils"].toArray();
+            for(int _index=0;_index<Utilities.count();_index++) {
+                QJsonObject util=Utilities[_index].toObject();
+                if(!util.contains("filename")) continue;
+                if(!util.contains("category")) continue;
+                if(!util.contains("type")) continue;
+                QString filename=util["filename"].toString();
+                Utility::FileCategory category=Utility::FileCategory(util["category"].toInt());
+                Utility::FileType ftype=Utility::FileType(util["type"].toInt());
+                utils[filename]={filename,category,ftype};
+            }
+        }
+
         return 0;
     }
 };
@@ -395,6 +412,54 @@ public:
     }
 };
 
-
-
+/*
+ * template code format:
+ * whenever you want to insert a snippet, write <snippet filename="filename"> in your file
+ */
+class Codetpl {
+public:
+    Codetpl() =delete;
+    static QVector<QString> get_snippets(const QString& templatefile) {
+        QVector<QString> FileNames={};
+        int pos1=0,pos2=0;
+        while(pos2>=0&&pos2<templatefile.size()) {
+            pos1=templatefile.indexOf("<snippet filename=\"",pos2);
+            if(pos1==-1) break;
+            pos2=templatefile.indexOf("\">",pos1);
+            if(pos2==-1) pos2=templatefile.size();
+            FileNames.push_back(templatefile.sliced(pos1+19,pos2-pos1-19));
+        }
+        return FileNames;
+    }
+    static bool is_valid(const QString& templatefile) {
+        QVector<QString> FileNames=get_snippets(templatefile);
+        if(FileNames.empty()) return false;
+        for(int i=0;i<FileNames.size();i++) {
+            if(!StrVal::isValidFileName(FileNames[i])) return false;
+        }
+        return true;
+    }
+    static QString fill_in(const QString& templatefile,const QMap<QString,QString>& snippetfiles) {
+        QString filefill="";
+        int pos1=0,pos2=0;
+        while(pos2>=0&&pos2<templatefile.size()) {
+            pos1=templatefile.indexOf("<snippet filename=\"",pos2);
+            if(pos1==-1) {
+                if(pos2==0) filefill+=templatefile;
+                else filefill+=templatefile.last(templatefile.size()-pos2-2);
+                break;
+            }
+            filefill+=templatefile.sliced(pos2,pos1-pos2);
+            pos2=templatefile.indexOf("\">",pos1);
+            if(pos2==-1) pos2=templatefile.size();
+            QString filename=templatefile.sliced(pos1+19,pos2-pos1-19);
+            if(snippetfiles.contains(filename)) {
+                filefill+=snippetfiles[filename];
+            } else {
+                filefill+=templatefile.sliced(pos1,pos2-pos1+2);
+            }
+        }
+        return filefill;
+    }
+};// need testing
 #endif // CTSETTINGS_H

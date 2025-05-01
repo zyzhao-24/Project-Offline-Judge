@@ -482,43 +482,20 @@
     <property name="title">
      <string>Judgement Utilities</string>
     </property>
-    <widget class="QListWidget" name="resfwid">
+    <widget class="QListWidget" name="jutilswid">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>100</y>
-       <width>171</width>
-       <height>151</height>
+       <y>80</y>
+       <width>531</width>
+       <height>171</height>
       </rect>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
      </property>
-    </widget>
-    <widget class="QListWidget" name="testdatawid">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>100</y>
-       <width>171</width>
-       <height>151</height>
-      </rect>
-     </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="pasubwid">
-     <property name="geometry">
-      <rect>
-       <x>370</x>
-       <y>100</y>
-       <width>171</width>
-       <height>151</height>
-      </rect>
-     </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
      </property>
     </widget>
     <widget class="QLineEdit" name="filename">
@@ -567,97 +544,7 @@
      <property name="text">
       <string>example.cpp</string>
      </property>
-    </widget>
-    <widget class="QLineEdit" name="resfile">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>171</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::StrongFocus</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 0);</string>
-     </property>
-     <property name="text">
-      <string>resource file</string>
-     </property>
-     <property name="frame">
-      <bool>false</bool>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="testdata">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>80</y>
-       <width>171</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::StrongFocus</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 0);</string>
-     </property>
-     <property name="text">
-      <string>test data</string>
-     </property>
-     <property name="frame">
-      <bool>false</bool>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="pasubmission">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>370</x>
-       <y>80</y>
-       <width>171</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::StrongFocus</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 0);</string>
-     </property>
-     <property name="text">
-      <string>participant submission</string>
-     </property>
-     <property name="frame">
-      <bool>false</bool>
-     </property>
-     <property name="readOnly">
+     <property name="clearButtonEnabled">
       <bool>true</bool>
      </property>
     </widget>
@@ -701,29 +588,27 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="frame">
+      <bool>true</bool>
+     </property>
      <item>
       <property name="text">
-       <string>plain text</string>
+       <string>plain</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>code/header file(compiler)</string>
+       <string>code</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>code/library file(interpreter)</string>
+       <string>template</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>code template file(compiler)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>code template file(interpreter)</string>
+       <string>snippet</string>
       </property>
      </item>
     </widget>
@@ -782,13 +667,18 @@
        <string>participant submission</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>built-in file</string>
+      </property>
+     </item>
     </widget>
     <widget class="QCommandLinkButton" name="jutilsaddbtn">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>250</y>
-       <width>121</width>
+       <width>171</width>
        <height>41</height>
       </rect>
      </property>
@@ -802,9 +692,9 @@
     <widget class="QCommandLinkButton" name="jutilsrembtn">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>190</x>
        <y>250</y>
-       <width>121</width>
+       <width>171</width>
        <height>41</height>
       </rect>
      </property>
@@ -815,39 +705,23 @@
       <iconset theme="QIcon::ThemeIcon::ListRemove"/>
      </property>
     </widget>
-    <widget class="QCommandLinkButton" name="jutilsovrbtn">
+    <widget class="QCommandLinkButton" name="jutilsmodbtn">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>370</x>
        <y>250</y>
-       <width>121</width>
+       <width>171</width>
        <height>41</height>
       </rect>
      </property>
      <property name="text">
-      <string>Override</string>
+      <string>Modify</string>
      </property>
      <property name="icon">
       <iconset theme="QIcon::ThemeIcon::DocumentSaveAs"/>
-     </property>
-    </widget>
-    <widget class="QCommandLinkButton" name="jutilseditbtn">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>250</y>
-       <width>121</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Edit</string>
-     </property>
-     <property name="icon">
-      <iconset theme="QIcon::ThemeIcon::DocumentProperties"/>
      </property>
     </widget>
    </widget>
@@ -871,7 +745,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>61</width>
+       <width>51</width>
        <height>20</height>
       </rect>
      </property>
@@ -939,19 +813,19 @@
      </property>
      <item>
       <property name="text">
-       <string>g++.exe</string>
+       <string notr="true">g++.exe</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>gcc.exe</string>
+       <string notr="true">gcc.exe</string>
       </property>
      </item>
     </widget>
     <widget class="QRadioButton" name="phaserbtn">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>70</x>
        <y>20</y>
        <width>95</width>
        <height>20</height>
@@ -967,9 +841,9 @@
     <widget class="QRadioButton" name="phaserbtn_2">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>180</x>
        <y>20</y>
-       <width>95</width>
+       <width>91</width>
        <height>20</height>
       </rect>
      </property>
@@ -1067,9 +941,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>290</x>
        <y>20</y>
-       <width>61</width>
+       <width>71</width>
        <height>20</height>
       </rect>
      </property>
@@ -1106,6 +980,9 @@
      </property>
      <property name="text">
       <string>example.exe</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLineEdit" name="src">
@@ -1178,6 +1055,9 @@
        <width>471</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QWidget" name="horizontalLayoutWidget">
@@ -1260,7 +1140,7 @@
       <number>0</number>
      </property>
      <property name="columnCount">
-      <number>5</number>
+      <number>6</number>
      </property>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>true</bool>
@@ -1290,12 +1170,17 @@
      </column>
      <column>
       <property name="text">
+       <string>output</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
        <string>params</string>
       </property>
      </column>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="jusettingbox">
+   <widget class="QGroupBox" name="JudgeSettingBox">
     <property name="geometry">
      <rect>
       <x>640</x>
@@ -1307,12 +1192,12 @@
     <property name="title">
      <string>Judge Settings</string>
     </property>
-    <widget class="QCommandLinkButton" name="commandLinkButton_2">
+    <widget class="QCommandLinkButton" name="TestSettingBTN">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>190</x>
        <y>20</y>
-       <width>261</width>
+       <width>171</width>
        <height>41</height>
       </rect>
      </property>
@@ -1323,12 +1208,12 @@
       <iconset theme="QIcon::ThemeIcon::SyncSynchronizing"/>
      </property>
     </widget>
-    <widget class="QCommandLinkButton" name="commandLinkButton_3">
+    <widget class="QCommandLinkButton" name="CheckSettingBTN">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>370</x>
        <y>20</y>
-       <width>261</width>
+       <width>171</width>
        <height>41</height>
       </rect>
      </property>
@@ -1337,6 +1222,25 @@
      </property>
      <property name="icon">
       <iconset theme="QIcon::ThemeIcon::EditFind"/>
+     </property>
+    </widget>
+    <widget class="QCommandLinkButton" name="TestDataBTN">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Test Data</string>
+     </property>
+     <property name="icon">
+      <iconset theme="QIcon::ThemeIcon::DocumentProperties"/>
      </property>
     </widget>
    </widget>
