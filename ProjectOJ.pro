@@ -45,3 +45,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     README.md
+
+CONFIG +=debug_and_release
+CONFIG(debug,debug|release){
+    testlib.path = $${OUT_PWD}\\debug
+}else{
+    testlib.path = $${OUT_PWD}\\release
+}
+testlib.files =  $${PWD}\\testlib\\testlib.h
+
+INSTALLS += \
+    testlib

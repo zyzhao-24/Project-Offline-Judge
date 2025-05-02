@@ -80,6 +80,9 @@ void ContestEditor::loadProb() {
         if(!FolderOp::exists(ctPath+probvec[index].name+".probdata/")) {
             FolderOp::create(ctPath+probvec[index].name+".probdata/");
         }
+        if(!FileOp::exists(ctPath+probvec[index].name+".probdata/testlib.h")) {
+            FileOp::copy(QCoreApplication::applicationDirPath()+"/testlib.h",ctPath+probvec[index].name+".probdata/testlib.h",true);
+        }
     }
 }
 
@@ -244,6 +247,8 @@ void ContestEditor::on_addprobbtn_clicked()
     }
     contest.problems[new_prob_name]=Problem(new_prob_name);
     FolderOp::create(ctPath+new_prob_name+".probdata/");
+    FileOp::copy(QCoreApplication::applicationDirPath()+"/testlib.h",ctPath+new_prob_name+".probdata/testlib.h",true);
+    contest.problems[new_prob_name].utils["testlib.h"]={"testlib.h",Problem::Utility::FileCategory::builtin,Problem::Utility::FileType::code};
     loadProb();
 }
 
@@ -292,6 +297,7 @@ void ContestEditor::on_confprobbtn_clicked()
     if(ui->problistwid->selectedItems().size()!=1) return;
     QString prob_name=ui->problistwid->selectedItems().constFirst()->text();
     if(!contest.problems.contains(prob_name)) return;
+    loadProb();
     ProblemEditor* probEditor=new ProblemEditor;
     probEditor->conEditor=this;
     probEditor->problem=&contest.problems[prob_name];
