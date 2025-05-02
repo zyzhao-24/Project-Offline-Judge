@@ -95,10 +95,16 @@ void ProblemEditor::loadUtils() {
                 continue;
             }
         }
+        if(it->filetype==Problem::Utility::FileType::templ) {
+            if(!FileOp::exists(probPath+it->filename+".tpl")) {
+                problem->utils.remove(it->filename);
+                continue;
+            }
+        }
     }
     for(QVector<Problem::Utility>::Iterator it=utilsvec.begin();it!=utilsvec.end();it++)
         if(it->filetype==Problem::Utility::FileType::templ){
-            QFile tplfile(probPath+it->filename);
+            QFile tplfile(probPath+it->filename+".tpl");
             if(!tplfile.open(QIODevice::ReadOnly)) {
                 problem->utils.remove(it->filename) ;
                 continue;
@@ -118,8 +124,32 @@ void ProblemEditor::loadUtils() {
     ui->jutilswid->clear();
     ui->jutilswid->addItems(utilslist);
     ui->filenametext->clear();
+    update_cplsrc_option();
 }
-
+void ProblemEditor::update_cplsrc_option() {
+    QStringList utilslist(problem->utils.keys());
+    bool precompile=ui->phaserbtn->isChecked();
+    for(QStringList::Iterator it=utilslist.begin();it!=utilslist.end();it++) {
+        Problem::Utility util=problem->utils[*it];
+        if(util.filetype==Problem::Utility::FileType::snippet||util.filetype==Problem::Utility::FileType::plain)
+        {
+            it=utilslist.erase(it)-1;
+            continue;
+        }
+        if(!precompile) {
+            if(util.category==Problem::Utility::FileCategory::submission)
+            {
+                it=utilslist.erase(it)-1;
+                continue;
+            }
+        }
+    }
+    for(int index=0;index<max_cplsrc;index++) {
+        cplsrc[index].clear();
+        cplsrc[index].clearEditText();
+        cplsrc[index].addItems(utilslist);
+    }
+}
 void ProblemEditor::refresh() {
     loadBasic();
     if(!pdfview->isHidden()) loadPDF();
@@ -200,6 +230,21 @@ void ProblemEditor::on_closepdfbtn_clicked()
     closePDF();
 }
 
+void ProblemEditor::set_cplsrc_cnt(int new_cnt) {
+    if(new_cnt<1||new_cnt>max_cplsrc) return;
+    if(new_cnt>cplsrc_cnt)
+        for(;cplsrc_cnt<new_cnt;cplsrc_cnt++) {
+        ui->srchlayout->addWidget(&cplsrc[cplsrc_cnt]);
+        cplsrc[cplsrc_cnt].show();
+    }
+    else for(;cplsrc_cnt>new_cnt;cplsrc_cnt--) {
+        cplsrc[cplsrc_cnt--].clearEditText();
+        ui->srchlayout->removeWidget(&cplsrc[cplsrc_cnt-1]);
+        cplsrc[cplsrc_cnt-1].hide();
+    }
+    return;
+}
+
 void ProblemEditor::on_srcaddbtn_clicked()
 {
     if(cplsrc_cnt>=max_cplsrc) return;
@@ -212,7 +257,7 @@ void ProblemEditor::on_srcrembtn_clicked()
 {
     if(cplsrc_cnt<=1) return;
     cplsrc_cnt--;
-    cplsrc[cplsrc_cnt].setText("");
+    cplsrc[cplsrc_cnt].clearEditText();
     ui->srchlayout->removeWidget(&cplsrc[cplsrc_cnt]);
     cplsrc[cplsrc_cnt].hide();
 }
@@ -237,6 +282,16 @@ void ProblemEditor::on_jutilswid_itemClicked(QListWidgetItem *item)
 void ProblemEditor::on_jutilsaddbtn_clicked()
 {
     QString name=ui->filenametext->text();
+    Problem::Utility::FileCategory category=Problem::Utility::FileCategory(ui->categorycombo->currentIndex());
+    Problem::Utility::FileType type=Problem::Utility::FileType(ui->filetypecombo->currentIndex());
+    // process template file name
+    if(type==Problem::Utility::FileType::templ) {
+        if(!name.endsWith(".tpl")) {
+            QMessageBox::warning(NULL, "warning", tr("Invalid template file name!(template file name should be the name of original code+\".tpl\"),e.g. example.cpp.tpl"), QMessageBox::Yes, QMessageBox::Yes);
+            return;
+        }
+        name.erase(name.end()-4,name.end());
+    }
     // validate filename
     if(problem->utils.contains(name)) {
         QMessageBox::warning(NULL, "warning", tr("File already exists!"), QMessageBox::Yes, QMessageBox::Yes);
@@ -246,28 +301,28 @@ void ProblemEditor::on_jutilsaddbtn_clicked()
         QMessageBox::warning(NULL, "warning", tr("Invalid file name!"), QMessageBox::Yes, QMessageBox::Yes);
         return;
     }
-    Problem::Utility::FileCategory category=Problem::Utility::FileCategory(ui->categorycombo->currentIndex());
-    Problem::Utility::FileType type=Problem::Utility::FileType(ui->filetypecombo->currentIndex());
     if(category==Problem::Utility::FileCategory::builtin || type==Problem::Utility::FileType::snippet) {// invalid type/category filter
         QMessageBox::warning(NULL, "warning", tr("Invalid file type/category!"), QMessageBox::Yes, QMessageBox::Yes);
         return;
     }
-    if(category!=Problem::Utility::FileCategory::resource&&type==Problem::Utility::FileType::templ) {
-        QMessageBox::warning(NULL, "warning", tr("Template file only allowed for resources!"), QMessageBox::Yes, QMessageBox::Yes);
+    if(category!=Problem::Utility::FileCategory::submission&&type==Problem::Utility::FileType::templ) {
+        QMessageBox::warning(NULL, "warning", tr("Template file only allowed for submission category!"), QMessageBox::Yes, QMessageBox::Yes);
         return;
     }
 
     if(category==Problem::Utility::FileCategory::resource||
-        (category==Problem::Utility::FileCategory::testdata&&type==Problem::Utility::FileType::code) ) {
+        (category==Problem::Utility::FileCategory::testdata&&type==Problem::Utility::FileType::code)||
+        type==Problem::Utility::FileType::templ) {
         // file importing needed
         QString fpath=QFileDialog::getOpenFileName(this, tr("Import from file"), probPath, tr("all files (*.*)"));
-        if(!FileOp::copy(fpath,probPath+name,true)) {
-            QMessageBox::warning(NULL, "warning", tr("Failed while importing file!"), QMessageBox::Yes, QMessageBox::Yes);
-            return;
-        }
+
         if(type==Problem::Utility::FileType::templ) {
+            if(!FileOp::copy(fpath,probPath+name+".tpl",true)) {
+                QMessageBox::warning(NULL, "warning", tr("Failed while importing file!"), QMessageBox::Yes, QMessageBox::Yes);
+                return;
+            }
             // template file parsing
-            QFile tplfile(probPath+name);
+            QFile tplfile(probPath+name+".tpl");
             if(!tplfile.open(QIODevice::ReadOnly)) {
                 QMessageBox::warning(NULL, "warning", tr("Failed while reading template file!"), QMessageBox::Yes, QMessageBox::Yes);
                 return;
@@ -290,6 +345,10 @@ void ProblemEditor::on_jutilsaddbtn_clicked()
             for(int index=0;index<snippetnames.size();index++)
                 problem->utils[snippetnames[index]]={snippetnames[index],Problem::Utility::FileCategory::submission,Problem::Utility::FileType::snippet};
         } else {
+            if(!FileOp::copy(fpath,probPath+name,true)) {
+                QMessageBox::warning(NULL, "warning", tr("Failed while importing file!"), QMessageBox::Yes, QMessageBox::Yes);
+                return;
+            }
             problem->utils[name]={name,category,type};
         }
     } else {
@@ -310,6 +369,7 @@ void ProblemEditor::on_jutilsrembtn_clicked()
         loadUtils();
         return;
     }
+
     // invalid type/category filter
     if(problem->utils[name].category==Problem::Utility::FileCategory::builtin||
         problem->utils[name].filetype==Problem::Utility::FileType::snippet) {
@@ -323,9 +383,22 @@ void ProblemEditor::on_jutilsrembtn_clicked()
     if(category==Problem::Utility::FileCategory::resource||
         (category==Problem::Utility::FileCategory::testdata&&type!=Problem::Utility::FileType::plain) )
         FileOp::remove(probPath+name);
-
+    if(type==Problem::Utility::FileType::templ)
+        FileOp::remove(probPath+name+".tpl");
     problem->utils.remove(name);
 
     loadUtils();
     return;
 }
+
+void ProblemEditor::on_phaserbtn_clicked()
+{
+    update_cplsrc_option();
+}
+
+
+void ProblemEditor::on_phaserbtn_2_clicked()
+{
+    update_cplsrc_option();
+}
+

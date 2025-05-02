@@ -12,6 +12,7 @@
 #include <QPaintEvent>
 #include <QListWidget>
 #include <QLineEdit>
+#include <QComboBox>
 #include "ctsettings.h"
 
 const int max_cplsrc=5;
@@ -35,8 +36,10 @@ public:
     QPdfDocument* pdfdoc=nullptr;
     QPdfDocument* docnull=nullptr;
 
-    QLineEdit cplsrc[max_cplsrc];//src file name input widget,to be modified to combo box
+    QComboBox cplsrc[max_cplsrc];//src file name input widget,to be modified to combo box
     int cplsrc_cnt=0;
+    void set_cplsrc_cnt(int new_cnt);
+    void update_cplsrc_option();
 
     void loadBasic();
     void closePDF();
@@ -73,6 +76,10 @@ private slots:
     void on_jutilsrembtn_clicked();
 
 
+
+    void on_phaserbtn_clicked();
+
+    void on_phaserbtn_2_clicked();
 
 private:
     Ui::ProblemEditor *ui;

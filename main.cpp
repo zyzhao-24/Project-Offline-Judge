@@ -4,8 +4,6 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "ctsettings.h"
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -20,10 +18,6 @@ int main(int argc, char *argv[])
         }
     }
 
-    QString str1="code fill <snippet filename=\"snippet_name\"> code fill";
-    QMap<QString,QString> fill;
-    fill["snippet_name1"]="fcode";
-    qDebug()<<Codetpl::get_snippets(str1)<<Codetpl::fill_in(str1,fill)<<Qt::endl;
     MainWindow w;
     w.show();
     return a.exec();
