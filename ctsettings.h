@@ -229,9 +229,9 @@ public:
     };
 
     struct CompileSetting {
+        bool precompile;
         QString compiler;
-        QVector<QString> inputs;
-        QString output_cmd;
+        QStringList inputs;
         QString output;
         QString params;
     };
@@ -259,9 +259,9 @@ public:
         if(!Utilities.isEmpty()) ProblemObj.insert("utils",Utilities);
         for(int _index=0;_index<cplvec.size();_index++) {
             QJsonObject cpls;
+            cpls.insert("precompile",cplvec[_index].precompile);
             cpls.insert("compiler",cplvec[_index].compiler);
-            cpls.insert("inputs",cplvec[_index].inputs.join(','));
-            cpls.insert("outcmd",cplvec[_index].output_cmd);
+            cpls.insert("inputs",cplvec[_index].inputs.join('|'));
             cpls.insert("output",cplvec[_index].output);
             cpls.insert("params",cplvec[_index].params);
             CompileSettings.append(cpls);
@@ -294,6 +294,23 @@ public:
             }
         }
 
+        if(ProblemObj.contains("cpl_settings")) {
+            QJsonArray CompileSettings=ProblemObj["cpl_settings"].toArray();
+            for(int _index=0;_index<CompileSettings.count();_index++) {
+                QJsonObject cplset=CompileSettings[_index].toObject();
+                if(!cplset.contains("precompile")) continue;
+                if(!cplset.contains("compiler")) continue;
+                if(!cplset.contains("inputs")) continue;
+                if(!cplset.contains("output")) continue;
+                if(!cplset.contains("params")) continue;
+                bool precompile=cplset["precompile"].toBool();
+                QString compiler=cplset["compiler"].toString("g++.exe");
+                QStringList inputs=cplset["inputs"].toString().split("|");
+                QString output=cplset["output"].toString();
+                QString params=cplset["params"].toString();
+                cpl_settings[output]={precompile,compiler,inputs,output,params};
+            }
+        }
         return 0;
     }
 };

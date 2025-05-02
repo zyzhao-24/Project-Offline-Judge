@@ -11,6 +11,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QListWidget>
+#include <QTableWidget>
 #include <QLineEdit>
 #include <QComboBox>
 #include "ctsettings.h"
@@ -45,6 +46,7 @@ public:
     void closePDF();
     void loadPDF();
     void loadUtils();
+    void loadCplSettings();
     void refresh();
 private slots:
     void on_refreshbtn_clicked();
@@ -80,6 +82,12 @@ private slots:
     void on_phaserbtn_clicked();
 
     void on_phaserbtn_2_clicked();
+
+    void on_cplsetaddbtn_clicked();
+
+    void on_cplsetrembtn_clicked();
+
+    void on_cplsettabwid_itemClicked(QTableWidgetItem *item);
 
 private:
     Ui::ProblemEditor *ui;

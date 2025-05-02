@@ -859,7 +859,7 @@
       <rect>
        <x>230</x>
        <y>50</y>
-       <width>81</width>
+       <width>311</width>
        <height>20</height>
       </rect>
      </property>
@@ -876,57 +876,7 @@
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>&lt;input_files&gt;</string>
-     </property>
-     <property name="frame">
-      <bool>false</bool>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="outcmdtext">
-     <property name="geometry">
-      <rect>
-       <x>320</x>
-       <y>50</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="inputMask">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>-o</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="cmdhint2">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>370</x>
-       <y>50</y>
-       <width>151</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::StrongFocus</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 0);</string>
-     </property>
-     <property name="inputMask">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>&lt;output_file&gt; &lt;params&gt;</string>
+      <string>&lt;input_files&gt; -o &lt;output_file&gt; &lt;params&gt;</string>
      </property>
      <property name="frame">
       <bool>false</bool>
@@ -1142,11 +1092,20 @@
        <height>251</height>
       </rect>
      </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+     </property>
      <property name="rowCount">
       <number>0</number>
      </property>
      <property name="columnCount">
-      <number>6</number>
+      <number>5</number>
      </property>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>true</bool>
@@ -1167,11 +1126,6 @@
      <column>
       <property name="text">
        <string>source</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>cmd</string>
       </property>
      </column>
      <column>
