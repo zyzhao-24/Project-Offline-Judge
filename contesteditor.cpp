@@ -297,6 +297,7 @@ void ContestEditor::on_confprobbtn_clicked()
     if(ui->problistwid->selectedItems().size()!=1) return;
     QString prob_name=ui->problistwid->selectedItems().constFirst()->text();
     if(!contest.problems.contains(prob_name)) return;
+    loadProb();
     ProblemEditor* probEditor=new ProblemEditor;
     probEditor->conEditor=this;
     probEditor->problem=&contest.problems[prob_name];
