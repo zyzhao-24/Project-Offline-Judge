@@ -126,6 +126,58 @@ void ProblemEditor::loadUtils() {
     ui->filenametext->clear();
     update_cplsrc_option();
 }
+
+void ProblemEditor::loadCplSettings() {
+    QVector<Problem::CompileSetting> cplsetvec(problem->cpl_settings.values());
+    for(QVector<Problem::CompileSetting>::Iterator it=cplsetvec.begin();it!=cplsetvec.end();it++) {
+        bool valid=true;
+        if(it->inputs.size()>max_cplsrc) valid=false;
+        foreach(QString input,it->inputs) {
+            if(it->inputs.count(input)>1) {
+                valid=false;
+                break;
+            }
+            if(!problem->utils.contains(input)) {
+                valid=false;
+                break;
+            }
+            Problem::Utility::FileCategory category=problem->utils[input].category;
+            Problem::Utility::FileType filetype=problem->utils[input].filetype;
+            if(filetype==Problem::Utility::FileType::plain||filetype==Problem::Utility::FileType::snippet) {
+                valid=false;
+                break;
+            }
+            if(!it->precompile) if(category==Problem::Utility::FileCategory::submission) {
+                valid=false;
+                break;
+            }
+        }
+        if(!valid) {
+            problem->cpl_settings.remove(it->output);
+            continue;
+        }
+    }
+    cplsetvec=problem->cpl_settings.values();
+    ui->cplsettabwid->setRowCount(cplsetvec.size());
+    for(int index=0;index<cplsetvec.size();index++) {
+        QString stage=cplsetvec[index].precompile?tr("precompile"):tr("in judge");
+        QTableWidgetItem *phaseItem = new QTableWidgetItem(stage);
+        QTableWidgetItem *compilerItem = new QTableWidgetItem(cplsetvec[index].compiler);
+        QTableWidgetItem *sourceItem = new QTableWidgetItem(cplsetvec[index].inputs.join(" "));
+        QTableWidgetItem *outputItem = new QTableWidgetItem(cplsetvec[index].output);
+        QTableWidgetItem *paramsItem = new QTableWidgetItem(cplsetvec[index].params);
+        ui->cplsettabwid->setItem(index,0,phaseItem);
+        ui->cplsettabwid->setItem(index,1,compilerItem);
+        ui->cplsettabwid->setItem(index,2,sourceItem);
+        ui->cplsettabwid->setItem(index,3,outputItem);
+        ui->cplsettabwid->setItem(index,4,paramsItem);
+    }
+    ui->cplsettabwid->clearSelection();
+    ui->outfnametext->clear();
+    set_cplsrc_cnt(1);
+    cplsrc[0].clearEditText();
+}
+
 void ProblemEditor::update_cplsrc_option() {
     QStringList utilslist(problem->utils.keys());
     bool precompile=ui->phaserbtn->isChecked();
@@ -154,6 +206,7 @@ void ProblemEditor::refresh() {
     loadBasic();
     if(!pdfview->isHidden()) loadPDF();
     loadUtils();
+    loadCplSettings();
     update();
 }
 
@@ -231,6 +284,7 @@ void ProblemEditor::on_closepdfbtn_clicked()
 }
 
 void ProblemEditor::set_cplsrc_cnt(int new_cnt) {
+    update_cplsrc_option();
     if(new_cnt<1||new_cnt>max_cplsrc) return;
     if(new_cnt>cplsrc_cnt)
         for(;cplsrc_cnt<new_cnt;cplsrc_cnt++) {
@@ -238,7 +292,7 @@ void ProblemEditor::set_cplsrc_cnt(int new_cnt) {
         cplsrc[cplsrc_cnt].show();
     }
     else for(;cplsrc_cnt>new_cnt;cplsrc_cnt--) {
-        cplsrc[cplsrc_cnt--].clearEditText();
+        cplsrc[cplsrc_cnt-1].clearEditText();
         ui->srchlayout->removeWidget(&cplsrc[cplsrc_cnt-1]);
         cplsrc[cplsrc_cnt-1].hide();
     }
@@ -287,7 +341,7 @@ void ProblemEditor::on_jutilsaddbtn_clicked()
     // process template file name
     if(type==Problem::Utility::FileType::templ) {
         if(!name.endsWith(".tpl")) {
-            QMessageBox::warning(NULL, "warning", tr("Invalid template file name!(template file name should be the name of original code+\".tpl\"),e.g. example.cpp.tpl"), QMessageBox::Yes, QMessageBox::Yes);
+            QMessageBox::warning(NULL, "warning", tr("Invalid template file name!(template file name should be the name of original code+\".tpl\", e.g. example.cpp.tpl)"), QMessageBox::Yes, QMessageBox::Yes);
             return;
         }
         name.erase(name.end()-4,name.end());
@@ -400,5 +454,93 @@ void ProblemEditor::on_phaserbtn_clicked()
 void ProblemEditor::on_phaserbtn_2_clicked()
 {
     update_cplsrc_option();
+}
+
+
+void ProblemEditor::on_cplsetaddbtn_clicked()
+{
+    Problem::CompileSetting cplset={
+        ui->phaserbtn->isChecked(),
+        ui->cplcmdbox->currentText(),
+        {},
+        ui->outfnametext->text(),
+        ui->paramtext->text()
+    };
+    if(!StrVal::isValidFileName(cplset.output)) {
+        QMessageBox::warning(NULL, "warning", tr("Invalid file name!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    if(problem->cpl_settings.contains(cplset.output)) {
+        QMessageBox::warning(NULL, "warning", tr("File already exists!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    for(int index=0;index<cplsrc_cnt;index++) {
+        QString input=cplsrc[index].currentText();
+        if(!problem->utils.contains(input)) {
+            QMessageBox::warning(NULL, "warning", tr("Input file does not exist!"), QMessageBox::Yes, QMessageBox::Yes);
+            return;
+        }
+        Problem::Utility::FileCategory category=problem->utils[input].category;
+        Problem::Utility::FileType filetype=problem->utils[input].filetype;
+        if(filetype==Problem::Utility::FileType::plain||filetype==Problem::Utility::FileType::snippet) {
+            QMessageBox::warning(NULL, "warning", tr("Invalid file category!"), QMessageBox::Yes, QMessageBox::Yes);
+            return;
+        }
+        if(!cplset.precompile) if(category==Problem::Utility::FileCategory::submission) {
+            QMessageBox::warning(NULL, "warning", tr("File in submission category not allowed in precompile stage!"), QMessageBox::Yes, QMessageBox::Yes);
+            return;
+        }
+        cplset.inputs.append(input);
+        if(cplset.inputs.count(input)>1) {
+            QMessageBox::warning(NULL, "warning", tr("Input file duplicated!"), QMessageBox::Yes, QMessageBox::Yes);
+            return;
+        }
+    }
+    problem->cpl_settings[cplset.output]=cplset;
+    loadCplSettings();
+}
+
+
+void ProblemEditor::on_cplsetrembtn_clicked()
+{
+    if(ui->cplsettabwid->selectedItems().isEmpty()) return;
+    int row_index=ui->cplsettabwid->currentRow();
+    QString output=ui->cplsettabwid->item(row_index,3)->text();
+    if(!problem->cpl_settings.contains(output)) {
+        loadCplSettings();
+        return;
+    }
+    problem->cpl_settings.remove(output);
+    loadCplSettings();
+}
+
+void ProblemEditor::on_cplsettabwid_itemClicked(QTableWidgetItem *item)
+{
+    int row_index=item->row();
+    QString output=ui->cplsettabwid->item(row_index,3)->text();
+    if(!problem->cpl_settings.contains(output)) {
+        loadCplSettings();
+        return;
+    }
+    Problem::CompileSetting cplset=problem->cpl_settings[output];
+    if(cplset.inputs.size()>max_cplsrc) {
+        loadCplSettings();
+        return;
+    }
+    if(cplset.precompile) {
+        ui->phaserbtn->setChecked(true);
+        ui->phaserbtn_2->setChecked(false);
+    }
+    else {
+        ui->phaserbtn_2->setChecked(true);
+        ui->phaserbtn->setChecked(false);
+    }
+    ui->outfnametext->setText(cplset.output);
+    ui->cplcmdbox->setCurrentText(cplset.compiler);
+    ui->paramtext->setText(cplset.params);
+    set_cplsrc_cnt(cplset.inputs.size());
+    for(int index=0;index<cplset.inputs.size();index++) {
+        cplsrc[index].setCurrentText(cplset.inputs[index]);
+    }
 }
 
