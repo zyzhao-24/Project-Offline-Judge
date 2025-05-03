@@ -14,7 +14,8 @@ SOURCES += \
     contesteditor.cpp \
     main.cpp \
     mainwindow.cpp \
-    problemeditor.cpp
+    problemeditor.cpp \
+    testdataprocessor.cpp
 
 HEADERS += \
     Qaesencryption/aesni/aesni-enc-cbc.h \
@@ -26,12 +27,14 @@ HEADERS += \
     ctsettings.h \
     mainwindow.h \
     problemeditor.h \
+    testdataprocessor.h \
     testlib/testlib.h
 
 FORMS += \
     contesteditor.ui \
     mainwindow.ui \
-    problemeditor.ui
+    problemeditor.ui \
+    testdataprocessor.ui
 
 TRANSLATIONS += \
     ProjectOJ_zh_CN.ts
@@ -44,7 +47,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    README.md
+    README.md \
+    favicon.ico
+
+RC_ICONS = favicon.ico
 
 CONFIG +=debug_and_release
 CONFIG(debug,debug|release){

@@ -410,6 +410,9 @@
        <height>31</height>
       </rect>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Add</string>
      </property>
@@ -425,6 +428,9 @@
        <width>81</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
      <property name="text">
       <string>Import</string>
@@ -458,6 +464,9 @@
        <height>31</height>
       </rect>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Remove</string>
      </property>
@@ -473,6 +482,9 @@
        <width>81</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
      <property name="text">
       <string>Export</string>
@@ -519,6 +531,9 @@
        <height>41</height>
       </rect>
      </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
      <property name="text">
       <string>Refresh Page</string>
      </property>
@@ -535,6 +550,9 @@
        <height>41</height>
       </rect>
      </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
      <property name="text">
       <string>Save Data</string>
      </property>
@@ -550,6 +568,9 @@
        <width>331</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
      </property>
      <property name="text">
       <string>Back To Home</string>
@@ -569,6 +590,9 @@
        <width>331</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
      </property>
      <property name="text">
       <string>Open Grading Panel</string>

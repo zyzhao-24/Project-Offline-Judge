@@ -147,7 +147,7 @@ void ProblemEditor::loadCplSettings() {
                 valid=false;
                 break;
             }
-            if(!it->precompile) if(category==Problem::Utility::FileCategory::submission) {
+            if(it->precompile) if(category==Problem::Utility::FileCategory::submission) {
                 valid=false;
                 break;
             }
@@ -188,7 +188,7 @@ void ProblemEditor::update_cplsrc_option() {
             it=utilslist.erase(it)-1;
             continue;
         }
-        if(!precompile) {
+        if(precompile) {
             if(util.category==Problem::Utility::FileCategory::submission)
             {
                 it=utilslist.erase(it)-1;
@@ -219,6 +219,7 @@ void ProblemEditor::on_refreshbtn_clicked()
 void ProblemEditor::on_backbtn_clicked()
 {
     refresh();
+    closePDF();
     conEditor->show();
     this->destroy();
 }
@@ -486,7 +487,7 @@ void ProblemEditor::on_cplsetaddbtn_clicked()
             QMessageBox::warning(NULL, "warning", tr("Invalid file category!"), QMessageBox::Yes, QMessageBox::Yes);
             return;
         }
-        if(!cplset.precompile) if(category==Problem::Utility::FileCategory::submission) {
+        if(cplset.precompile) if(category==Problem::Utility::FileCategory::submission) {
             QMessageBox::warning(NULL, "warning", tr("File in submission category not allowed in precompile stage!"), QMessageBox::Yes, QMessageBox::Yes);
             return;
         }
@@ -535,6 +536,7 @@ void ProblemEditor::on_cplsettabwid_itemClicked(QTableWidgetItem *item)
         ui->phaserbtn_2->setChecked(true);
         ui->phaserbtn->setChecked(false);
     }
+    update_cplsrc_option();
     ui->outfnametext->setText(cplset.output);
     ui->cplcmdbox->setCurrentText(cplset.compiler);
     ui->paramtext->setText(cplset.params);
@@ -542,5 +544,11 @@ void ProblemEditor::on_cplsettabwid_itemClicked(QTableWidgetItem *item)
     for(int index=0;index<cplset.inputs.size();index++) {
         cplsrc[index].setCurrentText(cplset.inputs[index]);
     }
+}
+
+
+void ProblemEditor::on_TestDataBTN_clicked()
+{
+    tdataproc.show();
 }
 
