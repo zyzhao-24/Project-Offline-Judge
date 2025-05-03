@@ -15,6 +15,7 @@
 #include <QDebug>
 #include "Qaesencryption/qaesencryption.h"
 #include <QByteArray>
+#include <QProcess>
 
 const QString keyStr="cbweuiverfuiwwryw8rew8df897wrwrqeftqwgqw78qwdq7qwtqw7etqw79dqwgd";//Key for Encryption, change to your need
 
@@ -438,8 +439,8 @@ public:
 };
 
 /*
- * template code format:
- * whenever you want to insert a snippet, write <snippet filename="filename"> in your file
+ * whenever you want to insert a snippet, write <snippet filename="filename"> in your file;
+ * to fill in a template file, write all snippets in a QMap:name->snippet file content, and pass it in function "fill_in"
  */
 class Codetpl {
 public:
@@ -464,7 +465,7 @@ public:
         }
         return true;
     }
-    static QString fill_in(const QString& templatefile,const QMap<QString,QString>& snippetfiles) {
+    static QString fill_in(const QString& templatefile,const QMap<QString,QString>& snippetfiles) {// need testing
         QString filefill="";
         int pos1=0,pos2=0;
         while(pos2>=0&&pos2<templatefile.size()) {
@@ -486,5 +487,26 @@ public:
         }
         return filefill;
     }
-};// need testing
+};
+
+static int CompileOp(const Problem::CompileSetting &cpl_setting,const QString& filepath,QString& cplLog) {
+    QString cmd=cpl_setting.compiler;
+    QString path=filepath;
+    QStringList args;
+    if(!path.endsWith("/")) path.append("/");
+    if(cmd == "g++.exe" || cmd =="gcc.exe") {
+        for(QString input:cpl_setting.inputs) args<<path+input;
+        args<<"-o"<<path+cpl_setting.output<<cpl_setting.params;
+    } else {
+        return -1;
+    }
+    QProcess compilation;
+    int ret=compilation.execute(cmd,args);
+    if(ret==-2) cplLog="FAIL: Cannot start compiler, please check system environment settings!";
+    else if(ret==-1) cplLog="FAIL: Compiler crashed.";
+    else if(ret==0) cplLog="SUCCESS: Compilation success.\n"+compilation.readAllStandardOutput();
+    else cplLog="FAIL: Compilation error with exit code "+QString::number(ret)+".\n"+compilation.readAllStandardOutput();
+    return ret;
+}
+
 #endif // CTSETTINGS_H

@@ -15,7 +15,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include "ctsettings.h"
-
+#include "testdataprocessor.h"
 const int max_cplsrc=5;
 
 namespace Ui {
@@ -36,6 +36,8 @@ public:
     QPdfView* pdfview=nullptr;
     QPdfDocument* pdfdoc=nullptr;
     QPdfDocument* docnull=nullptr;
+
+    TestDataProcessor tdataproc;
 
     QComboBox cplsrc[max_cplsrc];//src file name input widget,to be modified to combo box
     int cplsrc_cnt=0;
@@ -88,6 +90,8 @@ private slots:
     void on_cplsetrembtn_clicked();
 
     void on_cplsettabwid_itemClicked(QTableWidgetItem *item);
+
+    void on_TestDataBTN_clicked();
 
 private:
     Ui::ProblemEditor *ui;
