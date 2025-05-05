@@ -15,10 +15,8 @@
 #include <QDebug>
 #include "Qaesencryption/qaesencryption.h"
 #include <QByteArray>
-#include <QProcess>
 
 const QString keyStr="cbweuiverfuiwwryw8rew8df897wrwrqeftqwgqw78qwdq7qwtqw7etqw79dqwgd";//Key for Encryption, change to your need
-
 //Class for Encryption
 class Encryption {
 public:
@@ -36,6 +34,16 @@ public:
         QByteArray dec_data_ba = encry.decode(QByteArray::fromBase64(enc_data.toLatin1()), key);
         QString dec_data = QString::fromLatin1(QAESEncryption::RemovePadding(dec_data_ba, QAESEncryption::PKCS7));
         return dec_data;
+    }
+    static QByteArray encrypt_bytearray(const QByteArray& dec_data) {
+        QByteArray key=QCryptographicHash::hash(keyStr.toLocal8Bit(),QCryptographicHash::Sha256);
+        QAESEncryption encry(QAESEncryption::AES_256, QAESEncryption::ECB, QAESEncryption::PKCS7);
+        return encry.encode(dec_data, key);
+    }
+    static QByteArray decrypt_bytearray(const QByteArray& enc_data) {
+        QByteArray key=QCryptographicHash::hash(keyStr.toLocal8Bit(),QCryptographicHash::Sha256);
+        QAESEncryption encry(QAESEncryption::AES_256, QAESEncryption::ECB, QAESEncryption::PKCS7);
+        return encry.decode(enc_data, key);
     }
 };
 
@@ -167,6 +175,25 @@ public:
         }
         return QFile::copy(fromDir,toDir);
     }
+    static bool rename(const QString& fromDir, const QString& toDir, bool coverFileIfExist) {
+        QFileInfo fromFile(fromDir);
+        QFileInfo targetFile(toDir);
+        if(fromFile==targetFile) return true;
+        if(!fromFile.isFile()) return false;
+        if(targetFile.isFile()) {
+            if(coverFileIfExist) {
+                if(!QFile::remove(toDir)) {
+                    return false;
+                }
+            }
+            else
+                return false;
+        }
+        if(QFile::copy(fromDir,toDir)) {
+            QFile::remove(fromDir);
+            return true;
+        } else return false;
+    }
     static bool exists(const QString& dirPath) {
         QFileInfo fileItem(dirPath);
         return fileItem.isFile();
@@ -176,8 +203,109 @@ public:
     }
 };
 
+/*
+ * whenever you want to insert a snippet, write <snippet filename="filename"> in your file;
+ * to fill in a template file, write all snippets in a QMap:name->snippet file content, and pass it in function "fill_in"
+ */
+class Codetpl {
+public:
+    Codetpl() =delete;
+    static QVector<QString> get_snippets(const QString& templatefile) {
+        QVector<QString> FileNames={};
+        int pos1=0,pos2=0;
+        while(pos2>=0&&pos2<templatefile.size()) {
+            pos1=templatefile.indexOf("<snippet filename=\"",pos2);
+            if(pos1==-1) break;
+            pos2=templatefile.indexOf("\">",pos1);
+            if(pos2==-1) pos2=templatefile.size();
+            FileNames.push_back(templatefile.sliced(pos1+19,pos2-pos1-19));
+        }
+        return FileNames;
+    }
+    static bool is_valid(const QString& templatefile) {
+        QVector<QString> FileNames=get_snippets(templatefile);
+        if(FileNames.empty()) return false;
+        for(int i=0;i<FileNames.size();i++) {
+            if(!StrVal::isValidFileName(FileNames[i])) return false;
+        }
+        return true;
+    }
+    static QString fill_in(const QString& templatefile,const QMap<QString,QString>& snippetfiles) {// need testing
+        QString filefill="";
+        int pos1=0,pos2=0;
+        while(pos2>=0&&pos2<templatefile.size()) {
+            pos1=templatefile.indexOf("<snippet filename=\"",pos2);
+            if(pos1==-1) {
+                if(pos2==0) filefill+=templatefile;
+                else filefill+=templatefile.last(templatefile.size()-pos2-2);
+                break;
+            }
+            filefill+=templatefile.sliced(pos2,pos1-pos2);
+            pos2=templatefile.indexOf("\">",pos1);
+            if(pos2==-1) pos2=templatefile.size();
+            QString filename=templatefile.sliced(pos1+19,pos2-pos1-19);
+            if(snippetfiles.contains(filename)) {
+                filefill+=snippetfiles[filename];
+            } else {
+                filefill+=templatefile.sliced(pos1,pos2-pos1+2);
+            }
+        }
+        return filefill;
+    }
+};
+
+static const QString get_filename_with_id(const QString& filename,int case_id) {
+    if(!filename.contains(".")) return filename+QString::number(case_id);
+    else {
+        QString name=filename;
+        name.insert(name.lastIndexOf("."),QString::number(case_id));
+        return name;
+    }
+}
+
+static QStringList parseCombinedArgString(const QString &program)
+{
+    QStringList args;
+    QString tmp;
+    int quoteCount = 0;
+    bool inQuote = false;
+
+    // handle quoting. tokens can be surrounded by double quotes
+    // "hello world". three consecutive double quotes represent
+    // the quote character itself.
+    for (int i = 0; i < program.size(); ++i) {
+        if (program.at(i) == QLatin1Char('"')) {
+            ++quoteCount;
+            if (quoteCount == 3) {
+                // third consecutive quote
+                quoteCount = 0;
+                tmp += program.at(i);
+            }
+            continue;
+        }
+        if (quoteCount) {
+            if (quoteCount == 1)
+                inQuote = !inQuote;
+            quoteCount = 0;
+        }
+        if (!inQuote && program.at(i).isSpace()) {
+            if (!tmp.isEmpty()) {
+                args += tmp;
+                tmp.clear();
+            }
+        } else {
+            tmp += program.at(i);
+        }
+    }
+    if (!tmp.isEmpty())
+        args += tmp;
+
+    return args;
+}
+
 const QString ctinfo=".ctinfo";//suffix ctinfo
 const QString probcontent="content.pdf";//problem content file
+const QString templ=".tpl";//suffix tpl for template file
 
 const QString ProbTypeName[6]={
     "custom",
@@ -194,6 +322,125 @@ const QMap<QString,int> ProbTypeID = {
     {"fill_in",3},
     {"interactive",4},
     {"communicative",5}
+};
+
+class Testdata {
+public:
+    int ncase;
+    Testdata(const int& numcase=1):ncase(numcase) {}
+    struct Subtask {
+        int score=10;
+        QList<int> cases;
+    };
+    QList<Subtask> subtasks={{0,{}}};
+    struct GenCmd {
+        QString interpreter;
+        QString genorstd;
+        QStringList params;
+        QString inputFile;
+        bool multigen;
+        QList<int> cases;
+    };
+    struct TDSetting {
+        int index;
+        QString filename;
+        bool validation;
+        QString validator;
+        QList<GenCmd> generator;
+    };
+    QMap<QString,TDSetting> settings;
+
+    QJsonObject JsonTDataObj() {
+        QJsonObject TDataObj;
+        TDataObj.insert("num_cases",ncase);
+        QJsonArray SubtaskArray;
+        for(Subtask subtsk:subtasks) {
+            QJsonObject SubtaskObj;
+            SubtaskObj.insert("score",subtsk.score);
+            QJsonArray CasesArr;
+            for(int caseid:subtsk.cases) CasesArr.append(caseid);
+            SubtaskObj.insert("cases",CasesArr);
+            SubtaskArray.append(SubtaskObj);
+        }
+        TDataObj.insert("subtasks",SubtaskArray);
+        QJsonArray SettingArray;
+        for(TDSetting setting:settings) {
+            QJsonObject SettingObj;
+            SettingObj.insert("index",setting.index);
+            SettingObj.insert("filename",setting.filename);
+            SettingObj.insert("validation",setting.validation);
+            SettingObj.insert("validator",setting.validator);
+            QJsonArray GenArray;
+            for(GenCmd gen:setting.generator) {
+                QJsonObject GenObj;
+                GenObj.insert("interpreter",gen.interpreter);
+                GenObj.insert("gen_or_std",gen.genorstd);
+                GenObj.insert("input_file",gen.inputFile);
+                GenObj.insert("multigen",gen.multigen);
+                QJsonArray ParamArray;
+                for(QString param:gen.params) ParamArray.append(param);
+                GenObj.insert("params",ParamArray);
+                QJsonArray CaseArray;
+                for(int caseid:gen.cases) CaseArray.append(caseid);
+                GenObj.insert("cases",CaseArray);
+                GenArray.append(GenObj);
+            }
+            SettingObj.insert("generator",GenArray);
+            SettingArray.append(SettingObj);
+        }
+        TDataObj.insert("settings",SettingArray);
+        return TDataObj;
+    }
+    int load_form_JsonObj(const QJsonObject& TDataObj) {
+        if(!TDataObj.contains("num_cases")) return -1;
+        if(!TDataObj.contains("subtasks")) return -1;
+        if(!TDataObj.contains("settings")) return -1;
+
+        ncase=TDataObj["num_cases"].toInt(1);
+
+        QJsonArray SubtaskArray=TDataObj["subtasks"].toArray();
+        for(int subind=0;subind<SubtaskArray.count();subind++) {
+            QJsonObject SubtaskObj=SubtaskArray[subind].toObject();
+            Subtask subtsk;
+            subtsk.score=SubtaskObj["score"].toInt(0);
+            QJsonArray CaseArray=SubtaskObj["cases"].toArray();
+            for(int caseind=0;caseind<CaseArray.count();caseind++) {
+                subtsk.cases.append(CaseArray[caseind].toInt(1));
+            }
+            if(subind==0) subtasks[0].cases=subtsk.cases;
+            else subtasks.append(subtsk);
+        }
+
+        QJsonArray SettingArray=TDataObj["settings"].toArray();
+        for(int setind=0;setind<SettingArray.size();setind++) {
+            QJsonObject SettingObj=SettingArray[setind].toObject();
+            TDSetting tdset;
+            tdset.index=SettingObj["index"].toInt(setind);
+            tdset.filename=SettingObj["filename"].toString();
+            tdset.validation=SettingObj["validation"].toBool();
+            tdset.validator=SettingObj["validator"].toString();
+            QJsonArray GenArray=SettingObj["generator"].toArray();
+            for(int genind=0;genind<GenArray.count();genind++) {
+                QJsonObject GenObj=GenArray[genind].toObject();
+                GenCmd cmd;
+                cmd.interpreter=GenObj["interpreter"].toString();
+                cmd.genorstd=GenObj["gen_or_std"].toString();
+                cmd.inputFile=GenObj["input_file"].toString();
+                cmd.multigen=GenObj["multigen"].toBool();
+                QJsonArray ParamArray=GenObj["params"].toArray();
+                for(int pind=0;pind<ParamArray.count();pind++) {
+                    cmd.params.append(ParamArray[pind].toString());
+                }
+                QJsonArray CaseArray=GenObj["cases"].toArray();
+                for(int caseind=0;caseind<CaseArray.count();caseind++) {
+                    cmd.cases.append(CaseArray[caseind].toInt(1));
+                }
+                tdset.generator.append(cmd);
+            }
+            settings[tdset.filename]=tdset;
+        }
+        return 0;
+    }
 };
 
 class Problem {
@@ -240,6 +487,8 @@ public:
     QMap<QString,Utility> utils;
     QMap<QString,CompileSetting> cpl_settings;
 
+    Testdata testdata;
+
     QJsonObject JsonProblemObj() {
         QJsonObject ProblemObj;
         ProblemObj.insert("name",name);
@@ -268,6 +517,7 @@ public:
             CompileSettings.append(cpls);
         }
         if(!CompileSettings.isEmpty()) ProblemObj.insert("cpl_settings",CompileSettings);
+        ProblemObj.insert("testdata",testdata.JsonTDataObj());
         return ProblemObj;
     }
     int loadJsonObj(const QJsonObject& ProblemObj) {
@@ -280,7 +530,6 @@ public:
         time_limit_ms=ProblemObj["time_limit_ms"].toInt(1000);
         mem_limit_MiB=ProblemObj["mem_limit_MiB"].toInt(1000);
         type=ProblemType(ProbTypeID[ProblemObj["type"].toString()]);
-
         if(ProblemObj.contains("utils")) {
             QJsonArray Utilities=ProblemObj["utils"].toArray();
             for(int _index=0;_index<Utilities.count();_index++) {
@@ -312,11 +561,11 @@ public:
                 cpl_settings[output]={precompile,compiler,inputs,output,params};
             }
         }
+
+        if(ProblemObj.contains("testdata")) testdata.load_form_JsonObj(ProblemObj["testdata"].toObject());
         return 0;
     }
 };
-
-
 
 class Contest {
 public:
@@ -433,80 +682,8 @@ public:
             end_time=QDateTime::fromString(EndTimeStr,Qt::DateFormat::ISODate);
         }
         load_pa_csv(Participantcsv);
-        loadProblemArray(ProblemArray);
-        return 0;
+        return loadProblemArray(ProblemArray);
     }
 };
-
-/*
- * whenever you want to insert a snippet, write <snippet filename="filename"> in your file;
- * to fill in a template file, write all snippets in a QMap:name->snippet file content, and pass it in function "fill_in"
- */
-class Codetpl {
-public:
-    Codetpl() =delete;
-    static QVector<QString> get_snippets(const QString& templatefile) {
-        QVector<QString> FileNames={};
-        int pos1=0,pos2=0;
-        while(pos2>=0&&pos2<templatefile.size()) {
-            pos1=templatefile.indexOf("<snippet filename=\"",pos2);
-            if(pos1==-1) break;
-            pos2=templatefile.indexOf("\">",pos1);
-            if(pos2==-1) pos2=templatefile.size();
-            FileNames.push_back(templatefile.sliced(pos1+19,pos2-pos1-19));
-        }
-        return FileNames;
-    }
-    static bool is_valid(const QString& templatefile) {
-        QVector<QString> FileNames=get_snippets(templatefile);
-        if(FileNames.empty()) return false;
-        for(int i=0;i<FileNames.size();i++) {
-            if(!StrVal::isValidFileName(FileNames[i])) return false;
-        }
-        return true;
-    }
-    static QString fill_in(const QString& templatefile,const QMap<QString,QString>& snippetfiles) {// need testing
-        QString filefill="";
-        int pos1=0,pos2=0;
-        while(pos2>=0&&pos2<templatefile.size()) {
-            pos1=templatefile.indexOf("<snippet filename=\"",pos2);
-            if(pos1==-1) {
-                if(pos2==0) filefill+=templatefile;
-                else filefill+=templatefile.last(templatefile.size()-pos2-2);
-                break;
-            }
-            filefill+=templatefile.sliced(pos2,pos1-pos2);
-            pos2=templatefile.indexOf("\">",pos1);
-            if(pos2==-1) pos2=templatefile.size();
-            QString filename=templatefile.sliced(pos1+19,pos2-pos1-19);
-            if(snippetfiles.contains(filename)) {
-                filefill+=snippetfiles[filename];
-            } else {
-                filefill+=templatefile.sliced(pos1,pos2-pos1+2);
-            }
-        }
-        return filefill;
-    }
-};
-
-static int CompileOp(const Problem::CompileSetting &cpl_setting,const QString& filepath,QString& cplLog) {
-    QString cmd=cpl_setting.compiler;
-    QString path=filepath;
-    QStringList args;
-    if(!path.endsWith("/")) path.append("/");
-    if(cmd == "g++.exe" || cmd =="gcc.exe") {
-        for(QString input:cpl_setting.inputs) args<<path+input;
-        args<<"-o"<<path+cpl_setting.output<<cpl_setting.params;
-    } else {
-        return -1;
-    }
-    QProcess compilation;
-    int ret=compilation.execute(cmd,args);
-    if(ret==-2) cplLog="FAIL: Cannot start compiler, please check system environment settings!";
-    else if(ret==-1) cplLog="FAIL: Compiler crashed.";
-    else if(ret==0) cplLog="SUCCESS: Compilation success.\n"+compilation.readAllStandardOutput();
-    else cplLog="FAIL: Compilation error with exit code "+QString::number(ret)+".\n"+compilation.readAllStandardOutput();
-    return ret;
-}
 
 #endif // CTSETTINGS_H

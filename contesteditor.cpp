@@ -80,6 +80,9 @@ void ContestEditor::loadProb() {
         if(!FolderOp::exists(ctPath+probvec[index].name+".probdata/")) {
             FolderOp::create(ctPath+probvec[index].name+".probdata/");
         }
+        if(!FolderOp::exists(ctPath+probvec[index].name+".probdata/testdata/")) {
+            FolderOp::create(ctPath+probvec[index].name+".probdata/testdata/");
+        }
         if(!FileOp::exists(ctPath+probvec[index].name+".probdata/testlib.h")) {
             FileOp::copy(QCoreApplication::applicationDirPath()+"/testlib.h",ctPath+probvec[index].name+".probdata/testlib.h",true);
         }
@@ -247,6 +250,7 @@ void ContestEditor::on_addprobbtn_clicked()
     }
     contest.problems[new_prob_name]=Problem(new_prob_name);
     FolderOp::create(ctPath+new_prob_name+".probdata/");
+    FolderOp::create(ctPath+new_prob_name+".probdata/testdata/");
     FileOp::copy(QCoreApplication::applicationDirPath()+"/testlib.h",ctPath+new_prob_name+".probdata/testlib.h",true);
     contest.problems[new_prob_name].utils["testlib.h"]={"testlib.h",Problem::Utility::FileCategory::builtin,Problem::Utility::FileType::code};
     loadProb();

@@ -549,6 +549,12 @@ void ProblemEditor::on_cplsettabwid_itemClicked(QTableWidgetItem *item)
 
 void ProblemEditor::on_TestDataBTN_clicked()
 {
+    tdataproc.problem=problem;
+    tdataproc.probPath=probPath;
     tdataproc.show();
+    tdataproc.show_subtsk_tree();
+    tdataproc.refresh_testdata_settings();
+    this->hide();
+    connect(&tdataproc,SIGNAL(ExitWin()),this,SLOT(show()));
 }
 

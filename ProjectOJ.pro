@@ -12,6 +12,7 @@ CONFIG += c++17
 SOURCES += \
     Qaesencryption/qaesencryption.cpp \
     contesteditor.cpp \
+    dataconfigwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     problemeditor.cpp \
@@ -25,13 +26,16 @@ HEADERS += \
     Qaesencryption/qaesencryption.h \
     contesteditor.h \
     ctsettings.h \
+    dataconfigwidget.h \
     mainwindow.h \
     problemeditor.h \
     testdataprocessor.h \
-    testlib/testlib.h
+    testlib/testlib.h \
+    val_utils.h
 
 FORMS += \
     contesteditor.ui \
+    dataconfigwidget.ui \
     mainwindow.ui \
     problemeditor.ui \
     testdataprocessor.ui
