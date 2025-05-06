@@ -2,6 +2,7 @@
 #define TESTDATAPROCESSOR_H
 
 #include <QMainWindow>
+#include <QInputDialog>
 #include "dataconfigwidget.h"
 #include "val_utils.h"
 namespace Ui {

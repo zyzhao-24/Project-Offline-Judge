@@ -1,8 +1,6 @@
 #include "testdataprocessor.h"
 #include "ui_testdataprocessor.h"
 
-#include <QInputDialog>
-
 TestDataProcessor::TestDataProcessor(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::TestDataProcessor)

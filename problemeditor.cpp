@@ -1,11 +1,12 @@
 #include "problemeditor.h"
 #include "ui_problemeditor.h"
-#include <QStandardItem>
+
 ProblemEditor::ProblemEditor(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::ProblemEditor)
 {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 
     QListView* categoryview = dynamic_cast<QListView*>(ui->categorycombo->view());
     if (categoryview != nullptr) {
@@ -214,16 +215,6 @@ void ProblemEditor::on_refreshbtn_clicked()
 {
     refresh();
 }
-
-
-void ProblemEditor::on_backbtn_clicked()
-{
-    refresh();
-    closePDF();
-    conEditor->show();
-    this->destroy();
-}
-
 
 void ProblemEditor::on_tlspinbox_valueChanged(int arg1)
 {
@@ -558,3 +549,6 @@ void ProblemEditor::on_TestDataBTN_clicked()
     connect(&tdataproc,SIGNAL(ExitWin()),this,SLOT(show()));
 }
 
+void ProblemEditor::closeEvent(QCloseEvent *event) {
+    emit ExitWin();
+}

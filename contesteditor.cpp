@@ -309,5 +309,6 @@ void ContestEditor::on_confprobbtn_clicked()
     probEditor->refresh();
     probEditor->show();
     this->hide();
+    connect(probEditor,SIGNAL(ExitWin()),this,SLOT(show()));
 }
 

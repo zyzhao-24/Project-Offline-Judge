@@ -14,9 +14,10 @@
 #include <QTableWidget>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QStandardItem>
 #include "ctsettings.h"
 #include "testdataprocessor.h"
-const int max_cplsrc=5;
+const int max_cplsrc=4;
 
 namespace Ui {
 class ProblemEditor;
@@ -52,8 +53,6 @@ public:
     void refresh();
 private slots:
     void on_refreshbtn_clicked();
-
-    void on_backbtn_clicked();
 
     void on_tlspinbox_valueChanged(int arg1);
 
@@ -92,7 +91,10 @@ private slots:
     void on_cplsettabwid_itemClicked(QTableWidgetItem *item);
 
     void on_TestDataBTN_clicked();
-
+protected:
+    void closeEvent(QCloseEvent *event);
+public: signals:
+    void ExitWin();
 private:
     Ui::ProblemEditor *ui;
 };
