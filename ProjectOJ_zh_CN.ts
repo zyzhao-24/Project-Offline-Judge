@@ -353,122 +353,130 @@
         <translation>通信</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="338"/>
         <source>Menu</source>
-        <translation>操作</translation>
+        <translation type="vanished">操作</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="350"/>
         <source>Back to Contest</source>
-        <translation>返回比赛</translation>
+        <translation type="vanished">返回比赛</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="366"/>
+        <location filename="problemeditor.ui" line="1155"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="383"/>
+        <location filename="problemeditor.ui" line="338"/>
         <source>Problem Content</source>
         <translation>试题内容</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="418"/>
+        <location filename="problemeditor.ui" line="373"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="434"/>
+        <location filename="problemeditor.ui" line="389"/>
         <source>Export</source>
         <translation>导出</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="450"/>
+        <location filename="problemeditor.ui" line="405"/>
         <source>Load</source>
         <translation>加载</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="466"/>
+        <location filename="problemeditor.ui" line="421"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="483"/>
+        <location filename="problemeditor.ui" line="438"/>
         <source>Judgement Utilities</source>
         <translation>评测资源</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="523"/>
+        <location filename="problemeditor.ui" line="478"/>
         <source>file name:</source>
         <translation>文件名：</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="545"/>
+        <location filename="problemeditor.ui" line="500"/>
         <source>example.cpp</source>
         <translation>example.cpp</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="596"/>
+        <location filename="problemeditor.ui" line="551"/>
         <source>plain</source>
         <translation>文本</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="601"/>
+        <location filename="problemeditor.ui" line="556"/>
         <source>code</source>
         <translation>代码</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="606"/>
+        <location filename="problemeditor.ui" line="561"/>
         <source>template</source>
         <translation>代码模板</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="611"/>
+        <location filename="problemeditor.ui" line="566"/>
         <source>snippet</source>
         <translation>代码片段</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="657"/>
+        <location filename="problemeditor.ui" line="612"/>
         <source>resource file</source>
         <translation>资源文件</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="662"/>
+        <location filename="problemeditor.ui" line="617"/>
         <source>test data</source>
         <translation>测试数据</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="667"/>
+        <location filename="problemeditor.ui" line="622"/>
         <source>participant submission</source>
         <translation>选手提交文件</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="721"/>
+        <location filename="problemeditor.ui" line="676"/>
         <source>Modify</source>
         <translation>修改</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="879"/>
+        <location filename="problemeditor.ui" line="834"/>
         <source>&lt;input_files&gt; -o &lt;output_file&gt; &lt;params&gt;</source>
         <translation>&lt;输入文件&gt; -o &lt;输出文件&gt; &lt;参数&gt;</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1070"/>
+        <location filename="problemeditor.ui" line="1025"/>
         <source>Remove Source File</source>
         <translation>移除源文件</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1083"/>
+        <location filename="problemeditor.ui" line="1038"/>
         <source>Add Source File</source>
         <translation>添加源文件</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1200"/>
+        <location filename="problemeditor.ui" line="1108"/>
+        <source>Menu and Settings</source>
+        <translation>操作与设置</translation>
+    </message>
+    <message>
+        <location filename="problemeditor.ui" line="1120"/>
+        <source>Judgement</source>
+        <translation>评测阶段</translation>
+    </message>
+    <message>
+        <location filename="problemeditor.ui" line="1139"/>
         <source>Test Data</source>
         <translation>测试数据</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="573"/>
+        <location filename="problemeditor.ui" line="528"/>
         <source>file type:</source>
         <translation>文件类型：</translation>
     </message>
@@ -493,24 +501,24 @@
         <translation type="vanished">代码/库模板（解释式）</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="637"/>
+        <location filename="problemeditor.ui" line="592"/>
         <source>category:</source>
         <translation>文件类别：</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="672"/>
+        <location filename="problemeditor.ui" line="627"/>
         <source>built-in file</source>
         <translation>内置文件</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="686"/>
-        <location filename="problemeditor.ui" line="1054"/>
+        <location filename="problemeditor.ui" line="641"/>
+        <location filename="problemeditor.ui" line="1009"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="702"/>
-        <location filename="problemeditor.ui" line="1038"/>
+        <location filename="problemeditor.ui" line="657"/>
+        <location filename="problemeditor.ui" line="993"/>
         <source>Remove</source>
         <translation>移除</translation>
     </message>
@@ -523,17 +531,17 @@
         <translation type="vanished">编辑</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="738"/>
+        <location filename="problemeditor.ui" line="693"/>
         <source>Compilation Settings</source>
         <translation>编译设置</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="762"/>
+        <location filename="problemeditor.ui" line="717"/>
         <source>phase:</source>
         <translation>阶段：</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="793"/>
+        <location filename="problemeditor.ui" line="748"/>
         <source>compiler command:</source>
         <translation>编译器命令：</translation>
     </message>
@@ -546,14 +554,14 @@
         <translation type="vanished">gcc.exe</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="835"/>
-        <location filename="problemeditor.cpp" line="163"/>
+        <location filename="problemeditor.ui" line="790"/>
+        <location filename="problemeditor.cpp" line="164"/>
         <source>precompile</source>
         <translation>预编译</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="851"/>
-        <location filename="problemeditor.cpp" line="163"/>
+        <location filename="problemeditor.ui" line="806"/>
+        <location filename="problemeditor.cpp" line="164"/>
         <source>in judge</source>
         <translation>评测前</translation>
     </message>
@@ -570,37 +578,37 @@
         <translation type="vanished">&lt;输出文件&gt;&lt;参数&gt;</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="910"/>
+        <location filename="problemeditor.ui" line="865"/>
         <source>output:</source>
         <translation>输出文件：</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="932"/>
+        <location filename="problemeditor.ui" line="887"/>
         <source>example.exe</source>
         <translation>example.exe</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="960"/>
+        <location filename="problemeditor.ui" line="915"/>
         <source>source:</source>
         <translation>源文件：</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="991"/>
+        <location filename="problemeditor.ui" line="946"/>
         <source>params:</source>
         <translation>参数：</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1118"/>
+        <location filename="problemeditor.ui" line="1073"/>
         <source>phase</source>
         <translation>阶段</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1123"/>
+        <location filename="problemeditor.ui" line="1078"/>
         <source>compiler</source>
         <translation>编译器</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1128"/>
+        <location filename="problemeditor.ui" line="1083"/>
         <source>source</source>
         <translation>源文件</translation>
     </message>
@@ -609,117 +617,114 @@
         <translation type="vanished">输出指令</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1133"/>
+        <location filename="problemeditor.ui" line="1088"/>
         <source>output</source>
         <translation>输出文件</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1138"/>
+        <location filename="problemeditor.ui" line="1093"/>
         <source>params</source>
         <translation>参数</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1153"/>
         <source>Judge Settings</source>
-        <translation>评测设置</translation>
+        <translation type="vanished">评测设置</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1165"/>
         <source>Testing</source>
-        <translation>运行阶段</translation>
+        <translation type="vanished">运行阶段</translation>
     </message>
     <message>
-        <location filename="problemeditor.ui" line="1181"/>
         <source>Checking</source>
-        <translation>答案检查阶段</translation>
+        <translation type="vanished">答案检查阶段</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="87"/>
+        <location filename="problemeditor.cpp" line="88"/>
         <source>Builtin file </source>
         <translation>内置文件 </translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="87"/>
+        <location filename="problemeditor.cpp" line="88"/>
         <source> does not exist!</source>
         <translation> 不存在！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="248"/>
+        <location filename="problemeditor.cpp" line="239"/>
         <source>Import from pdf</source>
         <translation>从pdf导入</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="248"/>
-        <location filename="problemeditor.cpp" line="267"/>
+        <location filename="problemeditor.cpp" line="239"/>
+        <location filename="problemeditor.cpp" line="258"/>
         <source>pdf files (*.pdf)</source>
         <translation>pdf文件 (*.pdf)</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="251"/>
+        <location filename="problemeditor.cpp" line="242"/>
         <source>PDF file does not exist!</source>
         <translation>PDF文件不存在！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="256"/>
+        <location filename="problemeditor.cpp" line="247"/>
         <source>Failed while importing pdf!</source>
         <translation>导入pdf失败！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="267"/>
+        <location filename="problemeditor.cpp" line="258"/>
         <source>Export to pdf</source>
         <translation>导出为pdf</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="270"/>
+        <location filename="problemeditor.cpp" line="261"/>
         <source>Failed while exporting pdf!</source>
         <translation>导出pdf失败！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="345"/>
+        <location filename="problemeditor.cpp" line="336"/>
         <source>Invalid template file name!(template file name should be the name of original code+&quot;.tpl&quot;, e.g. example.cpp.tpl)</source>
         <oldsource>Invalid template file name!(template file name should be the name of original code+&quot;.tpl&quot;),e.g. example.cpp.tpl</oldsource>
         <translation>代码模板文件名称非法！（合法的名称应当为源文件名称+“.tpl”，如example.cpp.tpl）</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="352"/>
-        <location filename="problemeditor.cpp" line="475"/>
+        <location filename="problemeditor.cpp" line="343"/>
+        <location filename="problemeditor.cpp" line="466"/>
         <source>File already exists!</source>
         <translation>文件已经存在！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="356"/>
-        <location filename="problemeditor.cpp" line="471"/>
+        <location filename="problemeditor.cpp" line="347"/>
+        <location filename="problemeditor.cpp" line="462"/>
         <source>Invalid file name!</source>
         <translation>文件名不合法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="360"/>
-        <location filename="problemeditor.cpp" line="431"/>
+        <location filename="problemeditor.cpp" line="351"/>
+        <location filename="problemeditor.cpp" line="422"/>
         <source>Invalid file type/category!</source>
         <translation>文件类别不合法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="364"/>
+        <location filename="problemeditor.cpp" line="355"/>
         <source>Template file only allowed for submission category!</source>
         <translation>仅选手提交文件类别允许添加代码模板文件！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="481"/>
+        <location filename="problemeditor.cpp" line="472"/>
         <source>Input file does not exist!</source>
         <translation>输入文件不存在！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="487"/>
+        <location filename="problemeditor.cpp" line="478"/>
         <source>Invalid file category!</source>
         <translation>文件类别非法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="491"/>
+        <location filename="problemeditor.cpp" line="482"/>
         <source>File in submission category not allowed in precompile stage!</source>
         <translation>需要选手提交的文件不能在预编译阶段作为源文件！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="496"/>
+        <location filename="problemeditor.cpp" line="487"/>
         <source>Input file duplicated!</source>
         <translation>源文件重复！</translation>
     </message>
@@ -728,33 +733,33 @@
         <translation type="vanished">仅资源文件类别下可添加代码片段！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="372"/>
+        <location filename="problemeditor.cpp" line="363"/>
         <source>Import from file</source>
         <translation>从文件导入</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="372"/>
+        <location filename="problemeditor.cpp" line="363"/>
         <source>all files (*.*)</source>
         <translation>所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="376"/>
-        <location filename="problemeditor.cpp" line="404"/>
+        <location filename="problemeditor.cpp" line="367"/>
+        <location filename="problemeditor.cpp" line="395"/>
         <source>Failed while importing file!</source>
         <translation>导入文件失败！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="382"/>
+        <location filename="problemeditor.cpp" line="373"/>
         <source>Failed while reading template file!</source>
         <translation>读取代码模板文件失败！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="389"/>
+        <location filename="problemeditor.cpp" line="380"/>
         <source>Invalid template file!</source>
         <translation>代码模板文件不合法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="395"/>
+        <location filename="problemeditor.cpp" line="386"/>
         <source>Invalid snippet file!</source>
         <translation>代码片段文件不合法！</translation>
     </message>
@@ -856,55 +861,55 @@
         <translation>文件：</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="21"/>
+        <location filename="testdataprocessor.cpp" line="19"/>
         <source>Sample</source>
         <translation>样例数据</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="25"/>
-        <location filename="testdataprocessor.cpp" line="44"/>
+        <location filename="testdataprocessor.cpp" line="23"/>
+        <location filename="testdataprocessor.cpp" line="42"/>
         <source>Case </source>
         <translation>测试点</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="29"/>
-        <location filename="testdataprocessor.cpp" line="48"/>
+        <location filename="testdataprocessor.cpp" line="27"/>
+        <location filename="testdataprocessor.cpp" line="46"/>
         <source>Testdata file: </source>
         <translation>测试数据文件：</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="32"/>
-        <location filename="testdataprocessor.cpp" line="51"/>
+        <location filename="testdataprocessor.cpp" line="30"/>
+        <location filename="testdataprocessor.cpp" line="49"/>
         <source>Participant submission: </source>
         <translation>选手提交文件：</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="39"/>
+        <location filename="testdataprocessor.cpp" line="37"/>
         <source>Subtask </source>
         <translation>子任务</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="39"/>
+        <location filename="testdataprocessor.cpp" line="37"/>
         <source>pt</source>
         <translation>分</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="105"/>
+        <location filename="testdataprocessor.cpp" line="103"/>
         <source>Input subtask score</source>
         <translation>输入子任务分值</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="105"/>
+        <location filename="testdataprocessor.cpp" line="103"/>
         <source>score:</source>
         <translation>分值：</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="118"/>
+        <location filename="testdataprocessor.cpp" line="116"/>
         <source>Input case id(example:1,3-5)</source>
         <translation>输入测试点编号（例：1,3-5）</translation>
     </message>
     <message>
-        <location filename="testdataprocessor.cpp" line="118"/>
+        <location filename="testdataprocessor.cpp" line="116"/>
         <source>id:</source>
         <translation>编号：</translation>
     </message>
