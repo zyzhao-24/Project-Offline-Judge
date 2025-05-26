@@ -155,11 +155,11 @@ static TResult GenOp(QObject* parent,
     }
     generation.setArguments(args);
     if((!multigen)&&(!input.isEmpty()))
-        generation.setStandardInputFile(probpath+"testdata/"+get_filename_with_id(input,testcases[0]));
+        generation.setStandardInputFile(path+"testdata/"+get_filename_with_id(input,testcases[0]));
     if(!multigen)
-        generation.setStandardOutputFile(probpath+"testdata/"+get_filename_with_id(output,testcases[0]));
+        generation.setStandardOutputFile(path+"testdata/"+get_filename_with_id(output,testcases[0]));
 
-    generation.setWorkingDirectory(probpath+"testdata/");
+    generation.setWorkingDirectory(path+"testdata/");
     generation.start();
     if(!generation.waitForStarted(500)) {
         generation.terminate();
@@ -209,10 +209,10 @@ static TResult ValidateOp(QObject* parent,
     if(!path.endsWith("/")) path.append("/");
     args<<"--testcase"<<QString::number(testcase);
     QProcess validation(parent);
-    validation.setProgram(probpath+validator);
+    validation.setProgram(path+validator);
     validation.setArguments(args);
-    validation.setStandardInputFile(probpath+"testdata/"+get_filename_with_id(file,testcase));
-    validation.setWorkingDirectory(probpath+"testdata/");
+    validation.setStandardInputFile(path+"testdata/"+get_filename_with_id(file,testcase));
+    validation.setWorkingDirectory(path+"testdata/");
     validation.start();
     if(!validation.waitForStarted(500)) {
         validation.terminate();

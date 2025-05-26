@@ -332,7 +332,7 @@ public:
         int score=10;
         QList<int> cases;
     };
-    QList<Subtask> subtasks={{0,{}}};
+    QList<Subtask> subtasks={{0,{}}};//subtasks[0] denotes samples
     struct GenCmd {
         QString interpreter;
         QString genorstd;

@@ -27,8 +27,10 @@ HEADERS += \
     contesteditor.h \
     ctsettings.h \
     dataconfigwidget.h \
+    judge_utils.h \
     mainwindow.h \
     problemeditor.h \
+    procexelib.h \
     testdataprocessor.h \
     testlib/testlib.h \
     val_utils.h
