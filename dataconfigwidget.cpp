@@ -159,6 +159,7 @@ void DataConfigWidget::on_pushButton_clicked()
         if(info.multigen&&(!info.inputFile.isEmpty())) valid=false;
         if(valid) setting->generator.append(info);
     }
+    problem->validationSuccess=false;
     refresh();
 }
 

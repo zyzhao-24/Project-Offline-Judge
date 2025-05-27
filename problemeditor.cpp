@@ -93,12 +93,18 @@ void ProblemEditor::loadUtils() {
             (it->category==Problem::Utility::FileCategory::testdata&&it->filetype!=Problem::Utility::FileType::plain) ) {
             if(!FileOp::exists(probPath+it->filename)) {
                 problem->utils.remove(it->filename);
+                problem->validationSuccess=false;
+                ui->validationbtn_2->setChecked(true);
+                ui->validationbtn->setChecked(false);
                 continue;
             }
         }
         if(it->filetype==Problem::Utility::FileType::templ) {
             if(!FileOp::exists(probPath+it->filename+".tpl")) {
                 problem->utils.remove(it->filename);
+                problem->validationSuccess=false;
+                ui->validationbtn_2->setChecked(true);
+                ui->validationbtn->setChecked(false);
                 continue;
             }
         }
@@ -115,6 +121,9 @@ void ProblemEditor::loadUtils() {
             tplfile.close();
             if(!Codetpl::is_valid(tplcontent)) {
                 problem->utils.remove(it->filename);
+                problem->validationSuccess=false;
+                ui->validationbtn_2->setChecked(true);
+                ui->validationbtn->setChecked(false);
                 continue;
             }
             QVector<QString> snippetnames=Codetpl::get_snippets(tplcontent);
@@ -155,6 +164,9 @@ void ProblemEditor::loadCplSettings() {
         }
         if(!valid) {
             problem->cpl_settings.remove(it->output);
+            problem->validationSuccess=false;
+            ui->validationbtn_2->setChecked(true);
+            ui->validationbtn->setChecked(false);
             continue;
         }
     }
@@ -208,6 +220,13 @@ void ProblemEditor::refresh() {
     if(!pdfview->isHidden()) loadPDF();
     loadUtils();
     loadCplSettings();
+    if(problem->validationSuccess) {
+        ui->validationbtn->setChecked(true);
+        ui->validationbtn_2->setChecked(false);
+    } else {
+        ui->validationbtn_2->setChecked(true);
+        ui->validationbtn->setChecked(false);
+    }
     update();
 }
 
@@ -401,6 +420,9 @@ void ProblemEditor::on_jutilsaddbtn_clicked()
         problem->utils[name]={name,category,type};
     }
     loadUtils();
+    problem->validationSuccess=false;
+    ui->validationbtn_2->setChecked(true);
+    ui->validationbtn->setChecked(false);
     return;
 }
 
@@ -434,6 +456,9 @@ void ProblemEditor::on_jutilsrembtn_clicked()
     problem->utils.remove(name);
 
     loadUtils();
+    problem->validationSuccess=false;
+    ui->validationbtn_2->setChecked(true);
+    ui->validationbtn->setChecked(false);
     return;
 }
 
@@ -490,6 +515,9 @@ void ProblemEditor::on_cplsetaddbtn_clicked()
     }
     problem->cpl_settings[cplset.output]=cplset;
     loadCplSettings();
+    problem->validationSuccess=false;
+    ui->validationbtn_2->setChecked(true);
+    ui->validationbtn->setChecked(false);
 }
 
 
@@ -504,6 +532,9 @@ void ProblemEditor::on_cplsetrembtn_clicked()
     }
     problem->cpl_settings.remove(output);
     loadCplSettings();
+    problem->validationSuccess=false;
+    ui->validationbtn_2->setChecked(true);
+    ui->validationbtn->setChecked(false);
 }
 
 void ProblemEditor::on_cplsettabwid_itemClicked(QTableWidgetItem *item)
@@ -552,3 +583,18 @@ void ProblemEditor::on_TestDataBTN_clicked()
 void ProblemEditor::closeEvent(QCloseEvent *event) {
     emit ExitWin();
 }
+void ProblemEditor::showEvent(QShowEvent *event) {
+    refresh();
+}
+
+void ProblemEditor::on_validationbtn_clicked()
+{
+    problem->validationSuccess=true;
+}
+
+
+void ProblemEditor::on_validationbtn_2_clicked()
+{
+    problem->validationSuccess=false;
+}
+

@@ -324,6 +324,28 @@ const QMap<QString,int> ProbTypeID = {
     {"communicative",5}
 };
 
+class JudgeProcess {
+public:
+    QMap<QString,QString> folder;
+    unsigned int pipecount;
+    struct process{
+        bool isInteractor;
+        QString exedir;
+        QString interpreter;
+        QString proc_name;
+        unsigned int stdin_id,stdout_id,stderr_id;
+        QStringList params;
+    };
+    QMap<QString,QString> file_collect;
+    struct ChkCmd {
+        QString checker;
+        QString inputFile;
+        QString outputFile;
+        QString answerFile;
+    };
+    QMap<QString,ChkCmd> checkersCmds;
+};
+
 class Testdata {
 public:
     int ncase;
@@ -488,6 +510,9 @@ public:
     QMap<QString,CompileSetting> cpl_settings;
 
     Testdata testdata;
+    bool validationSuccess=false;
+
+    JudgeProcess judge_proc;
 
     QJsonObject JsonProblemObj() {
         QJsonObject ProblemObj;
@@ -518,6 +543,7 @@ public:
         }
         if(!CompileSettings.isEmpty()) ProblemObj.insert("cpl_settings",CompileSettings);
         ProblemObj.insert("testdata",testdata.JsonTDataObj());
+        if(validationSuccess) ProblemObj.insert("validated",true);
         return ProblemObj;
     }
     int loadJsonObj(const QJsonObject& ProblemObj) {
@@ -540,6 +566,7 @@ public:
                 QString filename=util["filename"].toString();
                 Utility::FileCategory category=Utility::FileCategory(util["category"].toInt());
                 Utility::FileType ftype=Utility::FileType(util["type"].toInt());
+
                 utils[filename]={filename,category,ftype};
             }
         }
@@ -563,7 +590,26 @@ public:
         }
 
         if(ProblemObj.contains("testdata")) testdata.load_form_JsonObj(ProblemObj["testdata"].toObject());
+
+        if(ProblemObj.contains("validated")) validationSuccess=true;
+        else validationSuccess=false;
         return 0;
+    }
+
+    bool toStudentPack() {
+        if(!validationSuccess) return false;
+        testdata.settings.clear();
+        for(auto it=utils.begin();it!=utils.end();) {
+            if(it->filetype==Problem::Utility::FileType::code&&it->category==Problem::Utility::FileCategory::testdata) it=utils.erase(it);
+            else it++;
+        }
+        for(auto it=cpl_settings.begin();it!=cpl_settings.end();) {
+            bool invalid=false;
+            for(const QString& src:it->inputs) if(!utils.contains(src)) invalid=true;
+            if(invalid) it=cpl_settings.erase(it);
+            else it++;
+        }
+        return true;
     }
 };
 
@@ -649,6 +695,7 @@ public:
             TimeSetObj.insert("end_time",end_time.toString(Qt::DateFormat::ISODate));
         else
             TimeSetObj.insert("end_time","disabled");
+
         ContestObj.insert("time_setting",TimeSetObj);
         ContestObj.insert("participant",get_pa_csv());
         ContestObj.insert("problem",JsonProblemArray());
@@ -661,7 +708,7 @@ public:
         if(!TimeSetObj.contains("start_time")) return -2;
         if(!TimeSetObj.contains("end_time")) return -2;
         QString StartTimeStr=TimeSetObj["start_time"].toString();
-        QString EndTimeStr=TimeSetObj["start_time"].toString();
+        QString EndTimeStr=TimeSetObj["end_time"].toString();
         if(!ContestObj.contains("participant")) return -3;
         QString Participantcsv=ContestObj["participant"].toString();
         if(!ContestObj.contains("problem")) return -4;
@@ -669,21 +716,27 @@ public:
 
         name=ContestObj["name"].toString();
         if(!StrVal::isValidName(name)) return -4;
+
         if(StartTimeStr=="disabled") {
             start_enabled=false;
         } else {
             if(!StrVal::isValidIsoDate(StartTimeStr)) return -5;
+            start_enabled=true;
             start_time=QDateTime::fromString(StartTimeStr,Qt::DateFormat::ISODate);
         }
+
         if(EndTimeStr=="disabled") {
             end_enabled=false;
         } else {
             if(!StrVal::isValidIsoDate(EndTimeStr)) return -5;
+            end_enabled=true;
             end_time=QDateTime::fromString(EndTimeStr,Qt::DateFormat::ISODate);
         }
+
         load_pa_csv(Participantcsv);
         return loadProblemArray(ProblemArray);
     }
 };
+
 
 #endif // CTSETTINGS_H

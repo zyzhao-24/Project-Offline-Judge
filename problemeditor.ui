@@ -431,7 +431,7 @@
       <x>640</x>
       <y>10</y>
       <width>551</width>
-      <height>301</height>
+      <height>271</height>
      </rect>
     </property>
     <property name="title">
@@ -443,7 +443,7 @@
        <x>10</x>
        <y>20</y>
        <width>271</width>
-       <height>271</height>
+       <height>241</height>
       </rect>
      </property>
      <property name="editTriggers">
@@ -684,9 +684,9 @@
     <property name="geometry">
      <rect>
       <x>640</x>
-      <y>320</y>
+      <y>290</y>
       <width>551</width>
-      <height>461</height>
+      <height>431</height>
      </rect>
     </property>
     <property name="title">
@@ -1044,7 +1044,7 @@
        <x>10</x>
        <y>170</y>
        <width>411</width>
-       <height>281</height>
+       <height>251</height>
       </rect>
      </property>
      <property name="editTriggers">
@@ -1156,6 +1156,66 @@
      </property>
      <property name="icon">
       <iconset theme="QIcon::ThemeIcon::ViewRefresh"/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="tdstatbox">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>730</y>
+      <width>551</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Test Data Generation and Validation Status</string>
+    </property>
+    <widget class="QRadioButton" name="validationbtn">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>20</y>
+       <width>95</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Complete</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="validationbtn_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>20</y>
+       <width>95</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Incomplete</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>

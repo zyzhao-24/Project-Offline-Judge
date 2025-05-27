@@ -306,7 +306,6 @@ void ContestEditor::on_confprobbtn_clicked()
     probEditor->conEditor=this;
     probEditor->problem=&contest.problems[prob_name];
     probEditor->probPath=ctPath+prob_name+".probdata/";
-    probEditor->refresh();
     probEditor->show();
     this->hide();
     connect(probEditor,SIGNAL(ExitWin()),this,SLOT(show()));

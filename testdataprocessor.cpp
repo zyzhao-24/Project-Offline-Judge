@@ -146,6 +146,7 @@ void TestDataProcessor::on_NCaseSpBOX_valueChanged(int arg1)
             if(*it>arg1) it=problem->testdata.subtasks[i].cases.erase(it)-1;
         }
     }
+    problem->validationSuccess=false;
     show_subtsk_tree();
 }
 
@@ -284,6 +285,7 @@ void TestDataProcessor::on_RunValBTN_clicked()
     ui->VerdictTXT->setTextColor(ValDescriptionCol(_ok));
     ui->VerdictTXT->setText(ValDescriptionStr(_ok));
     ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
+    problem->validationSuccess=true;
     return;
 }
 

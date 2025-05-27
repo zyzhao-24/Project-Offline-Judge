@@ -195,7 +195,7 @@ class JudgeOp {
         TPipe* PTPipe=nullptr;
     };
     QList<_proc> procs;
-    QList<TProcess> interactors;
+    QList<TProcess> owned_procs;
     unsigned int _tl{0},_ml{0};
     bool _enable_limit{false};
 public:
@@ -208,11 +208,16 @@ public:
     }
     JudgeOp(const JudgeOp&) =delete;
     JudgeOp(JudgeOp&&) =delete;
-
-    void addProcess(TProcess* process,bool isInteractor=false) {
-        if(process!=nullptr) procs.push_back({process,isInteractor,nullptr});
+    TProcess* addProcess() {
+        owned_procs.push_back(TProcess());
+        procs.push_back({&owned_procs.back(),false,nullptr});
+        return &owned_procs.back();
     }
-    void addInteractor(const QString& exepath,
+    TProcess* addProcess(TProcess* process,bool isInteractor=false) {
+        if(process!=nullptr) procs.push_back({process,isInteractor,nullptr});
+        return process;
+    }
+    TProcess* addInteractor(const QString& exepath,
                        const QString& interactor,
                        const QString& inputfile,
                        const QString& outputfile,
@@ -221,13 +226,15 @@ public:
     {
         QString path=exepath;
         if(!path.endsWith("/")) path.append("/");
-        if(ansfile.isEmpty()) interactors.push_back(TProcess(path+interactor,QStringList()<<inputfile<<outputfile));
-        else interactors.push_back(TProcess(path+interactor,QStringList()<<inputfile<<outputfile<<ansfile));
-        interactors.back().setWorkingDirectory(path);
-        procs.push_back({&interactors.back(),true,nullptr});
+        if(ansfile.isEmpty()) owned_procs.push_back(TProcess(path+interactor,QStringList()<<inputfile<<outputfile));
+        else owned_procs.push_back(TProcess(path+interactor,QStringList()<<inputfile<<outputfile<<ansfile));
+        owned_procs.back().setWorkingDirectory(path);
+        procs.push_back({&owned_procs.back(),true,nullptr});
+        return &owned_procs.back();
     }
     void clear() {
         procs.clear();
+        owned_procs.clear();
     }
     void resetLimit() {
         _tl=0;

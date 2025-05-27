@@ -91,8 +91,13 @@ private slots:
     void on_cplsettabwid_itemClicked(QTableWidgetItem *item);
 
     void on_TestDataBTN_clicked();
+    void on_validationbtn_clicked();
+
+    void on_validationbtn_2_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent *event);
 public: signals:
     void ExitWin();
 private:

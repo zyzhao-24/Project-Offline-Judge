@@ -165,10 +165,10 @@ public:
     TProcess()
         :_PStdin(&NullHandle), _PStdout(&NullHandle), _PStderr(&NullHandle)
     {}
-    TProcess(const QString& command,const QStringList params={})
+    TProcess(const QString& command,const QStringList params={},const QString interpreter="")
         :_PStdin(&NullHandle), _PStdout(&NullHandle), _PStderr(&NullHandle)
     {
-        setCmd(command,params);
+        setCmd(command,params,interpreter);
     }
     ~TProcess() {
         stop();
@@ -176,8 +176,10 @@ public:
     void setWorkingDirectory(const QString& dir) {
         _dir=dir;
     }
-    void setCmd(const QString& command,const QStringList params={}) {
-        _cmdlet=command;
+    void setCmd(const QString& command,const QStringList params={},const QString interpreter="") {
+        _cmdlet="";
+        if(!interpreter.isEmpty()) _cmdlet+=interpreter+" ";
+        _cmdlet+="\""+command+"\"";
         if(!params.isEmpty()) {
             for(const QString& str:params) {
                 _cmdlet+=" \""+str+"\"";
