@@ -334,6 +334,7 @@ public:
         QString interpreter;
         QString proc_name;
         unsigned int stdin_id,stdout_id,stderr_id;
+        QString stdin_file,stdout_file,stderr_file;
         QStringList params;
     };
     QMap<QString,QString> file_collect;
@@ -511,7 +512,7 @@ public:
 
     Testdata testdata;
     bool validationSuccess=false;
-
+    bool student=false;
     JudgeProcess judge_proc;
 
     QJsonObject JsonProblemObj() {
@@ -609,6 +610,7 @@ public:
             if(invalid) it=cpl_settings.erase(it);
             else it++;
         }
+        student=true;
         return true;
     }
 };

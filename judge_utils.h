@@ -4,6 +4,7 @@
 #include "procexelib.h"
 #include <QColor>
 #include "ctsettings.h"
+#include <QTime>
 
 enum TResult {
     _ok = 0,
@@ -298,6 +299,8 @@ public:
             stopAll();
             return {_fail,0};
         }
+        QElapsedTimer timer;
+        timer.start();
         while(isRunning()) {
             if(_enable_limit) {
                 if(getTime_ms()>_tl*1.2) {
@@ -309,6 +312,11 @@ public:
                     judgeLog="memory limit exceeded";
                     stopAll();
                     return {_mle,0};
+                }
+                if(timer.elapsed()>_tl*5) {
+                    judgeLog="FAIL program stuck while executing";
+                    stopAll();
+                    return {_fail,0};
                 }
             }
         }

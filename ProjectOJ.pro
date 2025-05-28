@@ -13,6 +13,8 @@ SOURCES += \
     Qaesencryption/qaesencryption.cpp \
     contesteditor.cpp \
     dataconfigwidget.cpp \
+    judgingdialog.cpp \
+    judgingwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     problemeditor.cpp \
@@ -28,6 +30,8 @@ HEADERS += \
     ctsettings.h \
     dataconfigwidget.h \
     judge_utils.h \
+    judgingdialog.h \
+    judgingwidget.h \
     mainwindow.h \
     problemeditor.h \
     procexelib.h \
@@ -38,6 +42,8 @@ HEADERS += \
 FORMS += \
     contesteditor.ui \
     dataconfigwidget.ui \
+    judgingdialog.ui \
+    judgingwidget.ui \
     mainwindow.ui \
     problemeditor.ui \
     testdataprocessor.ui
