@@ -15,6 +15,10 @@ public:
     explicit JudgingDialog(QWidget *parent = nullptr);
     ~JudgingDialog();
     JudgingWidget widget;
+protected:
+    void closeEvent(QCloseEvent *event);
+public: signals:
+    void ExitWin();
 private slots:
     void on_StopBTN_clicked();
 

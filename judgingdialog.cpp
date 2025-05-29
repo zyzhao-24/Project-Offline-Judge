@@ -6,7 +6,6 @@ JudgingDialog::JudgingDialog(QWidget *parent)
     , ui(new Ui::JudgingDialog)
 {
     ui->setupUi(this);
-    this->setAttribute(Qt::WA_QuitOnClose, false);
     widget.show();
     connect(&widget,SIGNAL(ExitWin()),this,SLOT(close()));
 }
@@ -31,3 +30,7 @@ void JudgingDialog::on_ContinueBTN_clicked()
     ui->StopBTN->setEnabled(true);
 }
 
+void JudgingDialog::closeEvent(QCloseEvent *event) {
+    widget.hide();
+    emit ExitWin();
+}

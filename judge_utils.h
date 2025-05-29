@@ -196,7 +196,6 @@ class JudgeOp {
         TPipe* PTPipe=nullptr;
     };
     QList<_proc> procs;
-    QList<TProcess> owned_procs;
     unsigned int _tl{0},_ml{0};
     bool _enable_limit{false};
 public:
@@ -209,33 +208,12 @@ public:
     }
     JudgeOp(const JudgeOp&) =delete;
     JudgeOp(JudgeOp&&) =delete;
-    TProcess* addProcess() {
-        owned_procs.push_back(TProcess());
-        procs.push_back({&owned_procs.back(),false,nullptr});
-        return &owned_procs.back();
-    }
     TProcess* addProcess(TProcess* process,bool isInteractor=false) {
         if(process!=nullptr) procs.push_back({process,isInteractor,nullptr});
         return process;
     }
-    TProcess* addInteractor(const QString& exepath,
-                       const QString& interactor,
-                       const QString& inputfile,
-                       const QString& outputfile,
-                       const QString& ansfile=NULL
-                       )
-    {
-        QString path=exepath;
-        if(!path.endsWith("/")) path.append("/");
-        if(ansfile.isEmpty()) owned_procs.push_back(TProcess(path+interactor,QStringList()<<inputfile<<outputfile));
-        else owned_procs.push_back(TProcess(path+interactor,QStringList()<<inputfile<<outputfile<<ansfile));
-        owned_procs.back().setWorkingDirectory(path);
-        procs.push_back({&owned_procs.back(),true,nullptr});
-        return &owned_procs.back();
-    }
     void clear() {
         procs.clear();
-        owned_procs.clear();
     }
     void resetLimit() {
         _tl=0;
@@ -286,17 +264,22 @@ public:
     }
 
     QPair<TResult,double> operator()(QString& judgeLog,QObject* parent=nullptr) {
-        QList<TPipe> interactorPipes;
+        QList<TPipe*> interactorPipes;
         for(_proc &proc_struct:procs)
             if(proc_struct.process!=nullptr && proc_struct.isInteractor) {
-                interactorPipes.push_back(TPipe());
-                proc_struct.process->setStandardErrorHandle(interactorPipes.back().hWrite);
-                proc_struct.PTPipe=&interactorPipes.back();
+                interactorPipes.push_back(new TPipe());
+                proc_struct.process->setStandardErrorHandle(interactorPipes.back()->hWrite);
+                proc_struct.PTPipe=interactorPipes.back();
             }
 
         if(!startAll()) {
             judgeLog="FAIL cannot start programs";
             stopAll();
+            while(!interactorPipes.isEmpty()) {
+                TPipe* pipe=interactorPipes.back();
+                interactorPipes.pop_back();
+                delete pipe;
+            }
             return {_fail,0};
         }
         QElapsedTimer timer;
@@ -306,16 +289,31 @@ public:
                 if(getTime_ms()>_tl*1.2) {
                     judgeLog="time limit exceeded";
                     stopAll();
+                    while(!interactorPipes.isEmpty()) {
+                        TPipe* pipe=interactorPipes.back();
+                        interactorPipes.pop_back();
+                        delete pipe;
+                    }
                     return {_tle,0};
                 }
                 if(getMemory_MiB()>_ml*1.2) {
                     judgeLog="memory limit exceeded";
                     stopAll();
+                    while(!interactorPipes.isEmpty()) {
+                        TPipe* pipe=interactorPipes.back();
+                        interactorPipes.pop_back();
+                        delete pipe;
+                    }
                     return {_mle,0};
                 }
                 if(timer.elapsed()>_tl*5) {
                     judgeLog="FAIL program stuck while executing";
                     stopAll();
+                    while(!interactorPipes.isEmpty()) {
+                        TPipe* pipe=interactorPipes.back();
+                        interactorPipes.pop_back();
+                        delete pipe;
+                    }
                     return {_fail,0};
                 }
             }
@@ -325,9 +323,19 @@ public:
                 if(proc_struct.process->getExitStatus()==TProcess::CrashExit) {
                     if(proc_struct.isInteractor) {
                         judgeLog="FAIL interactor crashed with exit code "+QString::number(proc_struct.process->getExitCode());
+                        while(!interactorPipes.isEmpty()) {
+                            TPipe* pipe=interactorPipes.back();
+                            interactorPipes.pop_back();
+                            delete pipe;
+                        }
                         return {_fail,0};
                     } else {
                         judgeLog="Runtime Error program crashed with exit code "+QString::number(proc_struct.process->getExitCode());
+                        while(!interactorPipes.isEmpty()) {
+                            TPipe* pipe=interactorPipes.back();
+                            interactorPipes.pop_back();
+                            delete pipe;
+                        }
                         return {_re,0};
                     }
                 }
@@ -342,8 +350,20 @@ public:
                 auto verdict=parseVerdict(message);
                 if(scorePercent>verdict.second) scorePercent=verdict.second;
                 if(scorePercent>=verdict.second) judgeLog=message;
-                if(verdict.second<=0) return {verdict.first,0};
+                if(verdict.second<=0) {
+                    while(!interactorPipes.isEmpty()) {
+                        TPipe* pipe=interactorPipes.back();
+                        interactorPipes.pop_back();
+                        delete pipe;
+                    }
+                    return {verdict.first,0};
+                }
             }
+        while(!interactorPipes.isEmpty()) {
+            TPipe* pipe=interactorPipes.back();
+            interactorPipes.pop_back();
+            delete pipe;
+        }
         if(scorePercent<=0) return {_wa,0};
         if(scorePercent>=1) return {_ok,1};
         return {_points,scorePercent};

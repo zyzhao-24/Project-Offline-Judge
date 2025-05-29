@@ -32,7 +32,7 @@
     <bool>true</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Stop Judging</string>
@@ -40,7 +40,7 @@
   </widget>
   <widget class="QCommandLinkButton" name="ContinueBTN">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -54,7 +54,7 @@
     <bool>true</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Continue Judging</string>
@@ -73,7 +73,7 @@
     <bool>true</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Add Judging Task</string>

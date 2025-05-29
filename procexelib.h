@@ -16,7 +16,7 @@ class THandle {
     HANDLE handle;
 public:
     THandle(HANDLE data=INVALID_HANDLE_VALUE):handle(data) {}
-    THandle(const THandle&)=delete;
+    THandle(THandle&)=delete;
     THandle(THandle&& that):handle(that.handle) {
         if(this!=&that)
         that.handle=INVALID_HANDLE_VALUE;
@@ -27,7 +27,7 @@ public:
             handle=INVALID_HANDLE_VALUE;
         }
     }
-    THandle& operator=(const THandle&) =delete;
+    THandle& operator=(THandle&) =delete;
     THandle& operator=(THandle&& that) {
         if(this==&that) return *this;
         handle=that.handle;
@@ -72,12 +72,12 @@ public:
     ~TPipe() {
         close();
     }
-    TPipe(const TPipe&) = delete;
+    TPipe(TPipe&) = delete;
     TPipe(TPipe&& other) :
         hRead(std::move(other.hRead)),
         hWrite(std::move(other.hWrite)) {
     }
-    TPipe& operator=(const TPipe&) = delete;
+    TPipe& operator=(TPipe&) = delete;
     TPipe& operator=(TPipe&& other) {
         hRead = std::move(other.hRead);
         hWrite = std::move(other.hWrite);
@@ -130,11 +130,11 @@ public:
         }
         return false;
     }
-    TFile(const TFile&) = delete;
+    TFile(TFile&) = delete;
     TFile(TFile&& other) :
         hFile(std::move(other.hFile)) {
     }
-    TFile& operator=(const TFile&) = delete;
+    TFile& operator=(TFile&) = delete;
     TFile& operator=(TFile&& other) {
         hFile = std::move(other.hFile);
         return (*this);
