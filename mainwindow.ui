@@ -144,7 +144,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </widget>
    <widget class="QCommandLinkButton" name="loadbtn">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>

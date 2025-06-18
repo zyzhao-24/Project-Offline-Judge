@@ -7,17 +7,24 @@ CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
     Qaesencryption/qaesencryption.cpp \
+    codeeditorwidget.cpp \
     contesteditor.cpp \
     dataconfigwidget.cpp \
-    judgingdialog.cpp \
+    judgesetting.cpp \
     judgingwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    packer.cpp \
     problemeditor.cpp \
+    idegroupwidget.cpp \
+    idehighlighter.cpp \
+    procexecinfowidget.cpp \
+    studenteditor.cpp \
+    submitide.cpp \
     testdataprocessor.cpp
 
 HEADERS += \
@@ -26,26 +33,38 @@ HEADERS += \
     Qaesencryption/aesni/aesni-key-exp.h \
     Qaesencryption/aesni/aesni-key-init.h \
     Qaesencryption/qaesencryption.h \
+    codeeditorwidget.h \
     contesteditor.h \
     ctsettings.h \
     dataconfigwidget.h \
     judge_utils.h \
-    judgingdialog.h \
+    judgesetting.h \
     judgingwidget.h \
     mainwindow.h \
     problemeditor.h \
+    idegroupwidget.h \
+    idehighlighter.h \
+    packer.h \
+    procexecinfowidget.h \
+    studenteditor.h \
+    submitide.h \
     procexelib.h \
     testdataprocessor.h \
     testlib/testlib.h \
     val_utils.h
 
 FORMS += \
+    codeeditorwidget.ui \
     contesteditor.ui \
     dataconfigwidget.ui \
-    judgingdialog.ui \
+    judgesetting.ui \
     judgingwidget.ui \
     mainwindow.ui \
     problemeditor.ui \
+    procexecinfowidget.ui \
+    studenteditor.ui \
+    submitide.ui \
+    idegroupwidget.ui \
     testdataprocessor.ui
 
 TRANSLATIONS += \

@@ -7,11 +7,23 @@
     <x>0</x>
     <y>0</y>
     <width>858</width>
-    <height>496</height>
+    <height>540</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>858</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>858</width>
+    <height>540</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Judging Result</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -19,12 +31,12 @@
   <property name="styleSheet">
    <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
-  <widget class="QTreeWidget" name="treeWidget">
+  <widget class="QTreeWidget" name="judgeTWid">
    <property name="geometry">
     <rect>
-     <x>15</x>
-     <y>0</y>
-     <width>831</width>
+     <x>10</x>
+     <y>10</y>
+     <width>841</width>
      <height>481</height>
     </rect>
    </property>
@@ -34,43 +46,36 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="minimumSize">
+   <property name="sizeIncrement">
     <size>
-     <width>831</width>
-     <height>481</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>831</width>
-     <height>481</height>
+     <width>0</width>
+     <height>0</height>
     </size>
    </property>
    <property name="frameShape">
-    <enum>QFrame::Shape::NoFrame</enum>
+    <enum>QFrame::Shape::Box</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Shadow::Sunken</enum>
+   </property>
+   <property name="midLineWidth">
+    <number>1</number>
    </property>
    <property name="editTriggers">
     <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
    </property>
+   <property name="uniformRowHeights">
+    <bool>false</bool>
+   </property>
+   <attribute name="headerCascadingSectionResizes">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="headerDefaultSectionSize">
+    <number>120</number>
+   </attribute>
    <column>
     <property name="text">
-     <string>Contestant</string>
-    </property>
-    <property name="textAlignment">
-     <set>AlignCenter</set>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Problem</string>
-    </property>
-    <property name="textAlignment">
-     <set>AlignCenter</set>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Testcase</string>
+     <string>Test Info</string>
     </property>
     <property name="textAlignment">
      <set>AlignCenter</set>
@@ -112,7 +117,73 @@
     <property name="text">
      <string>Log</string>
     </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
    </column>
+  </widget>
+  <widget class="QCommandLinkButton" name="StopBTN">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>490</y>
+     <width>271</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>Stop Judging</string>
+   </property>
+  </widget>
+  <widget class="QCommandLinkButton" name="ClearBTN">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>490</y>
+     <width>271</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>Clear Judging Records</string>
+   </property>
+  </widget>
+  <widget class="QCommandLinkButton" name="ContinueBTN">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>490</y>
+     <width>271</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>Continue Judging</string>
+   </property>
   </widget>
  </widget>
  <resources/>

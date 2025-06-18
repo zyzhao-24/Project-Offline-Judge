@@ -154,13 +154,13 @@ static TResult CompileOp(QObject* parent,
 
 static QPair<TResult,double> parseVerdict(const QString& msg) {
     QStringList lst=msg.split(" ");
-    if(lst[0]=="ok") return {_ok,1};
-    if(lst[0]=="wrong") {
-        if(lst[1]=="answer") return {_wa,0};
-        if(lst[1]=="output" && lst[2]=="format") return {_pe,0};
+    if(lst.size()>=1) if(lst[0]=="ok") return {_ok,1};
+    if(lst.size()>=1) if(lst[0]=="wrong") {
+        if(lst.size()>=2) if(lst[1]=="answer") return {_wa,0};
+        if(lst.size()>=3) if(lst[1]=="output" && lst[2]=="format") return {_pe,0};
     }
-    if(lst[0]=="FAIL") return {_fail,0};
-    if(lst[0]=="point") {
+    if(lst.size()>=1) if(lst[0]=="FAIL") return {_fail,0};
+    if(lst.size()>=2) if(lst[0]=="point") {
         QString score_info=lst[1];
         if(score_info.contains("=")) score_info=score_info.split("=")[1];
         bool ok;
@@ -172,8 +172,8 @@ static QPair<TResult,double> parseVerdict(const QString& msg) {
         }
         else return {_fail,0};
     }
-    if(lst[0]=="unexpected"&&lst[1]=="eof") return {_unexpected_eof,0};
-    if(lst[0]=="partially"&&lst[1]=="correct") {
+    if(lst.size()>=2) if(lst[0]=="unexpected"&&lst[1]=="eof") return {_unexpected_eof,0};
+    if(lst.size()>=2) if(lst[0]=="partially"&&lst[1]=="correct") {
         QString score_info=lst[2];
         if(score_info.front()=="(") score_info.removeFirst();
         if(score_info.back()==")") score_info.removeLast();
@@ -286,7 +286,7 @@ public:
         timer.start();
         while(isRunning()) {
             if(_enable_limit) {
-                if(getTime_ms()>_tl*1.2) {
+                if(getTime_ms()>_tl) {
                     judgeLog="time limit exceeded";
                     stopAll();
                     while(!interactorPipes.isEmpty()) {
@@ -296,7 +296,7 @@ public:
                     }
                     return {_tle,0};
                 }
-                if(getMemory_MiB()>_ml*1.2) {
+                if(getMemory_MiB()>_ml) {
                     judgeLog="memory limit exceeded";
                     stopAll();
                     while(!interactorPipes.isEmpty()) {
@@ -393,7 +393,7 @@ static QPair<TResult,double> CheckOp(QObject* parent,
         chkLog="FAIL cannot start checker";
         return {_fail,0};
     }
-    if(!check.waitForFinished(timeout*6/5)) {
+    if(!check.waitForFinished(timeout)) {
         check.terminate();
         chkLog="FAIL checker exceeded time limit";
         return {_fail,0};

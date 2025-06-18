@@ -17,6 +17,8 @@
 #include <QStandardItem>
 #include "ctsettings.h"
 #include "testdataprocessor.h"
+#include "codeeditorwidget.h"
+#include "judgesetting.h"
 const int max_cplsrc=4;
 
 namespace Ui {
@@ -39,6 +41,7 @@ public:
     QPdfDocument* docnull=nullptr;
 
     TestDataProcessor tdataproc;
+    JudgeSetting judgeset;
 
     QComboBox cplsrc[max_cplsrc];//src file name input widget,to be modified to combo box
     int cplsrc_cnt=0;
@@ -94,6 +97,10 @@ private slots:
     void on_validationbtn_clicked();
 
     void on_validationbtn_2_clicked();
+
+    void on_jutilsmodbtn_clicked();
+
+    void on_JudgeSettingBTN_clicked();
 
 protected:
     void closeEvent(QCloseEvent *event);

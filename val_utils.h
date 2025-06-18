@@ -219,7 +219,7 @@ static TResult ValidateOp(QObject* parent,
         valLog="FAIL cannot start validator";
         return _fail;
     }
-    if(!validation.waitForFinished(timeout*6/5)) {
+    if(!validation.waitForFinished(timeout)) {
         validation.terminate();
         valLog="time limit exceeded validation exceeded time limit";
         return _tle;

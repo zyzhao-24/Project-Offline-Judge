@@ -15,6 +15,7 @@
 #include <QDebug>
 #include "Qaesencryption/qaesencryption.h"
 #include <QByteArray>
+#include "packer.h"
 
 const QString keyStr="cbweuiverfuiwwryw8rew8df897wrwrqeftqwgqw78qwdq7qwtqw7etqw79dqwgd";//Key for Encryption, change to your need
 //Class for Encryption
@@ -201,6 +202,27 @@ public:
     static bool remove(const QString& dirPath) {
         return QFile::remove(dirPath);
     }
+    static bool write(const QString& dirPath,const QString fileContent) {
+        QFile outf(dirPath);
+        if(!outf.open(QFile::WriteOnly)) return false;
+        else {
+            QTextStream stream(&outf);
+            stream<<fileContent;
+        }
+        outf.close();
+        return true;
+    }
+    static QString read(const QString& dirPath) {
+        QFile outf(dirPath);
+        QString result;
+        if(!outf.open(QFile::ReadOnly)) return result;
+        else {
+            QTextStream stream(&outf);
+            result=stream.readAll();
+        }
+        outf.close();
+        return result;
+    }
 };
 
 /*
@@ -306,6 +328,7 @@ static QStringList parseCombinedArgString(const QString &program)
 const QString ctinfo=".ctinfo";//suffix ctinfo
 const QString probcontent="content.pdf";//problem content file
 const QString templ=".tpl";//suffix tpl for template file
+const QString stuinfo = ".stuinfo";
 
 const QString ProbTypeName[6]={
     "custom",
@@ -330,21 +353,100 @@ public:
     unsigned int pipecount;
     struct process{
         bool isInteractor;
-        QString exedir;
         QString interpreter;
         QString proc_name;
-        unsigned int stdin_id,stdout_id,stderr_id;
-        QString stdin_file,stdout_file,stderr_file;
+        int stdin_id=-1,stdout_id=-1;//not connected:-1,file:-2,pipe:0-(pipecount-1)
+        QString stdin_file,stdout_file;
         QStringList params;
     };
     QMap<QString,QString> file_collect;
+    QList<process> execute_info;
     struct ChkCmd {
         QString checker;
         QString inputFile;
         QString outputFile;
         QString answerFile;
     };
-    QMap<QString,ChkCmd> checkersCmds;
+    QList<ChkCmd> checkersCmds;
+
+    QJsonObject JsonJuProcObj() {
+        QJsonObject JuProcObj;
+        QJsonArray pathArray;
+        for(QString filename:folder.keys()) {
+            pathArray.append(QJsonObject({{"filename",filename},{"folder",folder[filename]}}));
+        }
+        JuProcObj.insert("folder",pathArray);
+        JuProcObj.insert("pipe_count",int(pipecount));
+        QJsonArray collectArray;
+        for(QString filename:file_collect.keys()) {
+            pathArray.append(QJsonObject({{"filename",filename},{"folder",file_collect[filename]}}));
+        }
+        JuProcObj.insert("collect",collectArray);
+        QJsonArray exeArray;
+        for(process proc:execute_info) {
+            QJsonArray paramArray;
+            for(QString str:proc.params) paramArray.append(str);
+            exeArray.append( QJsonObject({{"interactor",proc.isInteractor},{"interpreter",proc.interpreter},{"name",proc.proc_name},
+                             {"stdin",proc.stdin_id},{"stdin_file",proc.stdin_file},
+                             {"stdout",proc.stdout_id},{"stdout_file",proc.stdout_file},{"params",paramArray}}) );
+        }
+        JuProcObj.insert("execution",exeArray);
+        QJsonArray chkArray;
+        for(ChkCmd chk:checkersCmds) {
+            chkArray.append(QJsonObject({{"checker",chk.checker},{"input",chk.inputFile},{"output",chk.outputFile},{"answer",chk.answerFile}}));
+        }
+        JuProcObj.insert("checker",chkArray);
+        return JuProcObj;
+    }
+    int load_form_JsonObj(const QJsonObject& JuProcObj) {
+        if(JuProcObj.contains("folder")) {
+            QJsonArray pathArray=JuProcObj["folder"].toArray();
+            for(int ind=0;ind<pathArray.size();ind++) {
+                QJsonObject pathObj=pathArray[ind].toObject();
+                folder[pathObj["filename"].toString()]=pathObj["folder"].toString();
+            }
+        }
+        if(JuProcObj.contains("collect")) {
+            QJsonArray colArray=JuProcObj["collect"].toArray();
+            for(int ind=0;ind<colArray.size();ind++) {
+                QJsonObject colObject=colArray[ind].toObject();
+                file_collect[colObject["file"].toString()]=colObject["folder"].toString();
+            }
+        }
+        pipecount=JuProcObj["pipe_count"].toInt(0);
+        if(!JuProcObj.contains("execution")) return -1;
+        QJsonArray exeArray=JuProcObj["execution"].toArray();
+        execute_info.clear();
+        for(int ind=0;ind<exeArray.size();ind++) {
+            QJsonObject exeObj=exeArray[ind].toObject();
+            QJsonArray paramArray=exeObj["params"].toArray();
+            QStringList params;
+            for(int ind2=0;ind2<paramArray.size();ind2++) params.append(paramArray[ind2].toString());
+            execute_info.push_back({
+                exeObj["interactor"].toBool(),
+                exeObj["interpreter"].toString(),
+                exeObj["name"].toString(),
+                exeObj["stdin"].toInt(-1),
+                exeObj["stdout"].toInt(-1),
+                exeObj["stdin_file"].toString(),
+                exeObj["stdout_file"].toString(),
+                params
+            });
+        }
+        if(!JuProcObj.contains("checker")) return -2;
+        QJsonArray chkArray=JuProcObj["checker"].toArray();
+        checkersCmds.clear();
+        for(int ind=0;ind<chkArray.size();ind++) {
+            QJsonObject chkObj=chkArray[ind].toObject();
+            checkersCmds.push_back({
+                chkObj["checker"].toString(),
+                chkObj["input"].toString(),
+                chkObj["output"].toString(),
+                chkObj["answer"].toString()
+            });
+        }
+        return 0;
+    }
 };
 
 class Testdata {
@@ -545,6 +647,7 @@ public:
         if(!CompileSettings.isEmpty()) ProblemObj.insert("cpl_settings",CompileSettings);
         ProblemObj.insert("testdata",testdata.JsonTDataObj());
         if(validationSuccess) ProblemObj.insert("validated",true);
+        ProblemObj.insert("judge",judge_proc.JsonJuProcObj());
         return ProblemObj;
     }
     int loadJsonObj(const QJsonObject& ProblemObj) {
@@ -594,6 +697,8 @@ public:
 
         if(ProblemObj.contains("validated")) validationSuccess=true;
         else validationSuccess=false;
+
+        if(ProblemObj.contains("judge")) judge_proc.load_form_JsonObj(ProblemObj["judge"].toObject());
         return 0;
     }
 
@@ -739,6 +844,29 @@ public:
         return loadProblemArray(ProblemArray);
     }
 };
+class Submission{
+public:
+    Submission(){}
+    QString usrname="";//Student Basic info
+    QString id="";
+    QString pwd="";
+    QMap<QString,QString> answers;
+    QJsonObject SubmissionObj;//Final upload jsonfile
+    void JsonSubmission(){
+        QJsonObject submission;
+        submission.insert("usrname",usrname);
+        submission.insert("id",id);
+        submission.insert("pwd",pwd);
+        QJsonObject anss;
+        for(auto it = answers.begin();it!=answers.end();it++){
+            anss[it.key()] = it.value();
+        }
+        submission.insert("answer",anss);
+        SubmissionObj = submission;
+    }
+    //应该能够一次上传一个contest的多个问题的答案
+};
+
 
 
 #endif // CTSETTINGS_H

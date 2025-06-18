@@ -10,7 +10,6 @@
 #ifdef Q_OS_WIN32
 #include <windows.h>
 #include <psapi.h>
-#pragma comment(lib, "Psapi.lib")
 
 class THandle {
     HANDLE handle;
@@ -163,11 +162,14 @@ public:
     enum ExitStatus { NormalExit, CrashExit };
     enum ProcessState { NotRunning, Running } _state=NotRunning;
     TProcess()
-        :_PStdin(&NullHandle), _PStdout(&NullHandle), _PStderr(&NullHandle)
-    {}
-    TProcess(const QString& command,const QStringList params={},const QString interpreter="")
-        :_PStdin(&NullHandle), _PStdout(&NullHandle), _PStderr(&NullHandle)
+        :_PStdin(&NullHandle), _PStdout(&NullHandle), _PStderr(&NullHandle),_si{ sizeof(STARTUPINFOW)},_pi{}
     {
+        _si.dwFlags = STARTF_USESTDHANDLES;
+    }
+    TProcess(const QString& command,const QStringList params={},const QString interpreter="")
+        :_PStdin(&NullHandle), _PStdout(&NullHandle), _PStderr(&NullHandle),_si{ sizeof(STARTUPINFOW)},_pi{}
+    {
+        _si.dwFlags = STARTF_USESTDHANDLES;
         setCmd(command,params,interpreter);
     }
     ~TProcess() {
@@ -210,15 +212,16 @@ public:
         return _exit_code;
     }
     ProcessState getProcessState() {
+        if(_state==NotRunning) return NotRunning;
         if(hProcess) {
             getExitCode();
-            if(_exit_code==STILL_ACTIVE) _state=Running;
+            if(_exit_code==STILL_ACTIVE) return Running;
             else _state=NotRunning;
         } else _state=NotRunning;
         return _state;
     }
     unsigned int getTime_ms() {
-        if(hProcess) {
+        if(_state==Running) if(hProcess) {
             FILETIME creationTime, exitTime, kernelTime, userTime;
             if (GetProcessTimes(hProcess, &creationTime, &exitTime, &kernelTime, &userTime)) {
                 timeUsed.LowPart = userTime.dwLowDateTime;
@@ -230,7 +233,7 @@ public:
         return static_cast<DWORD>(cpuTime / 10000);
     }
     unsigned int getMemory_MiB() {
-        if(hProcess) {
+        if(_state==Running) if(hProcess) {
             PROCESS_MEMORY_COUNTERS _pmc;
             if (GetProcessMemoryInfo(hProcess, &_pmc, sizeof(_pmc))) {
                 memUsed=_pmc.PeakWorkingSetSize;
@@ -240,6 +243,7 @@ public:
     }
 
     bool start() {
+        if(_state==Running) return false;
         _PStdin->setInheritFlag();
         _PStdout->setInheritFlag();
         _PStderr->setInheritFlag();
@@ -249,9 +253,9 @@ public:
             NULL,
             NULL,
             TRUE,
-            NORMAL_PRIORITY_CLASS,
+            NORMAL_PRIORITY_CLASS|CREATE_NO_WINDOW,
             NULL,
-            _dir.isNull()?NULL:_dir.toStdWString().c_str(),
+            _dir.isEmpty()?NULL:_dir.toStdWString().c_str(),
             &_si,
             &_pi
             );
@@ -270,7 +274,10 @@ public:
     }
     bool stop() {
         bool success=true;
-        if(getProcessState()==Running) success=TerminateProcess(hProcess, 0);
+        if(_state==Running) {
+            _state=NotRunning;
+            success=TerminateProcess(hProcess, 1);
+        }
         _exit_code=-1;
         hProcess.close();
         hThread.close();

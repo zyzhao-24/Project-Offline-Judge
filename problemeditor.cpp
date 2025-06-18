@@ -577,7 +577,7 @@ void ProblemEditor::on_TestDataBTN_clicked()
     tdataproc.show_subtsk_tree();
     tdataproc.refresh_testdata_settings();
     this->hide();
-    connect(&tdataproc,SIGNAL(ExitWin()),this,SLOT(show()));
+    connect(&tdataproc,&TestDataProcessor::ExitWin,this,&ProblemEditor::show);
 }
 
 void ProblemEditor::closeEvent(QCloseEvent *event) {
@@ -589,12 +589,27 @@ void ProblemEditor::showEvent(QShowEvent *event) {
 
 void ProblemEditor::on_validationbtn_clicked()
 {
-    problem->validationSuccess=true;
+    refresh();
 }
 
 
 void ProblemEditor::on_validationbtn_2_clicked()
 {
-    problem->validationSuccess=false;
+    refresh();
+}
+
+void ProblemEditor::on_JudgeSettingBTN_clicked()
+{
+    judgeset.problem=problem;
+    judgeset.refresh();
+    judgeset.show();
+    connect(&judgeset,&JudgeSetting::ExitWin,this,&ProblemEditor::show);
+    this->hide();
+}
+
+void ProblemEditor::on_jutilsmodbtn_clicked()
+{
+    CodeEditorWidget *codeedit=new CodeEditorWidget(ui->filenametext->text());
+    codeedit->show();
 }
 

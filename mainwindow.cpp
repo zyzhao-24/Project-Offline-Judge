@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "contesteditor.h"
+#include "studenteditor.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -49,7 +50,7 @@ void MainWindow::on_editbtn_clicked()
         return;
     }
     QTextStream ctinfoStream(&ctinfof);
-    QString JsonText=Encryption::decrypt_data(ctinfoStream.readAll());
+    QString JsonText=/*Encryption::decrypt_data*/(ctinfoStream.readAll());
     ctinfof.close();
 
     QJsonParseError parseError;
@@ -77,6 +78,14 @@ void MainWindow::on_editbtn_clicked()
 
 void MainWindow::on_loadbtn_clicked()
 {
-
+    QString dir;
+    dir = QFileDialog::getExistingDirectory(nullptr,tr("新建提交文件夹"),"./", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks) + "/";
+    if(dir=="/")return;
+    StudentEditor* Editor=new StudentEditor();
+    Editor->father = this;
+    Editor->maindir = dir;
+    Editor->show();
+    this->hide();
 }
+
 

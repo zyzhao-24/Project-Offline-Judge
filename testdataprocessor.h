@@ -5,6 +5,20 @@
 #include <QInputDialog>
 #include "dataconfigwidget.h"
 #include "val_utils.h"
+
+class ValidationThread:public QObject {
+    Q_OBJECT
+public:
+    explicit ValidationThread(QObject *parent = nullptr);
+    ~ValidationThread();
+public slots:
+    void runValidation(Problem* problem,QString probPath);
+
+signals:
+    void ValidationResults(TResult result,QString file={},QString content={},QString log={});
+};
+
+
 namespace Ui {
 class TestDataProcessor;
 }
@@ -18,11 +32,17 @@ public:
     ~TestDataProcessor();
     Problem* problem=nullptr;
     QString probPath="";
+    QThread* valThreadContainer;
+    ValidationThread* valThread;
     void show_subtsk_tree();
     void refresh_testdata_settings();
+    bool pending=false;
 protected:
     void closeEvent(QCloseEvent *event);
+public slots:
+    void HandleResults(TResult result,QString file={},QString content={},QString log={});
 public: signals:
+    void startValidation(Problem* problem,QString probPath);
     void ExitWin();
 private slots:
     void on_CrSubtskBTN_clicked();
@@ -44,5 +64,7 @@ private slots:
 private:
     Ui::TestDataProcessor *ui;
 };
+
+
 
 #endif // TESTDATAPROCESSOR_H

@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 
-#include "judgingdialog.h"
-
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
@@ -22,9 +20,6 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
-
-    JudgingDialog dialog;
-    dialog.show();
 
     return a.exec();
 }

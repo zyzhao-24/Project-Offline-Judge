@@ -1,11 +1,96 @@
 #include "testdataprocessor.h"
 #include "ui_testdataprocessor.h"
 
+ValidationThread::ValidationThread(QObject* parent):QObject(parent) {}
+ValidationThread::~ValidationThread() {}
+void ValidationThread::runValidation(Problem* problem,QString probPath) {
+    emit ValidationResults(_pending,{},"N/A");
+    QApplication::processEvents();
+    QString log;
+    for(Problem::CompileSetting cplset:problem->cpl_settings) {
+        if(cplset.precompile) {
+            TResult cplres=CompileOp(this,cplset.compiler,cplset.inputs,cplset.output,parseCombinedArgString(cplset.params),probPath,log);
+            emit ValidationResults(_pending,cplset.output,"N/A",log);
+            if(cplres!=_ok) {
+                emit ValidationResults(cplres,cplset.output,"N/A",log);
+                return;
+            }
+        }
+    }
+
+    QList<Testdata::TDSetting> tdsetvec(problem->testdata.settings.values());
+    std::sort(tdsetvec.begin(),tdsetvec.end(),[&](Testdata::TDSetting& op1,Testdata::TDSetting& op2){return op1.index<op2.index;});
+    for(Testdata::TDSetting tdset:tdsetvec) {
+        for(Testdata::GenCmd cmd:tdset.generator) {
+            TResult genres=GenOp(this,cmd.interpreter,cmd.genorstd,cmd.params,cmd.inputFile,tdset.filename,probPath,log,cmd.multigen,cmd.cases,qMax(2*problem->time_limit_ms,2000));
+            if(cmd.multigen) {
+                emit ValidationResults(_pending,tdset.filename,"N/A",log);
+                if(genres!=_ok) {
+                    emit ValidationResults(genres,tdset.filename,"N/A",log);
+                    return;
+                }
+            } else {
+                QFile tdfile(probPath+"testdata/"+get_filename_with_id(tdset.filename,cmd.cases[0]));
+                QString content="N/A";
+                if (tdfile.open(QIODevice::ReadOnly))
+                {
+                    QTextStream tdstream(&tdfile);
+                    content=tdstream.readAll();
+                    tdfile.close();
+                }
+                emit ValidationResults(_pending,get_filename_with_id(tdset.filename,cmd.cases[0]),content,log);
+                if(genres!=_ok) {
+                    emit ValidationResults(genres,get_filename_with_id(tdset.filename,cmd.cases[0]),content,log);
+                    return;
+                }
+            }
+        }
+    }
+    for(int i=1;i<=problem->testdata.ncase;i++)
+        for(Testdata::TDSetting tdset:tdsetvec)
+            if(!FileOp::exists(probPath+"testdata/"+get_filename_with_id(tdset.filename,i))) {
+                emit ValidationResults(_fail,get_filename_with_id(tdset.filename,i),"N/A","FAIL filecheck:file does not exist");
+                return;
+            }
+    for(Testdata::TDSetting tdset:tdsetvec)
+        if(tdset.validation)
+            for(int i=1;i<=problem->testdata.ncase;i++) {
+                TResult valres=ValidateOp(this,tdset.validator,tdset.filename,i,probPath,log,qMax(2*problem->time_limit_ms,2000));
+                QFile tdfile(probPath+"testdata/"+get_filename_with_id(tdset.filename,i));
+
+                QString content="N/A";
+                if (tdfile.open(QIODevice::ReadOnly))
+                {
+                    QTextStream tdstream(&tdfile);
+                    content=tdstream.readAll();
+                    tdfile.close();
+                }
+
+                emit ValidationResults(_pending,get_filename_with_id(tdset.filename,i),content,log);
+
+                if(valres!=_ok) {
+                    emit ValidationResults(valres,get_filename_with_id(tdset.filename,i),content,log);
+                    return;
+                }
+            }
+    QThread::msleep(300);
+    emit ValidationResults(_ok,{},{},"ok validation complete");
+    return;
+}
+
 TestDataProcessor::TestDataProcessor(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::TestDataProcessor)
 {
     ui->setupUi(this);
+    valThreadContainer=new QThread;
+    valThread=new ValidationThread;
+    valThread->moveToThread(valThreadContainer);
+
+    connect(valThreadContainer,&QThread::finished,valThread,&QObject::deleteLater);
+    connect(valThread,&ValidationThread::ValidationResults,this,&TestDataProcessor::HandleResults);
+    valThreadContainer->start();
+    connect(this, &TestDataProcessor::startValidation, valThread, &ValidationThread::runValidation);
 }
 
 TestDataProcessor::~TestDataProcessor()
@@ -196,97 +281,22 @@ void TestDataProcessor::on_RefreshBTN_clicked()
 
 void TestDataProcessor::on_RunValBTN_clicked()
 {
-    ui->VerdictTXT->setTextColor(ValDescriptionCol(_pending));
-    ui->VerdictTXT->setText(ValDescriptionStr(_pending));
-    ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
-    ui->FileTXT->clear();
-    ui->FileContentTXT->clear();
-    ui->ValLogTXT->clear();
-    QApplication::processEvents();
-    QString log;
-    for(Problem::CompileSetting cplset:problem->cpl_settings) {
-        if(cplset.precompile) {
-            TResult cplres=CompileOp(this,cplset.compiler,cplset.inputs,cplset.output,parseCombinedArgString(cplset.params),probPath,log);
-            ui->FileTXT->setText(cplset.output);
-            ui->FileContentTXT->setPlainText("N/A");
-            ui->ValLogTXT->setPlainText(log);
-            QApplication::processEvents();
-            if(cplres!=_ok) {
-                ui->VerdictTXT->setTextColor(ValDescriptionCol(cplres));
-                ui->VerdictTXT->setText(ValDescriptionStr(cplres));
-                ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
-                return;
-            }
-        }
-    }
-
-    QList<Testdata::TDSetting> tdsetvec(problem->testdata.settings.values());
-    std::sort(tdsetvec.begin(),tdsetvec.end(),[&](Testdata::TDSetting& op1,Testdata::TDSetting& op2){return op1.index<op2.index;});
-    for(Testdata::TDSetting tdset:tdsetvec) {
-        for(Testdata::GenCmd cmd:tdset.generator) {
-            TResult genres=GenOp(this,cmd.interpreter,cmd.genorstd,cmd.params,cmd.inputFile,tdset.filename,probPath,log,cmd.multigen,cmd.cases,problem->time_limit_ms);
-            if(cmd.multigen) {
-                ui->FileTXT->setText(tdset.filename);
-                ui->FileContentTXT->setPlainText("N/A");
-            } else {
-                ui->FileTXT->setText(get_filename_with_id(tdset.filename,cmd.cases[0]));
-                QFile tdfile(probPath+"testdata/"+get_filename_with_id(tdset.filename,cmd.cases[0]));
-                if (!tdfile.open(QIODevice::ReadOnly)) {
-                    ui->FileContentTXT->setPlainText("N/A");
-                } else {
-                    QTextStream tdstream(&tdfile);
-                    ui->FileContentTXT->setPlainText(tdstream.readAll());
-                    tdfile.close();
-                }
-            }
-            ui->ValLogTXT->setPlainText(log);
-            QApplication::processEvents();
-            if(genres!=_ok) {
-                ui->VerdictTXT->setTextColor(ValDescriptionCol(genres));
-                ui->VerdictTXT->setText(ValDescriptionStr(genres));
-                ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
-                return;
-            }
-        }
-    }
-    for(int i=1;i<=problem->testdata.ncase;i++)
-        for(Testdata::TDSetting tdset:tdsetvec)
-            if(!FileOp::exists(probPath+"testdata/"+get_filename_with_id(tdset.filename,i))) {
-                ui->FileTXT->setText(get_filename_with_id(tdset.filename,i));
-                ui->FileContentTXT->setPlainText("N/A");
-                ui->ValLogTXT->setPlainText("FAIL filecheck:file does not exist");
-                ui->VerdictTXT->setTextColor(ValDescriptionCol(_fail));
-                ui->VerdictTXT->setText(ValDescriptionStr(_fail));
-                ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
-                return;
-            }
-    for(Testdata::TDSetting tdset:tdsetvec)
-        if(tdset.validation)
-            for(int i=1;i<=problem->testdata.ncase;i++) {
-                TResult valres=ValidateOp(this,tdset.validator,tdset.filename,i,probPath,log,qMax(problem->time_limit_ms,1000));
-                ui->FileTXT->setText(get_filename_with_id(tdset.filename,i));
-                QFile tdfile(probPath+"testdata/"+get_filename_with_id(tdset.filename,i));
-                if (!tdfile.open(QIODevice::ReadOnly)) {
-                    ui->FileContentTXT->setPlainText("N/A");
-                } else {
-                    QTextStream tdstream(&tdfile);
-                    ui->FileContentTXT->setPlainText(tdstream.readAll());
-                    tdfile.close();
-                }
-                ui->ValLogTXT->setPlainText(log);
-                QApplication::processEvents();
-                if(valres!=_ok) {
-                    ui->VerdictTXT->setTextColor(ValDescriptionCol(valres));
-                    ui->VerdictTXT->setText(ValDescriptionStr(valres));
-                    ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
-                    return;
-                }
-            }
-    ui->VerdictTXT->setTextColor(ValDescriptionCol(_ok));
-    ui->VerdictTXT->setText(ValDescriptionStr(_ok));
-    ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
-    problem->validationSuccess=true;
+    if(pending) return;
+    pending=true;
+    emit startValidation(problem,probPath);
     return;
+}
+
+void TestDataProcessor::HandleResults(TResult result,QString file,QString content,QString log) {
+    if(result==_ok) problem->validationSuccess=true;
+    if(result!=_pending) pending=false;
+    ui->VerdictTXT->setTextColor(ValDescriptionCol(result));
+    ui->VerdictTXT->setText(ValDescriptionStr(result));
+    ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
+    ui->FileTXT->setText(file);
+    ui->FileContentTXT->setPlainText(content);
+    ui->ValLogTXT->setPlainText(log);
+    QApplication::processEvents();
 }
 
 void TestDataProcessor::closeEvent(QCloseEvent *event) {

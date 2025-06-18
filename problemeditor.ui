@@ -662,7 +662,7 @@
     </widget>
     <widget class="QCommandLinkButton" name="jutilsmodbtn">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
