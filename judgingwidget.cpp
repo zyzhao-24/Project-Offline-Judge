@@ -319,12 +319,12 @@ void JudgingWidget::showCplResult(const QString& participant,
                                                               "",
                                                               log}));
     else prob_find.append(new QTreeWidgetItem(pa_find.back(),{problem,
-                                                          JudgeDescriptionStr(verdict),
+                                                          DescriptionStr(verdict),
                                                           "",
                                                           "",
                                                           "",
                                                           log}));
-    prob_find.back()->setForeground(1,QBrush(JudgeDescriptionCol(verdict)));
+    prob_find.back()->setForeground(1,QBrush(DescriptionCol(verdict)));
     prob_find.back()->setTextAlignment(1,Qt::AlignCenter);
     prob_find.back()->setTextAlignment(2,Qt::AlignCenter);
     prob_find.back()->setTextAlignment(3,Qt::AlignCenter);
@@ -363,12 +363,12 @@ void JudgingWidget::showJudResult(const QString& participant,
         prob_find.back()->removeChild(case_find.back());
     }
     case_find.append(new QTreeWidgetItem(prob_find.back(),{(caseid<100?(caseid<10?"Case 00":"Case 0"):"Case ")+QString::number(caseid),
-                                                            JudgeDescriptionStr(verdict),
+                                                            DescriptionStr(verdict),
                                                             QString::number(score,'g',3),
                                                             QString::number(time),
                                                             QString::number(mem),
                                                             log}));
-    case_find.back()->setForeground(1,QBrush(JudgeDescriptionCol(verdict)));
+    case_find.back()->setForeground(1,QBrush(DescriptionCol(verdict)));
     case_find.back()->setTextAlignment(1,Qt::AlignCenter);
     case_find.back()->setTextAlignment(2,Qt::AlignCenter);
     case_find.back()->setTextAlignment(3,Qt::AlignCenter);

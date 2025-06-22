@@ -2,10 +2,12 @@
 #include "ui_contesteditor.h"
 
 #include "problemeditor.h"
+#include "judgepanel.h"
 
 ContestEditor::ContestEditor(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::ContestEditor)
+    , panel(this,&contest)
 {
     ui->setupUi(this);
 }
@@ -140,7 +142,6 @@ void ContestEditor::on_savebtn_clicked()
 }
 void ContestEditor::on_returnbtn_clicked()
 {
-    save();
     father->show();
     this->destroy();
 }
@@ -328,5 +329,14 @@ void ContestEditor::on_confprobbtn_clicked()
     probEditor->show();
     this->hide();
     connect(probEditor,&ProblemEditor::ExitWin,this,&ContestEditor::show);
+}
+
+
+void ContestEditor::on_gradebtn_clicked()
+{
+    panel.refresh();
+    panel.show();
+    connect(&panel,&JudgePanel::ExitWin,this,&ContestEditor::show);
+    hide();
 }
 
