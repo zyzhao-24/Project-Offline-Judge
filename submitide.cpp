@@ -3,6 +3,7 @@
 
 SubmitIDE::SubmitIDE(QWidget *parent, Problem prob)
     : QWidget(parent)
+    , judge(nullptr,false)
     , ui(new Ui::SubmitIDE)
 {
     ui->setupUi(this);

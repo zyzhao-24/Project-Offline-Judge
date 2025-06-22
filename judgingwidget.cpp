@@ -8,48 +8,54 @@ void JudgingThread::setAbort(bool abort) {
     _abort=abort;
     amutex.unlock();
 }
-void JudgingThread::JudgeRunner::StartJud(JudgingThread* parent,bool abort=false) {
-    throw "task error";
-}
-void JudgingThread::cplRunner::StartJud(JudgingThread* parent,bool abort=false)
+void JudgingThread::cplRunner::StartJud(JudgingThread* parent,bool abort)
 {
-    Problem probcopy=problem;
+    parent->_cplsuccess=false;
     if(abort) {
-        parent->emit CplResult(participant,probcopy.name,_NA,"N/A compilation stopped manually");
+        parent->emit CplResult(participant,problem.name,_NA,"N/A compilation stopped manually");
         return;
     }
     QString log="pending";
-    if(!probcopy.toStudentPack()) {
+    if(!problem.toStudentPack()) {
         log="FAIL testdata not validated";
-        parent->emit CplResult(participant,probcopy.name,_fail,log);
+        parent->emit CplResult(participant,problem.name,_fail,log);
         return;
     }
-    parent->emit CplResult(participant,probcopy.name,_pending,log);
-    QString probdir=(ctdir.endsWith("/")?ctdir+probcopy.name+".probdata"+"/":ctdir+"/"+probcopy.name+".probdata"+"/");
+    parent->emit CplResult(participant,problem.name,_pending,log);
+
+    QString probdir=(ctdir.endsWith("/")?ctdir+problem.name+".probdata"+"/":ctdir+"/"+problem.name+".probdata"+"/");
     QString judgedir=QDir().absolutePath()+"/_JUDGE/";
     FolderOp::remove(judgedir);
     FolderOp::create(judgedir);
     FolderOp::create(judgedir+"testdata/");
     FolderOp::copy(probdir+"testdata/",judgedir+"testdata/",true);
-    for(Problem::Utility util:probcopy.utils){
+    for(Problem::Utility util:problem.utils){
         if(util.category==Problem::Utility::FileCategory::builtin||util.category==Problem::Utility::FileCategory::resource) {
             FileOp::copy(probdir+util.filename,judgedir+util.filename,true);
         }
         if(util.category==Problem::Utility::FileCategory::submission)
         {
             if(util.filetype==Problem::Utility::FileType::code) {
-                if(pa_files.contains(util.filename)) {
+                if(pa_files.isEmpty()) {
+                    log="compilation error empty submission";
+                    parent->emit CplResult(participant,problem.name,_ce,log);
+                    return;
+                } else if(pa_files.contains(util.filename)) {
                     FileOp::write(judgedir+util.filename,pa_files[util.filename]);
                 } else {
                     log="compilation error file not exist: "+util.filename;
-                    parent->emit CplResult(participant,probcopy.name,_ce,log);
+                    parent->emit CplResult(participant,problem.name,_ce,log);
                     return;
                 }
             }
             if(util.filetype==Problem::Utility::FileType::snippet) {
-                if(!pa_files.contains(util.filename)) {
+                if(pa_files.isEmpty()) {
+                    log="compilation error empty submission";
+                    parent->emit CplResult(participant,problem.name,_ce,log);
+                    return;
+                } else if(!pa_files.contains(util.filename)) {
                     log="compilation error file not exist: "+util.filename;
-                    parent->emit CplResult(participant,probcopy.name,_ce,log);
+                    parent->emit CplResult(participant,problem.name,_ce,log);
                     return;
                 }
             }
@@ -60,18 +66,19 @@ void JudgingThread::cplRunner::StartJud(JudgingThread* parent,bool abort=false)
             }
         }
     }
-    for(Problem::CompileSetting cplsetting:probcopy.cpl_settings) {
+    for(Problem::CompileSetting cplsetting:problem.cpl_settings) {
         TResult verdict=CompileOp(parent,cplsetting.compiler,cplsetting.inputs,cplsetting.output,parseCombinedArgString(cplsetting.params),judgedir,log);
         if(verdict!=_ok) {
-            parent->emit CplResult(participant,probcopy.name,verdict,log);
+            parent->emit CplResult(participant,problem.name,verdict,log);
             return;
         }
     }
     log="ok compilation success";
-    parent->emit CplResult(participant,probcopy.name,_ok,log);
+    parent->_cplsuccess=true;
+    parent->emit CplResult(participant,problem.name,_ok,log);
     return;
 }
-void JudgingThread::judRunner::StartJud(JudgingThread* parent,bool abort=false)
+void JudgingThread::judRunner::StartJud(JudgingThread* parent,bool abort)
 {
     if(abort) {
         parent->emit JudgeResult(participant,problem.name,caseid,_NA,0,0,0,"N/A judgement stopped manually");
@@ -88,12 +95,16 @@ void JudgingThread::judRunner::StartJud(JudgingThread* parent,bool abort=false)
         log="FAIL invalid case id";
         return;
     }
+    if(!parent->_cplsuccess) {
+        log="compilation error unsuccessful compilation";
+        parent->emit JudgeResult(participant,problem.name,caseid,_ce,0,0,0,log);
+        return;
+    }
     if(!FolderOp::exists(judgedir)) {
         log="FAIL judge folder unprepared";
         parent->emit JudgeResult(participant,problem.name,caseid,_fail,0,0,0,log);
         return;
     }
-
     parent->emit JudgeResult(participant,problem.name,caseid,_pending,0,0,0,log);
     for(Problem::Utility util:problem.utils) {
         if(util.category==Problem::Utility::FileCategory::submission&&util.filetype==Problem::Utility::FileType::plain) {
@@ -265,10 +276,9 @@ void JudgingThread::startJud() {
     amutex.lock();
     _pendingflag=false;
     amutex.unlock();
-    emit allComplete();
 }
 
-JudgingWidget::JudgingWidget(QWidget *parent)
+JudgingWidget::JudgingWidget(QWidget *parent,bool controllable)
     : QWidget(parent)
     , ui(new Ui::JudgingWidget)
 {
@@ -282,15 +292,17 @@ JudgingWidget::JudgingWidget(QWidget *parent)
     connect(judThread,&JudgingThread::JudgeResult,this,&JudgingWidget::showJudResult);
     judThreadContainer->start();
     connect(this,&JudgingWidget::startJudgeSig, judThread,&JudgingThread::startJud);
+
+    if(!controllable) {
+        ui->ContinueBTN->hide();
+        ui->StopBTN->hide();
+    }
+    setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 JudgingWidget::~JudgingWidget()
 {
     delete ui;
-}
-
-void JudgingWidget::closeEvent(QCloseEvent *event) {
-    emit ExitWin();
 }
 void JudgingWidget::clrResult() {
     ui->judgeTWid->headerItem()->treeWidget()->clear();
@@ -301,35 +313,39 @@ void JudgingWidget::showCplResult(const QString& participant,
                                const QString& log)
 {
     if(verdict!=_pending && verdict!=_NA) emit cplComplete(participant,problem,verdict,log);
-    QList<QTreeWidgetItem*> pa_find=ui->judgeTWid->findItems(participant,Qt::MatchFlag::MatchFixedString,0);
+    QList<QTreeWidgetItem*> pa_find=ui->judgeTWid->findItems(participant,Qt::MatchFlag::MatchExactly,0);
+
+    QTreeWidgetItem* paitem;
     if(pa_find.isEmpty()) {
-        pa_find.append(new QTreeWidgetItem(ui->judgeTWid,{participant}));
-        ui->judgeTWid->addTopLevelItem(pa_find.back());
+        paitem=new QTreeWidgetItem(ui->judgeTWid,{participant});
+        ui->judgeTWid->addTopLevelItem(paitem);
+    } else paitem=pa_find.back();
+
+    for(int indprob=0;indprob<paitem->childCount();indprob++) {
+        if(paitem->child(indprob)->text(0)==problem) paitem->removeChild(paitem->child(indprob--));
     }
 
-    QList<QTreeWidgetItem*> prob_find=pa_find.back()->treeWidget()->findItems(problem,Qt::MatchFlag::MatchFixedString|Qt::MatchFlag::MatchRecursive,0);
-    if(!prob_find.isEmpty()) {
-        pa_find.back()->removeChild(prob_find.back());
-    }
+    QTreeWidgetItem* probitem;
     if(verdict==_ok)
-        prob_find.append(new QTreeWidgetItem(pa_find.back(),{problem,
-                                                              "Compilation Success",
-                                                              "",
-                                                              "",
-                                                              "",
-                                                              log}));
-    else prob_find.append(new QTreeWidgetItem(pa_find.back(),{problem,
-                                                          DescriptionStr(verdict),
-                                                          "",
-                                                          "",
-                                                          "",
-                                                          log}));
-    prob_find.back()->setForeground(1,QBrush(DescriptionCol(verdict)));
-    prob_find.back()->setTextAlignment(1,Qt::AlignCenter);
-    prob_find.back()->setTextAlignment(2,Qt::AlignCenter);
-    prob_find.back()->setTextAlignment(3,Qt::AlignCenter);
-    prob_find.back()->setTextAlignment(4,Qt::AlignCenter);
-    pa_find.back()->addChild(prob_find.back());
+        probitem=new QTreeWidgetItem(paitem,{problem,
+                                              "Compilation Success",
+                                              "",
+                                              "",
+                                              "",
+                                              log});
+    else probitem=new QTreeWidgetItem(paitem,{problem,
+                                              DescriptionStr(verdict),
+                                              "",
+                                              "",
+                                              "",
+                                              log});
+
+    probitem->setForeground(1,QBrush(DescriptionCol(verdict)));
+    probitem->setTextAlignment(1,Qt::AlignCenter);
+    probitem->setTextAlignment(2,Qt::AlignCenter);
+    probitem->setTextAlignment(3,Qt::AlignCenter);
+    probitem->setTextAlignment(4,Qt::AlignCenter);
+    paitem->addChild(probitem);
     ui->judgeTWid->expandAll();
     QApplication::processEvents();
 }
@@ -344,37 +360,45 @@ void JudgingWidget::showJudResult(const QString& participant,
 {
     if(caseid<0||caseid>999) return;
     if(verdict!=_pending && verdict!=_NA) emit judgeComplete(participant,problem,caseid,verdict,score,time,mem,log);
-    QList<QTreeWidgetItem*> pa_find=ui->judgeTWid->findItems(participant,Qt::MatchFlag::MatchFixedString,0);
+    QList<QTreeWidgetItem*> pa_find=ui->judgeTWid->findItems(participant,Qt::MatchFlag::MatchExactly,0);
+    QTreeWidgetItem* paitem;
     if(pa_find.isEmpty()) {
-        pa_find.append(new QTreeWidgetItem(ui->judgeTWid,{participant}));
-        ui->judgeTWid->addTopLevelItem(pa_find.back());
+        paitem=new QTreeWidgetItem(ui->judgeTWid,{participant});
+        ui->judgeTWid->addTopLevelItem(paitem);
+    }
+    else paitem=pa_find.back();
+
+    QTreeWidgetItem* probitem=nullptr;
+    for(int indprob=0;indprob<paitem->childCount();indprob++) {
+        if(paitem->child(indprob)->text(0)==problem) {
+            probitem=paitem->child(indprob);
+        }
+    }
+    if(probitem==nullptr) {
+        probitem=new QTreeWidgetItem(paitem,{problem});
+        paitem->addChild(probitem);
     }
 
-    QList<QTreeWidgetItem*> prob_find=pa_find.back()->treeWidget()->findItems(problem,Qt::MatchFlag::MatchFixedString|Qt::MatchFlag::MatchRecursive,0);
-    if(prob_find.isEmpty()) {
-        prob_find.append(new QTreeWidgetItem(pa_find.back(),{problem}));
-        pa_find.back()->addChild(prob_find.back());
+    for(int indcase=0;indcase<probitem->childCount();indcase++) {
+        if(probitem->child(indcase)->text(0)==
+            (caseid<100?(caseid<10?"Case 00":"Case 0"):"Case ")+QString::number(caseid)
+        ) probitem->removeChild(probitem->child(indcase--));
     }
 
-    QList<QTreeWidgetItem*> case_find=prob_find.back()->treeWidget()->findItems(
-        (caseid<100?(caseid<10?"Case 00":"Case 0"):"Case ")+QString::number(caseid),
-        Qt::MatchFlag::MatchFixedString|Qt::MatchFlag::MatchRecursive,0);
-    if(!case_find.isEmpty()) {
-        prob_find.back()->removeChild(case_find.back());
-    }
-    case_find.append(new QTreeWidgetItem(prob_find.back(),{(caseid<100?(caseid<10?"Case 00":"Case 0"):"Case ")+QString::number(caseid),
+    QTreeWidgetItem* caseitem;
+    caseitem = new QTreeWidgetItem(probitem,{(caseid<100?(caseid<10?"Case 00":"Case 0"):"Case ")+QString::number(caseid),
                                                             DescriptionStr(verdict),
                                                             QString::number(score,'g',3),
                                                             QString::number(time),
                                                             QString::number(mem),
-                                                            log}));
-    case_find.back()->setForeground(1,QBrush(DescriptionCol(verdict)));
-    case_find.back()->setTextAlignment(1,Qt::AlignCenter);
-    case_find.back()->setTextAlignment(2,Qt::AlignCenter);
-    case_find.back()->setTextAlignment(3,Qt::AlignCenter);
-    case_find.back()->setTextAlignment(4,Qt::AlignCenter);
-    prob_find.back()->addChild(case_find.back());
-    prob_find.back()->sortChildren(0,Qt::SortOrder::AscendingOrder);
+                                                            log});
+    caseitem->setForeground(1,QBrush(DescriptionCol(verdict)));
+    caseitem->setTextAlignment(1,Qt::AlignCenter);
+    caseitem->setTextAlignment(2,Qt::AlignCenter);
+    caseitem->setTextAlignment(3,Qt::AlignCenter);
+    caseitem->setTextAlignment(4,Qt::AlignCenter);
+    probitem->addChild(caseitem);
+    probitem->sortChildren(0,Qt::SortOrder::AscendingOrder);
     ui->judgeTWid->expandAll();
     QApplication::processEvents();
 }
@@ -393,17 +417,12 @@ void JudgingWidget::runJudge(const Problem& problem,
     this->judThread->addJudWaitlist(problem,participant,pa_files,caseid);
 }
 void JudgingWidget::startJudge() {
-    if(judThread->_abort) return;
-    QApplication::processEvents();
-    ui->ContinueBTN->setEnabled(false);
-    ui->StopBTN->setEnabled(true);
     emit startJudgeSig();
 }
 
 void JudgingWidget::on_StopBTN_clicked()
 {
     judThread->setAbort(true);
-    ui->ContinueBTN->setEnabled(true);
     ui->StopBTN->setEnabled(false);
 }
 
@@ -411,7 +430,6 @@ void JudgingWidget::on_ContinueBTN_clicked()
 {
     judThread->setAbort(false);
     startJudge();
-    ui->ContinueBTN->setEnabled(false);
     ui->StopBTN->setEnabled(true);
 }
 

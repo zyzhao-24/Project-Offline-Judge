@@ -19,22 +19,22 @@ public:
                     const QMap<QString,QString>& _pa_files):
             problem(_problem),participant(_participant),pa_files(_pa_files) {}
         virtual ~JudgeRunner()=default;
-        const Problem& problem;
-        const QString& participant;
-        const QMap<QString,QString>& pa_files;
-        virtual void StartJud(JudgingThread* parent,bool abort) = 0;
+        Problem problem;
+        const QString participant;
+        const QMap<QString,QString> pa_files;
+        virtual void StartJud(JudgingThread* parent,bool abort=false) = 0;
         virtual bool cpl()=0;
     };
     class cplRunner:public JudgeRunner {
     public:
-        const QString& ctdir;
+        const QString ctdir;
         cplRunner(const Problem& _problem,
                   const QString& _participant,
                   const QString& _ctdir,
                   const QMap<QString,QString>& _pa_files):
             JudgeRunner(_problem,_participant,_pa_files),ctdir(_ctdir)
         {}
-        virtual void StartJud(JudgingThread* parent,bool abort);
+        virtual void StartJud(JudgingThread* parent,bool abort=false);
         virtual bool cpl() {return true;}
     };
     class judRunner:public JudgeRunner {
@@ -46,7 +46,7 @@ public:
                   const int _caseid):
             JudgeRunner(_problem,_participant,_pa_files),caseid(_caseid)
         {}
-        virtual void StartJud(JudgingThread* parent,bool abort);
+        virtual void StartJud(JudgingThread* parent,bool abort=false);
         virtual bool cpl() {return false;}
     };
     QList<JudgeRunner*> tasks;
@@ -60,23 +60,23 @@ public:
                         int caseid);
     bool _abort=false;
     bool _pendingflag=false;
+    bool _cplsuccess=false;
 public slots:
     void startJud();
     void setAbort(bool abort);
 signals:
-    void CplResult(const QString& problem,
-                    const QString& participant,
+    void CplResult(const QString& participant,
+                    const QString& problem,
                     TResult verdict,
                     const QString& log);
-    void JudgeResult(const QString& problem,
-                      const QString& participant,
+    void JudgeResult(const QString& participant,
+                      const QString& problem,
                       int caseid,
                       TResult verdict,
                       double score,
                       unsigned int time,
                       unsigned int mem,
                       const QString& log);
-    void allComplete();
 };
 
 
@@ -90,18 +90,18 @@ class JudgingWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit JudgingWidget(QWidget *parent = nullptr);
+    explicit JudgingWidget(QWidget *parent = nullptr,bool controllable=true);
     ~JudgingWidget();
     QThread* judThreadContainer;
     JudgingThread* judThread;
 public slots:
     void clrResult();
-    void showCplResult(const QString& problem,
-                    const QString& participant,
+    void showCplResult(const QString& participant,
+                    const QString& problem,
                     TResult verdict,
                     const QString& log);
-    void showJudResult(const QString& problem,
-                      const QString& participant,
+    void showJudResult(const QString& participant,
+                      const QString& problem,
                       int caseid,
                       TResult verdict,
                       double score,
@@ -119,17 +119,14 @@ public:
                     const QMap<QString,QString>& pa_files,
                     int caseid);
     void startJudge();
-protected:
-    void closeEvent(QCloseEvent *event);
 public: signals:
-    void ExitWin();
     void startJudgeSig();
-    void cplComplete(const QString& problem,
-                     const QString& participant,
+    void cplComplete(const QString& participant,
+                     const QString& problem,
                      TResult verdict,
                      const QString& log);
-    void judgeComplete(const QString& problem,
-                       const QString& participant,
+    void judgeComplete(const QString& participant,
+                       const QString& problem,
                        int caseid,
                        TResult verdict,
                        double score,

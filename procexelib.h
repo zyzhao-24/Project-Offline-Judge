@@ -276,7 +276,7 @@ public:
         bool success=true;
         if(_state==Running) {
             _state=NotRunning;
-            success=TerminateProcess(hProcess, 1);
+            success=TerminateProcess(hProcess, 1023);
         }
         _exit_code=-1;
         hProcess.close();
@@ -287,7 +287,7 @@ public:
 
 
 
-class THandleDevice : public QIODevice {//Written by DeepSeek, to be checked
+class THandleDevice : public QIODevice {
     Q_OBJECT
 public:
     explicit THandleDevice(THandle* handle,
