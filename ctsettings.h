@@ -387,7 +387,7 @@ public:
     static bool remove(const QString& dirPath) {
         return QFile::remove(dirPath);
     }
-    static bool write(const QString& dirPath,const QString fileContent) {
+    static bool write(const QString& dirPath,const QString& fileContent) {
         QFile outf(dirPath);
         if(!outf.open(QFile::WriteOnly)) return false;
         else {
@@ -398,14 +398,33 @@ public:
         return true;
     }
     static QString read(const QString& dirPath) {
-        QFile outf(dirPath);
+        QFile inf(dirPath);
         QString result;
-        if(!outf.open(QFile::ReadOnly)) return result;
+        if(!inf.open(QFile::ReadOnly)) return result;
         else {
-            QTextStream stream(&outf);
+            QTextStream stream(&inf);
             result=stream.readAll();
         }
+        inf.close();
+        return result;
+    }
+    static bool writeb(const QString& dirPath,const QByteArray& fileContent) {
+        QFile outf(dirPath);
+        if(!outf.open(QFile::WriteOnly)) return false;
+        else {
+            outf.write(fileContent);
+        }
         outf.close();
+        return true;
+    }
+    static QByteArray readb(const QString& dirPath) {
+        QFile inf(dirPath);
+        QByteArray result;
+        if(!inf.open(QFile::ReadOnly)) return result;
+        else {
+            result=inf.readAll();
+        }
+        inf.close();
         return result;
     }
 };
@@ -1056,6 +1075,10 @@ public:
     QString id,pwd;
     QString problem;
     QMap<QString,QString> pans;
+    struct CplResult {
+        TResult Verdict=_NA;
+        QString log="";
+    } cplres;
     struct JudgeResult {
         int caseid=0;
         double score=0.0;
