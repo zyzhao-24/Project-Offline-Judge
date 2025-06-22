@@ -270,8 +270,8 @@ void TestDataProcessor::on_RefreshBTN_clicked()
 {
     show_subtsk_tree();
     refresh_testdata_settings();
-    ui->VerdictTXT->setTextColor(ValDescriptionCol(_NA));
-    ui->VerdictTXT->setText(ValDescriptionStr(_NA));
+    ui->VerdictTXT->setTextColor(DescriptionCol(_NA));
+    ui->VerdictTXT->setText(DescriptionStr(_NA));
     ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
     ui->FileTXT->clear();
     ui->FileContentTXT->clear();
@@ -290,8 +290,8 @@ void TestDataProcessor::on_RunValBTN_clicked()
 void TestDataProcessor::HandleResults(TResult result,QString file,QString content,QString log) {
     if(result==_ok) problem->validationSuccess=true;
     if(result!=_pending) pending=false;
-    ui->VerdictTXT->setTextColor(ValDescriptionCol(result));
-    ui->VerdictTXT->setText(ValDescriptionStr(result));
+    ui->VerdictTXT->setTextColor(DescriptionCol(result));
+    ui->VerdictTXT->setText(DescriptionStr(result));
     ui->VerdictTXT->setAlignment(Qt::Alignment::enum_type::AlignCenter);
     ui->FileTXT->setText(file);
     ui->FileContentTXT->setPlainText(content);

@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include "ctsettings.h"
+#include "judgepanel.h"
 
 namespace Ui {
 class ContestEditor;
@@ -23,6 +24,7 @@ public:
 
     Contest contest;
 
+    JudgePanel panel;
     void loadPath();
     void setName();
     void loadName();
@@ -85,6 +87,8 @@ private slots:
     void on_problistwid_currentTextChanged(const QString &currentText);
 
     void on_confprobbtn_clicked();
+
+    void on_gradebtn_clicked();
 
 private:
     Ui::ContestEditor *ui;

@@ -14,6 +14,7 @@ SOURCES += \
     codeeditorwidget.cpp \
     contesteditor.cpp \
     dataconfigwidget.cpp \
+    judgepanel.cpp \
     judgesetting.cpp \
     judgingwidget.cpp \
     main.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
     ctsettings.h \
     dataconfigwidget.h \
     judge_utils.h \
+    judgepanel.h \
     judgesetting.h \
     judgingwidget.h \
     mainwindow.h \
@@ -57,6 +59,7 @@ FORMS += \
     codeeditorwidget.ui \
     contesteditor.ui \
     dataconfigwidget.ui \
+    judgepanel.ui \
     judgesetting.ui \
     judgingwidget.ui \
     mainwindow.ui \
