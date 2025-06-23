@@ -32,7 +32,6 @@ void SubmitIDE::submit(){
             submission->answers[answer_name] = code;
         }
     }
-
 }
 
 void SubmitIDE::on_testbtn_clicked(){

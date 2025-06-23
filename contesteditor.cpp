@@ -109,27 +109,10 @@ void ContestEditor::save() {
     QJsonDocument doc;
     doc.setObject(contest.JsonContestObj());
     QTextStream stream(&savef);
-    stream << /*Encryption::encrypt_data*/(doc.toJson());
+    stream << Encryption::encrypt_data(doc.toJson());
     savef.close();
 
-
-    QString studentdir =  QFileDialog::getExistingDirectory(nullptr,tr("选择学生文件文件夹"),"./", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if(studentdir+"/" == ctPath) {
-        QMessageBox::warning(NULL, "warning", tr("不能与比赛文件夹相同"), QMessageBox::Yes, QMessageBox::Yes);
-        return;
-    }
-    else{
-        QFile all_savef(studentdir+"/"+contest.name+stuinfo);
-        if (!all_savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-            QMessageBox::warning(NULL, "warning", tr("Failed while saving contest settings!"), QMessageBox::Yes, QMessageBox::Yes);
-            return;
-        }
-        QJsonDocument studentfile;
-        studentfile.setObject(Packer::directoryToJson(ctPath));
-        QTextStream stream2(&all_savef);
-        stream2 << Encryption::encrypt_data(studentfile.toJson());
-        all_savef.close();
-    }
+    // toStudent needed
 }
 
 

@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "contesteditor.h"
-#include "studenteditor.h"
+#include "login.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -81,11 +81,11 @@ void MainWindow::on_editbtn_clicked()
 void MainWindow::on_loadbtn_clicked()
 {
     QString dir;
-    dir = QFileDialog::getExistingDirectory(nullptr,tr("新建提交文件夹"),"./", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks) + "/";
-    if(dir=="/")return;
-    StudentEditor* Editor=new StudentEditor();
+    dir = QFileDialog::getOpenFileName(this, tr("Select contest info file"), "./", tr("contest info (*.sctinfo)"));
+    if(dir=="")return;
+    login* Editor=new login();
     Editor->father = this;
-    Editor->maindir = dir;
+    Editor->dir = dir;
     Editor->show();
     this->hide();
 }
