@@ -6,11 +6,9 @@
 
 ContestEditor::ContestEditor(QWidget *parent)
     : QMainWindow(parent)
-    , panel(this)
     , ui(new Ui::ContestEditor)
 {
     ui->setupUi(this);
-    panel.contest=&contest;
 }
 
 ContestEditor::~ContestEditor()
@@ -338,10 +336,13 @@ void ContestEditor::on_confprobbtn_clicked()
 
 void ContestEditor::on_gradebtn_clicked()
 {
-    panel.refresh();
-    panel.show();
+    JudgePanel* panel=new JudgePanel;
+    panel->contest=&contest;
+    panel->ctPath=ctPath;
+    panel->refresh();
+    panel->show();
     this->hide();
-    connect(&panel,&JudgePanel::ExitWin,this,&ContestEditor::show);
+    connect(panel,&JudgePanel::ExitWin,this,&ContestEditor::show);
 }
 
 void ContestEditor::on_stusavebtn_clicked()

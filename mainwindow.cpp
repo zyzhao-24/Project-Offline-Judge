@@ -29,7 +29,6 @@ void MainWindow::on_createbtn_clicked()
     Editor->father=this;
     if(!dir.endsWith('/')) dir+="/";
     Editor->ctPath=dir;
-    Editor->panel.ctPath=dir;
     Editor->refresh();
     Editor->show();
     this->hide();
@@ -66,7 +65,6 @@ void MainWindow::on_editbtn_clicked()
     ContestEditor* Editor=new ContestEditor();
     Editor->father=this;
     Editor->ctPath=dir;
-    Editor->panel.ctPath=dir;
     if(Editor->contest.loadJsonObj(ContestObj)!=0) {
         QMessageBox::warning(NULL, "warning", tr("Invalid ctinfo file!"), QMessageBox::Yes, QMessageBox::Yes);
         delete Editor;

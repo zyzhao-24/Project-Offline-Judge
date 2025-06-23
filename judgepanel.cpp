@@ -3,7 +3,6 @@
 
 JudgePanel::JudgePanel(QWidget *parent)
     : QMainWindow(parent)
-    , judgewid(nullptr)
     , ui(new Ui::JudgePanel)
 {
     ui->setupUi(this);
@@ -80,6 +79,8 @@ void JudgePanel::refresh() {
 }
 
 void JudgePanel::closeEvent(QCloseEvent *event) {
+    judgewid.close();
+    subwid.close();
     emit ExitWin();
 }
 

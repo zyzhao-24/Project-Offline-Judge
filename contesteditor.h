@@ -24,7 +24,6 @@ public:
 
     Contest contest;
 
-    JudgePanel panel;
     void loadPath();
     void setName();
     void loadName();
