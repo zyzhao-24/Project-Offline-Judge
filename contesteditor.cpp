@@ -100,6 +100,7 @@ void ContestEditor::refresh() {
     loadProb();
 }
 void ContestEditor::save() {
+    contest.packFiles(ctPath);
     QFile savef(ctPath+contest.name+ctinfo);
     if (!savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         QMessageBox::warning(NULL, "warning", tr("Failed while saving contest settings!"), QMessageBox::Yes, QMessageBox::Yes);
@@ -111,27 +112,29 @@ void ContestEditor::save() {
     QTextStream stream(&savef);
     stream << /*Encryption::encrypt_data*/(doc.toJson());
     savef.close();
-
-
-    QString studentdir =  QFileDialog::getExistingDirectory(nullptr,tr("选择学生文件文件夹"),"./", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if(studentdir+"/" == ctPath) {
-        QMessageBox::warning(NULL, "warning", tr("不能与比赛文件夹相同"), QMessageBox::Yes, QMessageBox::Yes);
-        return;
-    }
-    else{
-        QFile all_savef(studentdir+"/"+contest.name+stuinfo);
-        if (!all_savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-            QMessageBox::warning(NULL, "warning", tr("Failed while saving contest settings!"), QMessageBox::Yes, QMessageBox::Yes);
-            return;
-        }
-        QJsonDocument studentfile;
-        studentfile.setObject(Packer::directoryToJson(ctPath));
-        QTextStream stream2(&all_savef);
-        stream2 << Encryption::encrypt_data(studentfile.toJson());
-        all_savef.close();
-    }
 }
 
+void ContestEditor::savestu() {
+    QString studentdir = QFileDialog::getSaveFileName(nullptr,tr("Export Student Contest Setting File"),contest.name+sctinfo, tr("student contest info (*.sctinfo)"));
+    QFile all_savef(studentdir);
+    if (!all_savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        QMessageBox::warning(NULL, "warning", tr("Failed while saving student contest settings!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    Contest sctpack=contest;
+    for(QString probname:sctpack.problems.keys()) {
+        if(!sctpack.problems[probname].toStudentPack()) {
+            QMessageBox::warning(NULL, "warning", tr("Problem not validated: ")+probname, QMessageBox::Yes, QMessageBox::Yes);
+            return;
+        }
+    }
+    sctpack.packFiles(ctPath);
+    QJsonDocument studentfile;
+    studentfile.setObject(sctpack.JsonContestObj());
+    QTextStream stream(&all_savef);
+    stream << Encryption::encrypt_data(studentfile.toJson());
+    all_savef.close();
+}
 
 void ContestEditor::on_refreshbtn_clicked()
 {
@@ -340,3 +343,9 @@ void ContestEditor::on_gradebtn_clicked()
     this->hide();
     connect(&panel,&JudgePanel::ExitWin,this,&ContestEditor::show);
 }
+
+void ContestEditor::on_stusavebtn_clicked()
+{
+    savestu();
+}
+

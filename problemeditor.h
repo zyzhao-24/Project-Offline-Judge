@@ -38,7 +38,6 @@ public:
     QString probPath="";//problem path
     QPdfView* pdfview=nullptr;
     QPdfDocument* pdfdoc=nullptr;
-    QPdfDocument* docnull=nullptr;
 
     TestDataProcessor tdataproc;
     JudgeSetting judgeset;

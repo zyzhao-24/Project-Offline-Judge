@@ -72,6 +72,7 @@ void MainWindow::on_editbtn_clicked()
         delete Editor;
         return;
     }
+    Editor->contest.unpackFiles(dir);
     Editor->refresh();
     Editor->show();
     this->hide();

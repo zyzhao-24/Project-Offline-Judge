@@ -141,6 +141,9 @@ color: rgb(0, 0, 0);</string>
    <property name="text">
     <string>Stop Judging</string>
    </property>
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::MediaPlaybackStop"/>
+   </property>
   </widget>
   <widget class="QCommandLinkButton" name="ClearBTN">
    <property name="enabled">
@@ -164,6 +167,9 @@ color: rgb(0, 0, 0);</string>
    <property name="text">
     <string>Clear Judging Records</string>
    </property>
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::WindowClose"/>
+   </property>
   </widget>
   <widget class="QCommandLinkButton" name="ContinueBTN">
    <property name="geometry">
@@ -183,6 +189,9 @@ color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
     <string>Continue Judging</string>
+   </property>
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::MediaPlaybackStart"/>
    </property>
   </widget>
  </widget>

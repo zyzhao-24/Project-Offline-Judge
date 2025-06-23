@@ -103,7 +103,7 @@
      <string>Judge All</string>
     </property>
     <property name="icon">
-     <iconset theme="QIcon::ThemeIcon::SystemReboot"/>
+     <iconset theme="QIcon::ThemeIcon::SyncSynchronizing"/>
     </property>
    </widget>
   </widget>

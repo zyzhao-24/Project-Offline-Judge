@@ -1,6 +1,8 @@
 #include "judgingwidget.h"
 #include "ui_judgingwidget.h"
 
+#include "judge_utils.h"
+
 JudgingThread::JudgingThread(QObject* parent):QObject(parent) {}
 JudgingThread::~JudgingThread() {}
 void JudgingThread::setAbort(bool abort) {

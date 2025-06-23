@@ -31,9 +31,7 @@ ProblemEditor::ProblemEditor(QWidget *parent)
     pdfview->setPageMode(QPdfView::PageMode::MultiPage);
     pdfview->setZoomMode(QPdfView::ZoomMode::FitToWidth);
     ui->pdfarea->setWidget(pdfview);
-    docnull=new QPdfDocument(ui->contentbox);
-    pdfdoc=docnull;
-    pdfview->setDocument(docnull);
+    pdfdoc=new QPdfDocument(ui->contentbox);
     pdfview->hide();
 
     ui->srchlayout->addWidget(&cplsrc[0]);
@@ -44,9 +42,7 @@ ProblemEditor::ProblemEditor(QWidget *parent)
 ProblemEditor::~ProblemEditor()
 {
     delete pdfview;
-    if(pdfdoc!=docnull)
-        delete pdfdoc;
-    delete docnull;
+    delete pdfdoc;
     delete ui;
 }
 
@@ -59,21 +55,15 @@ void ProblemEditor::loadBasic() {
 }
 
 void ProblemEditor::loadPDF() {
-    if(pdfdoc==docnull)
-        pdfdoc=new QPdfDocument(ui->contentbox);
-    pdfdoc->load(probPath+probcontent);
+    QBuffer buffer(&problem->contentpdf);
+    buffer.open(QIODevice::ReadOnly);
+    pdfdoc->load(&buffer);
     pdfview->setDocument(pdfdoc);
     pdfview->show();
 }
 
 void ProblemEditor::closePDF() {
-    pdfview->setDocument(docnull);
     pdfview->hide();
-    if(pdfdoc!=docnull) {
-        pdfdoc->close();
-        delete pdfdoc;
-    }
-    pdfdoc=docnull;
 }
 
 void ProblemEditor::loadUtils() {
@@ -261,12 +251,7 @@ void ProblemEditor::on_importpdfbtn_clicked()
         QMessageBox::warning(NULL, "warning", tr("PDF file does not exist!"), QMessageBox::Yes, QMessageBox::Yes);
         return;
     }
-    closePDF();
-    if(!FileOp::copy(pdfpath,probPath+probcontent,true)) {
-        QMessageBox::warning(NULL, "warning", tr("Failed while importing pdf!"), QMessageBox::Yes, QMessageBox::Yes);
-        return;
-    }
-    loadPDF();
+    problem->contentpdf=FileOp::readb(pdfpath);
     update();
 }
 
@@ -276,10 +261,7 @@ void ProblemEditor::on_exportpdfbtn_clicked()
     if(pdfdoc==nullptr) return;
     QString pdfpath=QFileDialog::getSaveFileName(this, tr("Export to pdf"), probPath, tr("pdf files (*.pdf)"));
     if(pdfpath.isEmpty()) return;
-    if(!FileOp::copy(probPath+probcontent,pdfpath,true)) {
-        QMessageBox::warning(NULL, "warning", tr("Failed while exporting pdf!"), QMessageBox::Yes, QMessageBox::Yes);
-        return;
-    }
+    FileOp::writeb(pdfpath,problem->contentpdf);
 }
 
 
