@@ -4,7 +4,8 @@
 #include <QWidget>
 #include <QTreeWidget>
 #include <QMessageBox>
-#include "judge_utils.h"
+#include <QMutex>
+#include "ctsettings.h"
 
 class JudgingThread:public QObject {
     Q_OBJECT
