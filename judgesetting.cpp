@@ -26,7 +26,7 @@ void JudgeSetting::refresh() {
             ui->folderfnComboBox->addItem(util.filename);
         if(util.category==Problem::Utility::FileCategory::submission) {
             if(util.filetype==Problem::Utility::FileType::templ)
-                ui->folderfnComboBox->addItem(util.filename.left(util.filename.lastIndexOf(".tpl")));
+                ui->folderfnComboBox->addItem(util.filename.left(util.filename.lastIndexOf(templ)));
             if(util.filetype==Problem::Utility::FileType::code||util.filetype==Problem::Utility::FileType::plain)
                 ui->folderfnComboBox->addItem(util.filename);
         }

@@ -10,7 +10,6 @@ StudentEditor::StudentEditor(QWidget *parent)
     , ui(new Ui::StudentEditor)
 {
     ui->setupUi(this);
-    setWindowTitle("Student editor");
 }
 
 StudentEditor::~StudentEditor()
