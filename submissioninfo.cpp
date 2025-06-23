@@ -8,7 +8,6 @@ SubmissionInfo::SubmissionInfo(QWidget *parent)
     , ui(new Ui::SubmissionInfo)
 {
     ui->setupUi(this);
-    setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 SubmissionInfo::~SubmissionInfo()

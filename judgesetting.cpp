@@ -32,8 +32,14 @@ void JudgeSetting::refresh() {
         }
     }
     for(Problem::CompileSetting cplset:problem->cpl_settings) {
-        ui->folderfnComboBox->addItem(cplset.output);
-        ui->chkComboBox->addItem(cplset.output);
+        bool valid=true;
+        for(QString inputf:cplset.inputs) {
+            if(problem->utils[inputf].category==Problem::Utility::FileCategory::testdata) valid=false;
+        }
+        if(valid) {
+            ui->folderfnComboBox->addItem(cplset.output);
+            ui->chkComboBox->addItem(cplset.output);
+        }
     }
     ui->folderLWid->clear();
     for(QString file:problem->judge_proc.folder.keys()) {
@@ -89,7 +95,7 @@ void JudgeSetting::on_folderLWid_itemClicked(QListWidgetItem *item)
 {
     QStringList str=item->text().split('/');
     if(str.size()<2) return;
-    ui->folderfnComboBox->setEditText(str[1]);
+    ui->folderfnComboBox->setCurrentText(str[1]);
     ui->folderTXT->setText(str[0]);
 }
 

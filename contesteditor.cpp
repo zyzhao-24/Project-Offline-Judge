@@ -6,11 +6,9 @@
 
 ContestEditor::ContestEditor(QWidget *parent)
     : QMainWindow(parent)
-    , panel(this)
     , ui(new Ui::ContestEditor)
 {
     ui->setupUi(this);
-    panel.contest=&contest;
 }
 
 ContestEditor::~ContestEditor()
@@ -100,6 +98,7 @@ void ContestEditor::refresh() {
     loadProb();
 }
 void ContestEditor::save() {
+    contest.packFiles(ctPath);
     QFile savef(ctPath+contest.name+ctinfo);
     if (!savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         QMessageBox::warning(NULL, "warning", tr("Failed while saving contest settings!"), QMessageBox::Yes, QMessageBox::Yes);
@@ -111,10 +110,29 @@ void ContestEditor::save() {
     QTextStream stream(&savef);
     stream << Encryption::encrypt_data(doc.toJson());
     savef.close();
-
-    // toStudent needed
 }
 
+void ContestEditor::savestu() {
+    QString studentdir = QFileDialog::getSaveFileName(nullptr,tr("Export Student Contest Setting File"),contest.name+sctinfo, tr("student contest info (*.sctinfo)"));
+    QFile all_savef(studentdir);
+    if (!all_savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        QMessageBox::warning(NULL, "warning", tr("Failed while saving student contest settings!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    Contest sctpack=contest;
+    for(QString probname:sctpack.problems.keys()) {
+        if(!sctpack.problems[probname].toStudentPack()) {
+            QMessageBox::warning(NULL, "warning", tr("Problem not validated: ")+probname, QMessageBox::Yes, QMessageBox::Yes);
+            return;
+        }
+    }
+    sctpack.packFiles(ctPath);
+    QJsonDocument studentfile;
+    studentfile.setObject(sctpack.JsonContestObj());
+    QTextStream stream(&all_savef);
+    stream << Encryption::encrypt_data(studentfile.toJson());
+    all_savef.close();
+}
 
 void ContestEditor::on_refreshbtn_clicked()
 {
@@ -318,8 +336,17 @@ void ContestEditor::on_confprobbtn_clicked()
 
 void ContestEditor::on_gradebtn_clicked()
 {
-    panel.refresh();
-    panel.show();
+    JudgePanel* panel=new JudgePanel;
+    panel->contest=&contest;
+    panel->ctPath=ctPath;
+    panel->refresh();
+    panel->show();
     this->hide();
-    connect(&panel,&JudgePanel::ExitWin,this,&ContestEditor::show);
+    connect(panel,&JudgePanel::ExitWin,this,&ContestEditor::show);
 }
+
+void ContestEditor::on_stusavebtn_clicked()
+{
+    savestu();
+}
+
