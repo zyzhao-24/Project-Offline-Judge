@@ -55,7 +55,7 @@ void StudentEditor::set_time(){
         ui->StartTime->setDateTime(contest.start_time);
     }
     if(contest.end_enabled ){
-        ui->StartTime->setDateTime(contest.end_time);
+        ui->EndTime->setDateTime(contest.end_time);
     }
 }
 
