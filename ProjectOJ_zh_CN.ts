@@ -6,22 +6,22 @@
     <message>
         <location filename="codeeditorwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>表单</translation>
     </message>
     <message>
         <location filename="codeeditorwidget.ui" line="48"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="codeeditorwidget.ui" line="64"/>
         <source>C/C++</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="codeeditorwidget.ui" line="77"/>
         <source>Python</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -161,8 +161,8 @@
         <translation>试题名称：</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="107"/>
-        <location filename="contesteditor.cpp" line="126"/>
+        <location filename="contesteditor.cpp" line="105"/>
+        <location filename="contesteditor.cpp" line="124"/>
         <source>Failed while saving contest settings!</source>
         <translation>比赛信息保存失败！</translation>
     </message>
@@ -179,65 +179,65 @@
         <translation type="vanished">比赛结束时间须早于开始时间！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="24"/>
+        <location filename="contesteditor.cpp" line="27"/>
         <source>Invalid name! Name should NOT be empty and should only contain Letters, Numbers and Underscore &apos; _ &apos;!</source>
         <translation>比赛名称非法！比赛名称应当非空且只应包含数字、字母和下划线“_”！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="37"/>
+        <location filename="contesteditor.cpp" line="40"/>
         <source>End time must be later than start time!</source>
         <translation>比赛结束时间应早于开始时间！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="118"/>
+        <location filename="contesteditor.cpp" line="116"/>
         <source>选择学生文件文件夹</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="120"/>
+        <location filename="contesteditor.cpp" line="118"/>
         <source>不能与比赛文件夹相同</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="189"/>
+        <location filename="contesteditor.cpp" line="186"/>
         <source>Import From csv</source>
         <translation>从csv文件导入</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="189"/>
-        <location filename="contesteditor.cpp" line="237"/>
+        <location filename="contesteditor.cpp" line="186"/>
+        <location filename="contesteditor.cpp" line="234"/>
         <source>comma seperated values (*.csv)</source>
         <translation>逗号分隔符文件(*.csv)</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="195"/>
+        <location filename="contesteditor.cpp" line="192"/>
         <source>Failed while reading csv file!</source>
         <translation>读取csv文件失败！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="226"/>
+        <location filename="contesteditor.cpp" line="223"/>
         <source>lines discarded!</source>
         <translation>行无效数据被忽略！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="237"/>
+        <location filename="contesteditor.cpp" line="234"/>
         <source>Export to csv</source>
         <translation>导出为csv</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="241"/>
+        <location filename="contesteditor.cpp" line="238"/>
         <source>Failed while writing csv file!</source>
         <translation>写入csv文件失败！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="268"/>
-        <location filename="contesteditor.cpp" line="291"/>
+        <location filename="contesteditor.cpp" line="265"/>
+        <location filename="contesteditor.cpp" line="288"/>
         <source>Invalid problem name!</source>
         <translation>试题名称非法！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="272"/>
-        <location filename="contesteditor.cpp" line="295"/>
+        <location filename="contesteditor.cpp" line="269"/>
+        <location filename="contesteditor.cpp" line="292"/>
         <source>Problem name already exists!</source>
         <translation>试题名称重复！</translation>
     </message>
@@ -270,37 +270,112 @@
     <message>
         <location filename="idegroupwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>表单</translation>
+    </message>
+</context>
+<context>
+    <name>JudgePanel</name>
+    <message>
+        <location filename="judgepanel.ui" line="26"/>
+        <source>Judge Panel</source>
+        <translation>评测面板</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.ui" line="55"/>
+        <source>Import Submission</source>
+        <translation>导入提交文件</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.ui" line="71"/>
+        <source>Judge Selected</source>
+        <translation>评测选中记录</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.ui" line="87"/>
+        <source>Export CSV</source>
+        <translation>导出CSV</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.ui" line="103"/>
+        <source>Judge All</source>
+        <translation>评测全部记录</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="31"/>
+        <location filename="judgepanel.cpp" line="99"/>
+        <source>ID</source>
+        <translation>账号</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="31"/>
+        <location filename="judgepanel.cpp" line="99"/>
+        <source>Total</source>
+        <translation>总分</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="90"/>
+        <source>Export to csv</source>
+        <translation>导出为csv</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="90"/>
+        <source>comma seperated values (*.csv)</source>
+        <translation>逗号分隔符文件(*.csv)</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="94"/>
+        <source>Failed while writing csv file!</source>
+        <translation>写入csv文件失败！</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="197"/>
+        <source>Import submission files</source>
+        <translation>导入提交文件</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="197"/>
+        <source>student submission packs (*.sspack)</source>
+        <translation>学生提交文件包 (*.sspack)</translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="218"/>
+        <source>Error while opening/parsing </source>
+        <translation>打开/解析文件时有 </translation>
+    </message>
+    <message>
+        <location filename="judgepanel.cpp" line="218"/>
+        <source> file(s)!</source>
+        <translation> 个文件出错！</translation>
     </message>
 </context>
 <context>
     <name>JudgeSetting</name>
     <message>
         <location filename="judgesetting.ui" line="26"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
+        <source>Judge Settings</source>
+        <translation>评测设置</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="79"/>
         <source>pipe count:</source>
-        <translation type="unfinished"></translation>
+        <translation>管道数目：</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="92"/>
         <source>Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>文件夹</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="114"/>
         <location filename="judgesetting.ui" line="227"/>
         <source>filename:</source>
-        <translation type="unfinished"></translation>
+        <translation>文件名：</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="143"/>
         <location filename="judgesetting.ui" line="246"/>
         <source>folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>文件夹：</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="178"/>
@@ -308,7 +383,7 @@
         <location filename="judgesetting.ui" line="414"/>
         <location filename="judgesetting.ui" line="454"/>
         <source>Add</source>
-        <translation type="unfinished">添加</translation>
+        <translation>添加</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="191"/>
@@ -316,51 +391,47 @@
         <location filename="judgesetting.ui" line="427"/>
         <location filename="judgesetting.ui" line="441"/>
         <source>Remove</source>
-        <translation type="unfinished">移除</translation>
+        <translation>移除</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="205"/>
         <source>Collect File</source>
-        <translation type="unfinished"></translation>
+        <translation>收集文件</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="324"/>
         <source>Refresh</source>
-        <translation type="unfinished">刷新</translation>
+        <translation>刷新</translation>
     </message>
     <message>
         <location filename="judgesetting.ui" line="340"/>
         <source>Checker Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>检查器设置</translation>
     </message>
     <message>
         <location filename="judgesetting.cpp" line="58"/>
-        <location filename="judgesetting.cpp" line="139"/>
+        <location filename="judgesetting.cpp" line="142"/>
         <source>Process </source>
-        <translation type="unfinished"></translation>
+        <translation>进程 </translation>
     </message>
 </context>
 <context>
     <name>JudgingDialog</name>
     <message>
-        <location filename="judgingdialog.ui" line="14"/>
         <source>Judging Control Panel</source>
-        <translation>评测控制面板</translation>
+        <translation type="vanished">评测控制面板</translation>
     </message>
     <message>
-        <location filename="judgingdialog.ui" line="39"/>
         <source>Stop Judging</source>
-        <translation>停止评测</translation>
+        <translation type="vanished">停止评测</translation>
     </message>
     <message>
-        <location filename="judgingdialog.ui" line="59"/>
         <source>Continue Judging</source>
-        <translation>继续评测</translation>
+        <translation type="vanished">继续评测</translation>
     </message>
     <message>
-        <location filename="judgingdialog.ui" line="82"/>
         <source>Clear Judging Records</source>
-        <translation>清除评测记录</translation>
+        <translation type="vanished">清除评测记录</translation>
     </message>
 </context>
 <context>
@@ -445,34 +516,34 @@
         <translation>选择比赛目录</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="40"/>
+        <location filename="mainwindow.cpp" line="41"/>
         <source>Select contest info file</source>
         <translation>选择比赛信息文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="40"/>
+        <location filename="mainwindow.cpp" line="41"/>
         <source>contest info (*.ctinfo)</source>
         <translation>比赛信息 (*.ctinfo)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="49"/>
+        <location filename="mainwindow.cpp" line="50"/>
         <source>Failed while reading ctinfo file!</source>
         <translation>读取.ctinfo文件失败！</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="59"/>
+        <location filename="mainwindow.cpp" line="60"/>
         <source>Error while parsing ctinfo file!</source>
         <translation>解析.ctinfo文件失败！</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="69"/>
+        <location filename="mainwindow.cpp" line="71"/>
         <source>Invalid ctinfo file!</source>
         <translation>.ctinfo文件非法！</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="82"/>
+        <location filename="mainwindow.cpp" line="84"/>
         <source>新建提交文件夹</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -974,7 +1045,7 @@
     <message>
         <location filename="procexecinfowidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>表单</translation>
     </message>
     <message>
         <location filename="procexecinfowidget.ui" line="44"/>
@@ -1046,108 +1117,131 @@
     <message>
         <location filename="studenteditor.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation>主窗口</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="27"/>
         <source>Contest</source>
-        <translation type="unfinished"></translation>
+        <translation>比赛</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="39"/>
         <source>load contest</source>
-        <translation type="unfinished"></translation>
+        <translation>载入比赛</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="55"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>标题</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="75"/>
         <location filename="studenteditor.ui" line="118"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>登录</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="92"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>用户名</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="106"/>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>代码</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="135"/>
         <source>ProblemDisplay</source>
-        <translation type="unfinished"></translation>
+        <translation>题面</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="197"/>
         <source>Timer</source>
-        <translation type="unfinished"></translation>
+        <translation>计时器</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="230"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>开始</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="237"/>
         <source>End</source>
-        <translation type="unfinished"></translation>
+        <translation>结束</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="254"/>
         <source>ProblemList</source>
-        <translation type="unfinished"></translation>
+        <translation>问题列表</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="276"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>查看</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="290"/>
         <source>GroupBox</source>
-        <translation type="unfinished"></translation>
+        <translation>组合框</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="342"/>
         <source>Test</source>
-        <translation type="unfinished"></translation>
+        <translation>测试</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="389"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="436"/>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>主页</translation>
     </message>
     <message>
         <location filename="studenteditor.cpp" line="70"/>
         <source>选择比赛设置文件</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="studenteditor.cpp" line="70"/>
         <source>比赛设置文件 (*.stuinfo)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="studenteditor.cpp" line="74"/>
         <source>无法打开所选文件！</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="studenteditor.cpp" line="111"/>
         <source>比赛设置导入成功！</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>SubmissionInfo</name>
+    <message>
+        <location filename="submissioninfo.ui" line="26"/>
+        <source>Submission Information</source>
+        <translation>提交文件信息</translation>
+    </message>
+    <message>
+        <location filename="submissioninfo.ui" line="100"/>
+        <source>Case</source>
+        <translation>测试点</translation>
+    </message>
+    <message>
+        <location filename="submissioninfo.ui" line="105"/>
+        <source>Verdict</source>
+        <translation>结果</translation>
+    </message>
+    <message>
+        <location filename="submissioninfo.ui" line="110"/>
+        <source>Score</source>
+        <translation>得分</translation>
     </message>
 </context>
 <context>
@@ -1155,42 +1249,42 @@
     <message>
         <location filename="submitide.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>表单</translation>
     </message>
     <message>
         <location filename="submitide.ui" line="29"/>
         <source>Back To Home</source>
-        <translation type="unfinished">返回主页</translation>
+        <translation>返回主页</translation>
     </message>
     <message>
         <location filename="submitide.ui" line="45"/>
         <source>IDE</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="submitide.ui" line="61"/>
         <source>Tab 1</source>
-        <translation type="unfinished"></translation>
+        <translation>页面1</translation>
     </message>
     <message>
         <location filename="submitide.ui" line="76"/>
         <source>Tab 2</source>
-        <translation type="unfinished"></translation>
+        <translation>页面2</translation>
     </message>
     <message>
         <location filename="submitide.ui" line="94"/>
         <source>Submit</source>
-        <translation type="unfinished"></translation>
+        <translation>提交</translation>
     </message>
     <message>
         <location filename="submitide.ui" line="113"/>
         <source>Test</source>
-        <translation type="unfinished"></translation>
+        <translation>测试</translation>
     </message>
     <message>
         <location filename="submitide.ui" line="132"/>
         <source>Init</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化</translation>
     </message>
 </context>
 <context>

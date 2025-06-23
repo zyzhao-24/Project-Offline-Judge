@@ -1115,7 +1115,58 @@ public:
         QString log="";
     };
     QMap<int,JudgeResult> results;
+    QJsonObject JsonJudgeInfoObj() const {
+        QJsonObject JudgeInfoObj;
+        JudgeInfoObj.insert("id",id);
+        JudgeInfoObj.insert("password",pwd);
+        JudgeInfoObj.insert("problem",problem);
+        QJsonArray answerArray;
+        for(QString filename:pans.keys()) {
+            answerArray.append(QJsonObject({{"filename",filename},{"filecontent",pans[filename]}}));
+        }
+        JudgeInfoObj.insert("answers",answerArray);
+        return JudgeInfoObj;
+    }
+    int loadJsonObj(QJsonObject JsonJudgeInfoObj) {
+        cplres={_NA,""};
+        results.clear();
+        if(!JsonJudgeInfoObj.contains("id")) return -1;
+        if(!JsonJudgeInfoObj.contains("password")) return -2;
+        if(!JsonJudgeInfoObj.contains("problem")) return -3;
+        id=JsonJudgeInfoObj["id"].toString();
+        pwd=JsonJudgeInfoObj["password"].toString();
+        problem=JsonJudgeInfoObj["problem"].toString();
+        if(JsonJudgeInfoObj.contains("answers")) {
+            QJsonArray answerArray=JsonJudgeInfoObj["answers"].toArray();
+            for(int _index=0;_index<answerArray.count();_index++) {
+                QJsonObject answerObj=answerArray[_index].toObject();
+                QString filename=answerObj["filename"].toString();
+                QString filecontent=answerObj["filecontent"].toString();
+                pans[filename]=filecontent;
+            }
+        }
+        return 0;
+    }
+    static QJsonObject packInfoList(const QList<JudgeInfo>& infoList) {
+        QJsonArray infoArray;
+        for(JudgeInfo info:infoList) {
+            infoArray.append(info.JsonJudgeInfoObj());
+        }
+        QJsonObject infoObject;
+        infoObject.insert("submissions",infoArray);
+        return infoObject;
+    }
+    static QList<JudgeInfo> getInfoList(QJsonObject infoObject) {
+        QList<JudgeInfo> infoList;
+        if(!infoObject.contains("submissions")) return infoList;
+        QJsonArray infoArray=infoObject["submissions"].toArray();
+        for(int _index=0;_index<infoArray.count();_index++) {
+            JudgeInfo info;
+            if(info.loadJsonObj(infoArray[_index].toObject())==0)
+                infoList.append(info);
+        }
+        return infoList;
+    }
 };
-
 
 #endif // CTSETTINGS_H
