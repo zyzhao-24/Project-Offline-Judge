@@ -254,8 +254,10 @@ void JudgePanel::on_ScoreWID_cellDoubleClicked(int row, int column)
             }
         if(util.filetype==Problem::Utility::FileType::templ) {
             QString filecontent=FileOp::read(ctPath+probname+".probdata/"+util.filename+".tpl");
-            filecontent=Codetpl::fill_in(filecontent,judgeinfo[ctid][probname].pans);
-            if(!Codetpl::is_valid(filecontent)) subwid.addcode(util.filename,filecontent);
+            if(Codetpl::is_valid(filecontent)) {
+                filecontent=Codetpl::fill_in(filecontent,judgeinfo[ctid][probname].pans);
+                if(!Codetpl::is_valid(filecontent)) subwid.addcode(util.filename,filecontent);
+            }
         }
     }
     subwid.show();
