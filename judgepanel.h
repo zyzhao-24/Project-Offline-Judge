@@ -6,7 +6,7 @@
 #include "judgingwidget.h"
 #include "ctsettings.h"
 #include "judgingwidget.h"
-
+#include "submissioninfo.h"
 namespace Ui {
 class JudgePanel;
 }
@@ -26,6 +26,7 @@ public:
     QStringList probnames,contestantids;
     QMap<QString,QMap<QString,JudgeInfo> > judgeinfo;
     JudgingWidget judgewid;
+    SubmissionInfo subwid;
 public: signals:
     void ExitWin();
 
@@ -49,6 +50,10 @@ private slots:
     void on_JudgeAllBTN_clicked();
 
     void on_JudgeBTN_clicked();
+
+    void on_ImportBTN_clicked();
+
+    void on_ScoreWID_cellDoubleClicked(int row, int column);
 
 private:
     Ui::JudgePanel *ui;
