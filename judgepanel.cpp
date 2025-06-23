@@ -189,3 +189,75 @@ void JudgePanel::on_JudgeBTN_clicked()
     judgewid.startJudge();
 }
 
+
+void JudgePanel::on_ImportBTN_clicked()
+{
+    probnames=contest->problems.keys();
+    contestantids=contest->participants.keys();
+    QStringList filenames=QFileDialog::getOpenFileNames(this, tr("Import submission files"), "./", tr("student submission packs (*.sspack)"));
+    int nerror=0;
+    for(QString filename:filenames) {
+        QFile file(filename);
+        if(!file.open(QIODevice::ReadOnly)) {nerror++;continue;}
+        QTextStream stream(&file);
+        QString JsonText=Encryption::decrypt_data(stream.readAll());
+        file.close();
+        QJsonParseError parseError;
+        QJsonDocument document = QJsonDocument::fromJson(JsonText.toUtf8(), &parseError);
+        if (parseError.error != QJsonParseError::NoError) {nerror++;continue;}
+        QJsonObject SubObj=document.object();
+        QList<JudgeInfo> infoList=JudgeInfo::getInfoList(SubObj);
+        for(JudgeInfo info:infoList) {
+            if(!contest->participants.contains(info.id)) continue;
+            if(contest->participants[info.id].pwd!=info.pwd) continue;
+            if(!contest->problems.contains(info.problem)) continue;
+            judgeinfo[info.id][info.problem]=info;
+        }
+    }
+    if(nerror>0)
+        QMessageBox::warning(NULL, "warning", tr("Error while opening/parsing ")+QString::number(nerror)+tr(" file(s)!"), QMessageBox::Yes, QMessageBox::Yes);
+}
+
+
+void JudgePanel::on_ScoreWID_cellDoubleClicked(int row, int column)
+{
+    if(row<0||row>=contestantids.size()) return;
+    if(column<1||column>probnames.size()) return;
+    QString ctid=contestantids[row];
+    QString probname=probnames[column-1];
+    subwid.reset();
+    for(int caseid=1;caseid<=contest->problems[probname].testdata.ncase;caseid++) {
+        if(judgeinfo.contains(ctid)) {
+            if(judgeinfo[ctid].contains(probname))
+                subwid.addcase(caseid,judgeinfo[ctid][probname].results[caseid].verdict,judgeinfo[ctid][probname].results[caseid].score);
+            else subwid.addcase(caseid,_NA,0);
+        } else subwid.addcase(caseid,_NA,0);
+    }
+
+    if(!judgeinfo.contains(ctid)) {
+        subwid.show();
+        return;
+    }
+    if(!judgeinfo[ctid].contains(probname)) {
+        subwid.show();
+        return;
+    }
+    for(Problem::Utility util:contest->problems[probname].utils) if(util.category==Problem::Utility::FileCategory::submission) {
+        if(util.filetype==Problem::Utility::FileType::code) {
+            if(judgeinfo[ctid][probname].pans.contains(util.filename))
+                subwid.addcode(util.filename,judgeinfo[ctid][probname].pans[util.filename]);
+        }
+        if(util.filetype==Problem::Utility::FileType::plain)
+            for(int caseid=1;caseid<=contest->problems[probname].testdata.ncase;caseid++) {
+                if(judgeinfo[ctid][probname].pans.contains(get_filename_with_id(util.filename,caseid)))
+                    subwid.addcode(get_filename_with_id(util.filename,caseid),judgeinfo[ctid][probname].pans[get_filename_with_id(util.filename,caseid)]);
+            }
+        if(util.filetype==Problem::Utility::FileType::templ) {
+            QString filecontent=FileOp::read(ctPath+probname+".probdata/"+util.filename+".tpl");
+            filecontent=Codetpl::fill_in(filecontent,judgeinfo[ctid][probname].pans);
+            if(!Codetpl::is_valid(filecontent)) subwid.addcode(util.filename,filecontent);
+        }
+    }
+    subwid.show();
+}
+

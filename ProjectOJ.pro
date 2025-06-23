@@ -25,6 +25,7 @@ SOURCES += \
     idehighlighter.cpp \
     procexecinfowidget.cpp \
     studenteditor.cpp \
+    submissioninfo.cpp \
     submitide.cpp \
     testdataprocessor.cpp
 
@@ -49,6 +50,7 @@ HEADERS += \
     packer.h \
     procexecinfowidget.h \
     studenteditor.h \
+    submissioninfo.h \
     submitide.h \
     procexelib.h \
     testdataprocessor.h \
@@ -66,6 +68,7 @@ FORMS += \
     problemeditor.ui \
     procexecinfowidget.ui \
     studenteditor.ui \
+    submissioninfo.ui \
     submitide.ui \
     idegroupwidget.ui \
     testdataprocessor.ui
