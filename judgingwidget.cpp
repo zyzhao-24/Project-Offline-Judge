@@ -299,7 +299,6 @@ JudgingWidget::JudgingWidget(QWidget *parent,bool controllable)
         ui->ContinueBTN->hide();
         ui->StopBTN->hide();
     }
-    setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 JudgingWidget::~JudgingWidget()
@@ -442,6 +441,6 @@ void JudgingWidget::on_ClearBTN_clicked()
 
 void JudgingWidget::on_judgeTWid_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-    QMessageBox::information(NULL, "log", "Log:\n"+item->text(5), QMessageBox::Yes, QMessageBox::Yes);
+    QMessageBox::information(this, "log", "Log:\n"+item->text(5), QMessageBox::Yes, QMessageBox::Yes);
 }
 

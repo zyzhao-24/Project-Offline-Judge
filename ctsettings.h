@@ -1062,7 +1062,7 @@ public:
                         QByteArray::fromBase64(probfiles[util.filename+templ].toString().toUtf8())
                     );
                 else if(util.category==Problem::Utility::FileCategory::testdata&&
-                         util.filetype==Problem::Utility::FileType::plain)
+                         util.filetype==Problem::Utility::FileType::plain) {
                     if(problem.student) for(int caseid:problem.testdata.subtasks[0].cases)
                         FileOp::writeb(
                             path+probname+".probdata/testdata/"+get_filename_with_id(util.filename,caseid),
@@ -1073,6 +1073,7 @@ public:
                             path+probname+".probdata/testdata/"+get_filename_with_id(util.filename,caseid),
                             QByteArray::fromBase64(testdataobj[get_filename_with_id(util.filename,caseid)].toString().toUtf8())
                         );
+                }
             }
         }
         return;
