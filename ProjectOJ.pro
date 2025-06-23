@@ -17,6 +17,7 @@ SOURCES += \
     judgepanel.cpp \
     judgesetting.cpp \
     judgingwidget.cpp \
+    login.cpp \
     main.cpp \
     mainwindow.cpp \
     packer.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     judgepanel.h \
     judgesetting.h \
     judgingwidget.h \
+    login.h \
     mainwindow.h \
     problemeditor.h \
     idegroupwidget.h \
@@ -64,6 +66,7 @@ FORMS += \
     judgepanel.ui \
     judgesetting.ui \
     judgingwidget.ui \
+    login.ui \
     mainwindow.ui \
     problemeditor.ui \
     procexecinfowidget.ui \

@@ -108,7 +108,7 @@ void ContestEditor::save() {
     QJsonDocument doc;
     doc.setObject(contest.JsonContestObj());
     QTextStream stream(&savef);
-    stream << /*Encryption::encrypt_data*/(doc.toJson());
+    stream << Encryption::encrypt_data(doc.toJson());
     savef.close();
 }
 
