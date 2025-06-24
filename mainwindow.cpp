@@ -29,7 +29,6 @@ void MainWindow::on_createbtn_clicked()
     Editor->father=this;
     if(!dir.endsWith('/')) dir+="/";
     Editor->ctPath=dir;
-    Editor->panel.ctPath=dir;
     Editor->refresh();
     Editor->show();
     this->hide();
@@ -66,12 +65,12 @@ void MainWindow::on_editbtn_clicked()
     ContestEditor* Editor=new ContestEditor();
     Editor->father=this;
     Editor->ctPath=dir;
-    Editor->panel.ctPath=dir;
     if(Editor->contest.loadJsonObj(ContestObj)!=0) {
         QMessageBox::warning(NULL, "warning", tr("Invalid ctinfo file!"), QMessageBox::Yes, QMessageBox::Yes);
         delete Editor;
         return;
     }
+    Editor->contest.unpackFiles(dir);
     Editor->refresh();
     Editor->show();
     this->hide();
@@ -80,12 +79,37 @@ void MainWindow::on_editbtn_clicked()
 
 void MainWindow::on_loadbtn_clicked()
 {
-    QString dir;
-    dir = QFileDialog::getOpenFileName(this, tr("Select contest info file"), "./", tr("contest info (*.sctinfo)"));
-    if(dir=="")return;
+    QString dirSCTINFO = QFileDialog::getOpenFileName(this, tr("Select student contest info file"), "./", tr("student contest info (*.sctinfo)"));
+    if(dirSCTINFO.isEmpty())
+        return;
+
+    QString dir=dirSCTINFO.mid(0,dirSCTINFO.lastIndexOf("/")+1);//get contest folder
+    QFile sctinfof(dirSCTINFO);
+    if (!sctinfof.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(NULL, "warning", tr("Failed while reading sctinfo file!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    QTextStream sctinfoStream(&sctinfof);
+    QString JsonText=Encryption::decrypt_data(sctinfoStream.readAll());
+    sctinfof.close();
+
+    QJsonParseError parseError;
+    QJsonDocument document = QJsonDocument::fromJson(JsonText.toUtf8(), &parseError);
+    if (parseError.error != QJsonParseError::NoError) {
+        QMessageBox::warning(NULL, "warning", tr("Error while parsing sctinfo file!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    QJsonObject ContestObj=document.object();
+
     login* Editor=new login();
     Editor->father = this;
-    Editor->dir = dir;
+    Editor->sctPath = dir;
+    if(Editor->contest.loadJsonObj(ContestObj)!=0) {
+        QMessageBox::warning(NULL, "warning", tr("Invalid sctinfo file!"), QMessageBox::Yes, QMessageBox::Yes);
+        delete Editor;
+        return;
+    }
+    Editor->refresh();
     Editor->show();
     this->hide();
 }

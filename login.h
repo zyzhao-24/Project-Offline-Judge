@@ -32,13 +32,17 @@ public:
     explicit login(QWidget *parent = nullptr);
     ~login();
 
-    QWidget* father;
-    Contest contest;
-    QDateTime time;
-    QString dir;
+    void refresh();
+    QString username, password;
+    bool verified=false;//id and password verified
+    QWidget* father=nullptr;
+    Contest contest;//loaded already before showing
+    QString sctPath;//parent folder of sctinfo
 
 private slots:
     void on_loginbtn_clicked();
+    void on_homebtn_clicked();
+
 private:
     Ui::login *ui;
 };

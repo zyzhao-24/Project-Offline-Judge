@@ -35,6 +35,7 @@ public:
     QMainWindow * father = nullptr;
     IDEHighlighter* highlighter;
     Submission* submission;
+    JudgeInfo* judgeinfo;
     Problem problem;
     JudgingWidget judge;
     QString maindir;

@@ -530,9 +530,9 @@ static QStringList parseCombinedArgString(const QString &program)
 }
 
 const QString ctinfo=".ctinfo";//suffix ctinfo
-const QString probcontent="content.pdf";//problem content file
+const QString sctinfo = ".sctinfo";//suffix sctinfo
 const QString templ=".tpl";//suffix tpl for template file
-const QString stuinfo = ".stuinfo";
+
 
 const QString ProbTypeName[6]={
     "custom",
@@ -679,34 +679,6 @@ public:
     };
     QMap<QString,TDSetting> settings;
 
-    void toStudentPack() {
-        ncase = 1;
-        // 只保留subtasks中的第一个case
-        if (!subtasks.isEmpty()) {
-            // 保留subtasks[0]，并只保留case编号为1
-            subtasks[0].cases.clear();
-            subtasks[0].cases.append(1);
-            subtasks = {subtasks[0]};
-        }
-        // 只保留settings中与第一个case相关的内容
-        QMap<QString, TDSetting> new_settings;
-        for (auto it = settings.begin(); it != settings.end(); ++it) {
-            TDSetting td = it.value();
-            // 只保留与case 1相关的generator
-            QList<GenCmd> new_gens;
-            for (const GenCmd& gen : td.generator) {
-                GenCmd new_gen = gen;
-                // 只保留case 1
-                new_gen.cases.clear();
-                new_gen.cases.append(1);
-                new_gens.append(new_gen);
-            }
-            td.generator = new_gens;
-            new_settings[it.key()] = td;
-        }
-        settings = new_settings;
-    }
-
     QJsonObject JsonTDataObj() {
         QJsonObject TDataObj;
         TDataObj.insert("num_cases",ncase);
@@ -808,6 +780,8 @@ public:
     QString name="new_problem";
     int time_limit_ms=1000;
     int mem_limit_MiB=256;
+    QByteArray contentpdf={};
+
     enum class ProblemType {
         custom=0,
         traditional=1,
@@ -855,6 +829,7 @@ public:
         ProblemObj.insert("time_limit_ms",time_limit_ms);
         ProblemObj.insert("mem_limit_MiB",mem_limit_MiB);
         ProblemObj.insert("type",ProbTypeName[(int) type]);
+        ProblemObj.insert("content",QString(contentpdf.toBase64()));
         QJsonArray Utilities;
         QVector<Utility> utilsvec(utils.values());
         QJsonArray CompileSettings;
@@ -887,11 +862,11 @@ public:
         if(!ProblemObj.contains("time_limit_ms")) return -1;
         if(!ProblemObj.contains("mem_limit_MiB")) return -1;
         if(!ProblemObj.contains("type")) return -1;
-
         name=ProblemObj["name"].toString();
         time_limit_ms=ProblemObj["time_limit_ms"].toInt(1000);
         mem_limit_MiB=ProblemObj["mem_limit_MiB"].toInt(1000);
         type=ProblemType(ProbTypeID[ProblemObj["type"].toString()]);
+        contentpdf=QByteArray::fromBase64(ProblemObj["content"].toString().toUtf8());
         if(ProblemObj.contains("utils")) {
             QJsonArray Utilities=ProblemObj["utils"].toArray();
             for(int _index=0;_index<Utilities.count();_index++) {
@@ -1022,6 +997,88 @@ public:
         }
         return 0;
     }
+
+    QJsonObject files;
+    void packFiles(QString& ctPath) {
+        QString path=ctPath;
+        if(!path.endsWith("/")) path.append("/");
+        files=QJsonObject();
+        for(QString probname:problems.keys()) {
+            QJsonObject probfiles;
+            Problem& problem=problems[probname];
+            int ncase=problem.testdata.ncase;
+            QJsonObject testdataobj;
+            for(Problem::Utility util:problem.utils.values()) {
+                if(util.category==Problem::Utility::FileCategory::builtin||
+                    util.category==Problem::Utility::FileCategory::resource||
+                    (util.category==Problem::Utility::FileCategory::testdata&&
+                    util.filetype==Problem::Utility::FileType::code))
+                    probfiles.insert(
+                        util.filename,
+                        QString(FileOp::readb(path+probname+".probdata/"+util.filename).toBase64())
+                    );
+                else if(util.category==Problem::Utility::FileCategory::submission&&
+                         util.filetype==Problem::Utility::FileType::templ)
+                    probfiles.insert(
+                        util.filename+templ,
+                        QString(FileOp::readb(path+probname+".probdata/"+util.filename+templ).toBase64())
+                    );
+                else if(util.category==Problem::Utility::FileCategory::testdata&&
+                         util.filetype==Problem::Utility::FileType::plain)
+                    for(int caseid=1;caseid<=ncase;caseid++)
+                        testdataobj.insert(
+                            get_filename_with_id(util.filename,caseid),
+                            QString(FileOp::readb(path+probname+".probdata/testdata/"+get_filename_with_id(util.filename,caseid)).toBase64())
+                        );
+            }
+            probfiles.insert("testdata",testdataobj);
+            files.insert(probname,probfiles);
+        }
+        return;
+    }
+    void unpackFiles(QString& ctPath) {
+        QString path=ctPath;
+        if(!path.endsWith("/")) path.append("/");
+        for(QString probname:problems.keys()) {
+            FolderOp::create(path+probname+".probdata/");
+            FolderOp::create(path+probname+".probdata/testdata/");
+            QJsonObject probfiles=files[probname].toObject();
+            Problem& problem=problems[probname];
+            int ncase=problem.testdata.ncase;
+            QJsonObject testdataobj=probfiles["testdata"].toObject();
+            for(Problem::Utility util:problem.utils.values()) {
+                if(util.category==Problem::Utility::FileCategory::builtin||
+                    util.category==Problem::Utility::FileCategory::resource||
+                    (util.category==Problem::Utility::FileCategory::testdata&&
+                     util.filetype==Problem::Utility::FileType::code))
+                    FileOp::writeb(
+                        path+probname+".probdata/"+util.filename,
+                        QByteArray::fromBase64(probfiles[util.filename].toString().toUtf8())
+                    );
+                else if(util.category==Problem::Utility::FileCategory::submission&&
+                         util.filetype==Problem::Utility::FileType::templ)
+                    FileOp::writeb(
+                        path+probname+".probdata/"+util.filename+templ,
+                        QByteArray::fromBase64(probfiles[util.filename+templ].toString().toUtf8())
+                    );
+                else if(util.category==Problem::Utility::FileCategory::testdata&&
+                         util.filetype==Problem::Utility::FileType::plain) {
+                    if(problem.student) for(int caseid:problem.testdata.subtasks[0].cases)
+                        FileOp::writeb(
+                            path+probname+".probdata/testdata/"+get_filename_with_id(util.filename,caseid),
+                            QByteArray::fromBase64(testdataobj[get_filename_with_id(util.filename,caseid)].toString().toUtf8())
+                        );
+                    else for(int caseid=1;caseid<=ncase;caseid++)
+                        FileOp::writeb(
+                            path+probname+".probdata/testdata/"+get_filename_with_id(util.filename,caseid),
+                            QByteArray::fromBase64(testdataobj[get_filename_with_id(util.filename,caseid)].toString().toUtf8())
+                        );
+                }
+            }
+        }
+        return;
+    }
+
     QJsonObject JsonContestObj() {
         QJsonObject ContestObj;
         ContestObj.insert("name",name);
@@ -1038,6 +1095,7 @@ public:
         ContestObj.insert("time_setting",TimeSetObj);
         ContestObj.insert("participant",get_pa_csv());
         ContestObj.insert("problem",JsonProblemArray());
+        if(!files.isEmpty()) ContestObj.insert("files",files);
         return ContestObj;
     }
     int loadJsonObj(const QJsonObject& ContestObj) {
@@ -1073,6 +1131,7 @@ public:
         }
 
         load_pa_csv(Participantcsv);
+        files=ContestObj["files"].toObject();
         return loadProblemArray(ProblemArray);
     }
 };

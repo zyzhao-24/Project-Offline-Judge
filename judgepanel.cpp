@@ -3,7 +3,6 @@
 
 JudgePanel::JudgePanel(QWidget *parent)
     : QMainWindow(parent)
-    , judgewid(nullptr)
     , ui(new Ui::JudgePanel)
 {
     ui->setupUi(this);
@@ -80,6 +79,8 @@ void JudgePanel::refresh() {
 }
 
 void JudgePanel::closeEvent(QCloseEvent *event) {
+    judgewid.close();
+    subwid.close();
     emit ExitWin();
 }
 
@@ -87,7 +88,7 @@ void JudgePanel::on_ExportBTN_clicked()
 {
     probnames=contest->problems.keys();
     contestantids=contest->participants.keys();
-    QString csvPath=QFileDialog::getSaveFileName(this, tr("Export to csv"), "./", tr("comma seperated values (*.csv)"));
+    QString csvPath=QFileDialog::getSaveFileName(this, tr("Export to csv"), "results.csv", tr("comma seperated values (*.csv)"));
     if(csvPath.isEmpty()) return;
     QFile csvf(csvPath);
     if (!csvf.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
@@ -96,7 +97,7 @@ void JudgePanel::on_ExportBTN_clicked()
     }
 
     QTextStream csvstream(&csvf);
-    csvstream<<tr("ID")<<","<<probnames.join(',')<<","<<tr("Total")<<Qt::endl;
+    csvstream<<"ID"<<","<<probnames.join(',')<<","<<"Total"<<Qt::endl;
     for(int index=0;index<contestantids.size();index++) {
         QString ctid=contestantids[index];
         csvstream<<ctid<<",";

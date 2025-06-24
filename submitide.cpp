@@ -9,7 +9,6 @@ SubmitIDE::SubmitIDE(QWidget *parent, Problem prob)
     ui->setupUi(this);
     highlighter = new IDEHighlighter(ui->IDE->document());
     ui->IDEGroup->clear();
-
 }
 
 SubmitIDE::~SubmitIDE()
@@ -29,7 +28,7 @@ void SubmitIDE::submit(){
             if(code == ""){
                 QMessageBox::warning(this, "警告", "代码文本为空/代码上传失败");
             }
-            submission->answers[answer_name] = code;
+            judgeinfo->pans[answer_name] = code;
         }
     }
 }
@@ -38,7 +37,7 @@ void SubmitIDE::on_testbtn_clicked(){
 
     submit();
     judge.show();
-    judge.prepareJudge(problem, submission->id,maindir,submission->answers);
+    judge.prepareJudge(problem, judgeinfo->id,maindir,judgeinfo->pans);
     for(int caseid:problem.testdata.subtasks[0].cases)
         judge.runJudge(problem,submission->id,submission->answers,caseid);
     judge.startJudge();

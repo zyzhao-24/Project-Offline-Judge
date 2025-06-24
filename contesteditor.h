@@ -24,7 +24,6 @@ public:
 
     Contest contest;
 
-    JudgePanel panel;
     void loadPath();
     void setName();
     void loadName();
@@ -36,7 +35,7 @@ public:
 
     void refresh();
     void save();
-
+    void savestu();
 
 private slots:
     //refresh()
@@ -89,6 +88,8 @@ private slots:
     void on_confprobbtn_clicked();
 
     void on_gradebtn_clicked();
+
+    void on_stusavebtn_clicked();
 
 private:
     Ui::ContestEditor *ui;

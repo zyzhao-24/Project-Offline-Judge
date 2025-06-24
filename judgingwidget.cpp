@@ -1,6 +1,8 @@
 #include "judgingwidget.h"
 #include "ui_judgingwidget.h"
 
+#include "judge_utils.h"
+
 JudgingThread::JudgingThread(QObject* parent):QObject(parent) {}
 JudgingThread::~JudgingThread() {}
 void JudgingThread::setAbort(bool abort) {
@@ -297,7 +299,6 @@ JudgingWidget::JudgingWidget(QWidget *parent,bool controllable)
         ui->ContinueBTN->hide();
         ui->StopBTN->hide();
     }
-    setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 JudgingWidget::~JudgingWidget()
@@ -440,6 +441,6 @@ void JudgingWidget::on_ClearBTN_clicked()
 
 void JudgingWidget::on_judgeTWid_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-    QMessageBox::information(NULL, "log", "Log:\n"+item->text(5), QMessageBox::Yes, QMessageBox::Yes);
+    QMessageBox::information(this, "log", "Log:\n"+item->text(5), QMessageBox::Yes, QMessageBox::Yes);
 }
 
