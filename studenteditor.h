@@ -16,6 +16,7 @@
 #include <QComboBox>
 #include "ctsettings.h"
 #include "packer.h"
+#include "submitide.h"
 
 namespace Ui {
 class StudentEditor;
@@ -31,36 +32,32 @@ public:
 
     QMainWindow * father = nullptr;
 
-    QString maindir;
-    QString dir;
-    Contest contest;//Validation and read contest info
-    Problem problem  = Problem("");//Currently
-    Submission submission;//store submission info
-    bool access = false;
+    QString ctPath;
+    Contest* contest;
+    QString curProb;
+    QMap<QString,JudgeInfo> judgeinfo;
+    QString id,pwd;
 
-    QJsonObject Pack;
-    QString probPath="";//problem path
     QPdfView* pdfview=nullptr;
     QPdfDocument* pdfdoc=nullptr;
-    QPdfDocument* docnull=nullptr;
+
+    SubmitIDE IDE;
+
+    void refresh();
+    void set_name();
     void set_time();
     void load_prob();
     void view();
 
 private slots:
-    void on_loginbtn_clicked();
 
     void on_submitbtn_clicked();
 
-    void on_loadcontestbtn_clicked();
-
-
-
     void on_returnbtn_clicked();
 
-    void on_viewbtn_clicked();
-
     void on_savebtn_clicked();
+
+    void on_Problist_itemClicked(QListWidgetItem *item);
 private:
     Ui::StudentEditor *ui;
 };

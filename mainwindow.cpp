@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "contesteditor.h"
-#include "studenteditor.h"
+#include "login.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -79,12 +79,37 @@ void MainWindow::on_editbtn_clicked()
 
 void MainWindow::on_loadbtn_clicked()
 {
-    QString dir;
-    dir = QFileDialog::getExistingDirectory(nullptr,tr("新建提交文件夹"),"./", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks) + "/";
-    if(dir=="/")return;
-    StudentEditor* Editor=new StudentEditor();
+    QString dirSCTINFO = QFileDialog::getOpenFileName(this, tr("Select student contest info file"), "./", tr("student contest info (*.sctinfo)"));
+    if(dirSCTINFO.isEmpty())
+        return;
+
+    QString dir=dirSCTINFO.mid(0,dirSCTINFO.lastIndexOf("/")+1);//get contest folder
+    QFile sctinfof(dirSCTINFO);
+    if (!sctinfof.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(NULL, "warning", tr("Failed while reading sctinfo file!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    QTextStream sctinfoStream(&sctinfof);
+    QString JsonText=Encryption::decrypt_data(sctinfoStream.readAll());
+    sctinfof.close();
+
+    QJsonParseError parseError;
+    QJsonDocument document = QJsonDocument::fromJson(JsonText.toUtf8(), &parseError);
+    if (parseError.error != QJsonParseError::NoError) {
+        QMessageBox::warning(NULL, "warning", tr("Error while parsing sctinfo file!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    QJsonObject ContestObj=document.object();
+
+    login* Editor=new login();
     Editor->father = this;
-    Editor->maindir = dir;
+    Editor->sctPath = dir;
+    if(Editor->contest.loadJsonObj(ContestObj)!=0) {
+        QMessageBox::warning(NULL, "warning", tr("Invalid sctinfo file!"), QMessageBox::Yes, QMessageBox::Yes);
+        delete Editor;
+        return;
+    }
+    Editor->refresh();
     Editor->show();
     this->hide();
 }

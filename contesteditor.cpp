@@ -347,6 +347,7 @@ void ContestEditor::on_gradebtn_clicked()
 
 void ContestEditor::on_stusavebtn_clicked()
 {
+    save();
     savestu();
 }
 

@@ -88,7 +88,7 @@ void JudgePanel::on_ExportBTN_clicked()
 {
     probnames=contest->problems.keys();
     contestantids=contest->participants.keys();
-    QString csvPath=QFileDialog::getSaveFileName(this, tr("Export to csv"), "./", tr("comma seperated values (*.csv)"));
+    QString csvPath=QFileDialog::getSaveFileName(this, tr("Export to csv"), "results.csv", tr("comma seperated values (*.csv)"));
     if(csvPath.isEmpty()) return;
     QFile csvf(csvPath);
     if (!csvf.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
