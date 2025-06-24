@@ -78,6 +78,7 @@ signals:
                       unsigned int time,
                       unsigned int mem,
                       const QString& log);
+    void judgeComplete();
 };
 
 
@@ -120,6 +121,7 @@ public:
                     const QMap<QString,QString>& pa_files,
                     int caseid);
     void startJudge();
+    void sendFinishJudgeSig();
 public: signals:
     void startJudgeSig();
     void cplComplete(const QString& participant,
@@ -134,7 +136,7 @@ public: signals:
                        unsigned int time,
                        unsigned int mem,
                        const QString& log);
-
+    void allComplete();
 private slots:
     void on_StopBTN_clicked();
 

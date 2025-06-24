@@ -278,6 +278,7 @@ void JudgingThread::startJud() {
     amutex.lock();
     _pendingflag=false;
     amutex.unlock();
+    emit judgeComplete();
 }
 
 JudgingWidget::JudgingWidget(QWidget *parent,bool controllable)
@@ -292,6 +293,7 @@ JudgingWidget::JudgingWidget(QWidget *parent,bool controllable)
     connect(judThreadContainer,&QThread::finished,judThread,&QObject::deleteLater);
     connect(judThread,&JudgingThread::CplResult,this,&JudgingWidget::showCplResult);
     connect(judThread,&JudgingThread::JudgeResult,this,&JudgingWidget::showJudResult);
+    connect(judThread,&JudgingThread::judgeComplete,this,&JudgingWidget::sendFinishJudgeSig);
     judThreadContainer->start();
     connect(this,&JudgingWidget::startJudgeSig, judThread,&JudgingThread::startJud);
 
@@ -444,3 +446,6 @@ void JudgingWidget::on_judgeTWid_itemDoubleClicked(QTreeWidgetItem *item, int co
     QMessageBox::information(this, "log", "Log:\n"+item->text(5), QMessageBox::Yes, QMessageBox::Yes);
 }
 
+void JudgingWidget::sendFinishJudgeSig() {
+    emit allComplete();
+}

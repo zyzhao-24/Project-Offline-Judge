@@ -96,6 +96,9 @@ void StudentEditor::on_returnbtn_clicked(){
 
 void StudentEditor::on_savebtn_clicked(){
     QString sspPath=QFileDialog::getSaveFileName(this, tr("Save submission pack"), ctPath+id+sspack, tr("student submission pack (*.sspack)"));
+    if(sspPath.isEmpty())
+        return;
+
     QFile savef(sspPath);
     if (!savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         QMessageBox::warning(NULL, "warning", tr("Failed while saving submission pack!"), QMessageBox::Yes, QMessageBox::Yes);
