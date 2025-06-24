@@ -68,6 +68,11 @@ void login::on_loginbtn_clicked(){
     Editor->maindir = sctPath;
     Editor->contest = contest;
     Editor->show();
+    Editor->set_name();
+    Editor->set_time();
+    Editor->load_prob();
+    Editor->id = username;
+    Editor->pwd = password;
     this->hide();
 }
 

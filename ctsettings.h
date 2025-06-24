@@ -679,34 +679,6 @@ public:
     };
     QMap<QString,TDSetting> settings;
 
-    // void toStudentPack() {
-    //     ncase = 1;
-    //     // 只保留subtasks中的第一个case
-    //     if (!subtasks.isEmpty()) {
-    //         // 保留subtasks[0]，并只保留case编号为1
-    //         subtasks[0].cases.clear();
-    //         subtasks[0].cases.append(1);
-    //         subtasks = {subtasks[0]};
-    //     }
-    //     // 只保留settings中与第一个case相关的内容
-    //     QMap<QString, TDSetting> new_settings;
-    //     for (auto it = settings.begin(); it != settings.end(); ++it) {
-    //         TDSetting td = it.value();
-    //         // 只保留与case 1相关的generator
-    //         QList<GenCmd> new_gens;
-    //         for (const GenCmd& gen : td.generator) {
-    //             GenCmd new_gen = gen;
-    //             // 只保留case 1
-    //             new_gen.cases.clear();
-    //             new_gen.cases.append(1);
-    //             new_gens.append(new_gen);
-    //         }
-    //         td.generator = new_gens;
-    //         new_settings[it.key()] = td;
-    //     }
-    //     settings = new_settings;
-    // }
-
     QJsonObject JsonTDataObj() {
         QJsonObject TDataObj;
         TDataObj.insert("num_cases",ncase);

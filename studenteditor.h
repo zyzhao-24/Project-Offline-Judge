@@ -36,25 +36,22 @@ public:
     Contest contest;//Validation and read contest info
     Problem problem  = Problem("");//Currently
     Submission submission;//store submission info
-    bool access = false;
+    JudgeInfo judgeinfo;
+    QString id,pwd;
 
     QJsonObject Pack;
     QString probPath="";//problem path
     QPdfView* pdfview=nullptr;
     QPdfDocument* pdfdoc=nullptr;
     QPdfDocument* docnull=nullptr;
+    void set_name();
     void set_time();
     void load_prob();
     void view();
 
 private slots:
-    void on_loginbtn_clicked();
 
     void on_submitbtn_clicked();
-
-    void on_loadcontestbtn_clicked();
-
-
 
     void on_returnbtn_clicked();
 
