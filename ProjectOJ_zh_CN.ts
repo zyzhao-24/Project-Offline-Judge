@@ -166,7 +166,7 @@
         <translation>试题名称：</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="106"/>
+        <location filename="contesteditor.cpp" line="104"/>
         <source>Failed while saving contest settings!</source>
         <translation>比赛信息保存失败！</translation>
     </message>
@@ -183,75 +183,75 @@
         <translation type="vanished">比赛结束时间须早于开始时间！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="27"/>
+        <location filename="contesteditor.cpp" line="25"/>
         <source>Invalid name! Name should NOT be empty and should only contain Letters, Numbers and Underscore &apos; _ &apos;!</source>
         <translation>比赛名称非法！比赛名称应当非空且只应包含数字、字母和下划线“_”！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="40"/>
+        <location filename="contesteditor.cpp" line="38"/>
         <source>End time must be later than start time!</source>
         <translation>比赛结束时间应早于开始时间！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="118"/>
+        <location filename="contesteditor.cpp" line="116"/>
         <source>Export Student Contest Setting File</source>
         <translation>导出学生试题设定文件</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="118"/>
+        <location filename="contesteditor.cpp" line="116"/>
         <source>student contest info (*.sctinfo)</source>
         <translation>学生试题信息 (*.sctinfo)</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="121"/>
+        <location filename="contesteditor.cpp" line="119"/>
         <source>Failed while saving student contest settings!</source>
         <translation>保存学生试题设定失败！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="127"/>
+        <location filename="contesteditor.cpp" line="125"/>
         <source>Problem not validated: </source>
         <translation>试题测试数据未验证： </translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="189"/>
+        <location filename="contesteditor.cpp" line="187"/>
         <source>Import From csv</source>
         <translation>从csv文件导入</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="189"/>
-        <location filename="contesteditor.cpp" line="237"/>
+        <location filename="contesteditor.cpp" line="187"/>
+        <location filename="contesteditor.cpp" line="235"/>
         <source>comma seperated values (*.csv)</source>
         <translation>逗号分隔符文件(*.csv)</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="195"/>
+        <location filename="contesteditor.cpp" line="193"/>
         <source>Failed while reading csv file!</source>
         <translation>读取csv文件失败！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="226"/>
+        <location filename="contesteditor.cpp" line="224"/>
         <source>lines discarded!</source>
         <translation>行无效数据被忽略！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="237"/>
+        <location filename="contesteditor.cpp" line="235"/>
         <source>Export to csv</source>
         <translation>导出为csv</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="241"/>
+        <location filename="contesteditor.cpp" line="239"/>
         <source>Failed while writing csv file!</source>
         <translation>写入csv文件失败！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="268"/>
-        <location filename="contesteditor.cpp" line="291"/>
+        <location filename="contesteditor.cpp" line="266"/>
+        <location filename="contesteditor.cpp" line="289"/>
         <source>Invalid problem name!</source>
         <translation>试题名称非法！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="272"/>
-        <location filename="contesteditor.cpp" line="295"/>
+        <location filename="contesteditor.cpp" line="270"/>
+        <location filename="contesteditor.cpp" line="293"/>
         <source>Problem name already exists!</source>
         <translation>试题名称重复！</translation>
     </message>
@@ -315,47 +315,47 @@
         <translation>评测全部记录</translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="31"/>
+        <location filename="judgepanel.cpp" line="30"/>
         <source>ID</source>
         <translation>账号</translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="31"/>
+        <location filename="judgepanel.cpp" line="30"/>
         <source>Total</source>
         <translation>总分</translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="90"/>
+        <location filename="judgepanel.cpp" line="91"/>
         <source>Export to csv</source>
         <translation>导出为csv</translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="90"/>
+        <location filename="judgepanel.cpp" line="91"/>
         <source>comma seperated values (*.csv)</source>
         <translation>逗号分隔符文件(*.csv)</translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="94"/>
+        <location filename="judgepanel.cpp" line="95"/>
         <source>Failed while writing csv file!</source>
         <translation>写入csv文件失败！</translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="197"/>
+        <location filename="judgepanel.cpp" line="198"/>
         <source>Import submission files</source>
         <translation>导入提交文件</translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="197"/>
+        <location filename="judgepanel.cpp" line="198"/>
         <source>student submission packs (*.sspack)</source>
         <translation>学生提交文件包 (*.sspack)</translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="218"/>
+        <location filename="judgepanel.cpp" line="219"/>
         <source>Error while opening/parsing </source>
         <translation>打开/解析文件时有 </translation>
     </message>
     <message>
-        <location filename="judgepanel.cpp" line="218"/>
+        <location filename="judgepanel.cpp" line="219"/>
         <source> file(s)!</source>
         <translation> 个文件出错！</translation>
     </message>
@@ -421,8 +421,8 @@
         <translation>检查器设置</translation>
     </message>
     <message>
-        <location filename="judgesetting.cpp" line="58"/>
-        <location filename="judgesetting.cpp" line="142"/>
+        <location filename="judgesetting.cpp" line="64"/>
+        <location filename="judgesetting.cpp" line="148"/>
         <source>Process </source>
         <translation>进程 </translation>
     </message>
@@ -528,34 +528,54 @@
         <translation>选择比赛目录</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="41"/>
+        <location filename="mainwindow.cpp" line="40"/>
         <source>Select contest info file</source>
         <translation>选择比赛信息文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="41"/>
+        <location filename="mainwindow.cpp" line="40"/>
         <source>contest info (*.ctinfo)</source>
         <translation>比赛信息 (*.ctinfo)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="50"/>
+        <location filename="mainwindow.cpp" line="49"/>
         <source>Failed while reading ctinfo file!</source>
         <translation>读取.ctinfo文件失败！</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="60"/>
+        <location filename="mainwindow.cpp" line="59"/>
         <source>Error while parsing ctinfo file!</source>
         <translation>解析.ctinfo文件失败！</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="71"/>
+        <location filename="mainwindow.cpp" line="69"/>
         <source>Invalid ctinfo file!</source>
         <translation>.ctinfo文件非法！</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="85"/>
-        <source>新建提交文件夹</source>
-        <translation></translation>
+        <location filename="mainwindow.cpp" line="82"/>
+        <source>Select student contest info file</source>
+        <translation>选择学生试题信息文件</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="82"/>
+        <source>student contest info (*.sctinfo)</source>
+        <translation>学生试题信息 (*.sctinfo)</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="89"/>
+        <source>Failed while reading sctinfo file!</source>
+        <translation>sctinfo文件读取失败！</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="99"/>
+        <source>Error while parsing sctinfo file!</source>
+        <translation>sctinfo文件解析失败！</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="108"/>
+        <source>Invalid sctinfo file!</source>
+        <translation>sctinfo文件不合法！</translation>
     </message>
 </context>
 <context>
@@ -1125,110 +1145,179 @@
 <context>
     <name>StudentEditor</name>
     <message>
-        <location filename="studenteditor.ui" line="14"/>
+        <location filename="studenteditor.ui" line="26"/>
         <source>MainWindow</source>
         <translation>主窗口</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="27"/>
-        <source>Contest</source>
-        <translation>比赛</translation>
-    </message>
-    <message>
-        <location filename="studenteditor.ui" line="39"/>
-        <source>load contest</source>
-        <translation>载入比赛</translation>
-    </message>
-    <message>
-        <location filename="studenteditor.ui" line="55"/>
-        <source>Title</source>
-        <translation>标题</translation>
-    </message>
-    <message>
-        <location filename="studenteditor.ui" line="75"/>
-        <location filename="studenteditor.ui" line="118"/>
-        <source>Login</source>
-        <translation>登录</translation>
-    </message>
-    <message>
-        <location filename="studenteditor.ui" line="92"/>
-        <source>Username</source>
-        <translation>用户名</translation>
-    </message>
-    <message>
-        <location filename="studenteditor.ui" line="106"/>
-        <source>Code</source>
-        <translation>代码</translation>
-    </message>
-    <message>
-        <location filename="studenteditor.ui" line="135"/>
-        <source>ProblemDisplay</source>
+        <location filename="studenteditor.ui" line="45"/>
+        <source>Problem Display</source>
         <translation>题面</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="197"/>
+        <location filename="studenteditor.ui" line="190"/>
+        <source>Contest Information</source>
+        <translation>比赛信息</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="218"/>
+        <source>ID</source>
+        <translation>账号</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="234"/>
+        <source>End Time</source>
+        <translation>结束时间</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="250"/>
+        <source>Contest Title</source>
+        <translation>比赛标题</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="266"/>
+        <source>Start Time</source>
+        <translation>开始时间</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="328"/>
+        <source>Problem Selector</source>
+        <translation>题目选择器</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="351"/>
+        <source>Control Panel</source>
+        <translation>控制面板</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="483"/>
+        <source>Save Answers</source>
+        <translation>保存答案</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="619"/>
+        <source>Submit for Test</source>
+        <translation>提交测试</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="772"/>
+        <source>Problem Information</source>
+        <translation>试题信息</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="793"/>
+        <source>Problem Name:</source>
+        <translation>试题名称：</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="846"/>
+        <source>Time Limit(ms):</source>
+        <translation>时间限制(ms)：</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="874"/>
+        <source>Memory Limit(MiB):</source>
+        <translation>空间限制(MiB)：</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="902"/>
+        <source>Problem Type:</source>
+        <translation>试题类别：</translation>
+    </message>
+    <message>
+        <source>Contest</source>
+        <translation type="vanished">比赛</translation>
+    </message>
+    <message>
+        <source>load contest</source>
+        <translation type="vanished">载入比赛</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="vanished">标题</translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation type="vanished">登录</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="vanished">用户名</translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="vanished">代码</translation>
+    </message>
+    <message>
+        <source>ProblemDisplay</source>
+        <translation type="vanished">题面</translation>
+    </message>
+    <message>
         <source>Timer</source>
-        <translation>计时器</translation>
+        <translation type="vanished">计时器</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="230"/>
         <source>Start</source>
-        <translation>开始</translation>
+        <translation type="vanished">开始</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="237"/>
         <source>End</source>
-        <translation>结束</translation>
+        <translation type="vanished">结束</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="254"/>
         <source>ProblemList</source>
-        <translation>问题列表</translation>
+        <translation type="vanished">问题列表</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="276"/>
         <source>View</source>
-        <translation>查看</translation>
+        <translation type="vanished">查看</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="290"/>
         <source>GroupBox</source>
-        <translation>组合框</translation>
+        <translation type="vanished">组合框</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="342"/>
         <source>Test</source>
-        <translation>测试</translation>
+        <translation type="vanished">测试</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="389"/>
         <source>Save</source>
-        <translation>保存</translation>
+        <translation type="vanished">保存</translation>
     </message>
     <message>
-        <location filename="studenteditor.ui" line="436"/>
+        <location filename="studenteditor.ui" line="755"/>
         <source>Home</source>
         <translation>主页</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="70"/>
-        <source>选择比赛设置文件</source>
-        <translation></translation>
+        <location filename="studenteditor.cpp" line="68"/>
+        <source>Contest has not started yet!</source>
+        <translation>比赛还没有开始！</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="70"/>
-        <source>比赛设置文件 (*.stuinfo)</source>
-        <translation></translation>
+        <location filename="studenteditor.cpp" line="72"/>
+        <source>Contest has already ended!</source>
+        <translation>比赛已经结束！</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="74"/>
-        <source>无法打开所选文件！</source>
-        <translation></translation>
+        <location filename="studenteditor.cpp" line="77"/>
+        <source>Problem not selected!</source>
+        <translation>未选择作答的试题！</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="111"/>
-        <source>比赛设置导入成功！</source>
-        <translation></translation>
+        <location filename="studenteditor.cpp" line="98"/>
+        <source>Save submission pack</source>
+        <translation>保存提交文件包</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.cpp" line="98"/>
+        <source>student submission pack (*.sspack)</source>
+        <translation>学生提交文件包 (*.sspack)</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.cpp" line="101"/>
+        <source>Failed while saving submission pack!</source>
+        <translation>提交文件包保存失败！</translation>
     </message>
 </context>
 <context>
@@ -1445,6 +1534,75 @@
         <location filename="testdataprocessor.cpp" line="201"/>
         <source>id:</source>
         <translation>编号：</translation>
+    </message>
+</context>
+<context>
+    <name>login</name>
+    <message>
+        <location filename="login.ui" line="26"/>
+        <location filename="login.ui" line="44"/>
+        <source>Login</source>
+        <translation>登录</translation>
+    </message>
+    <message>
+        <location filename="login.ui" line="60"/>
+        <source>User Information</source>
+        <translation>用户信息</translation>
+    </message>
+    <message>
+        <location filename="login.ui" line="72"/>
+        <source>ID</source>
+        <translation>账号</translation>
+    </message>
+    <message>
+        <location filename="login.ui" line="88"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="login.ui" line="125"/>
+        <source>Time</source>
+        <translation>时间</translation>
+    </message>
+    <message>
+        <location filename="login.ui" line="137"/>
+        <source>Start</source>
+        <translation>开始</translation>
+    </message>
+    <message>
+        <location filename="login.ui" line="153"/>
+        <source>End</source>
+        <translation>结束</translation>
+    </message>
+    <message>
+        <location filename="login.ui" line="208"/>
+        <source>Home</source>
+        <translation>主页</translation>
+    </message>
+    <message>
+        <location filename="login.cpp" line="39"/>
+        <source>Wrong Password!</source>
+        <translation>密码错误！</translation>
+    </message>
+    <message>
+        <location filename="login.cpp" line="44"/>
+        <source>Participant ID does not exist!</source>
+        <translation>选手ID不存在！</translation>
+    </message>
+    <message>
+        <location filename="login.cpp" line="52"/>
+        <source>Start Contest</source>
+        <translation>开始比赛</translation>
+    </message>
+    <message>
+        <location filename="login.cpp" line="58"/>
+        <source>Contest has not started yet!</source>
+        <translation>比赛还没有开始！</translation>
+    </message>
+    <message>
+        <location filename="login.cpp" line="62"/>
+        <source>Contest has already ended!</source>
+        <translation>比赛已经结束！</translation>
     </message>
 </context>
 </TS>
