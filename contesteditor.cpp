@@ -108,7 +108,7 @@ void ContestEditor::save() {
     QJsonDocument doc;
     doc.setObject(contest.JsonContestObj());
     QTextStream stream(&savef);
-    stream << Encryption::encrypt_data(doc.toJson());
+    stream << /*Encryption::encrypt_data*/(doc.toJson());
     savef.close();
 }
 
@@ -347,6 +347,7 @@ void ContestEditor::on_gradebtn_clicked()
 
 void ContestEditor::on_stusavebtn_clicked()
 {
+    save();
     savestu();
 }
 
