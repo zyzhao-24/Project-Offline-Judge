@@ -35,7 +35,7 @@ public:
     void refresh();
     QString username, password;
     bool verified=false;//id and password verified
-    QWidget* father=nullptr;
+    QMainWindow* father=nullptr;
     Contest contest;//loaded already before showing
     QString sctPath;//parent folder of sctinfo
 

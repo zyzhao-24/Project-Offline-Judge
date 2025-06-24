@@ -529,10 +529,10 @@ static QStringList parseCombinedArgString(const QString &program)
     return args;
 }
 
-const QString ctinfo=".ctinfo";//suffix ctinfo
-const QString sctinfo = ".sctinfo";//suffix sctinfo
+const QString ctinfo=".ctinfo";//suffix ctinfo for contest information
+const QString sctinfo = ".sctinfo";//suffix sctinfo for participant contest information
 const QString templ=".tpl";//suffix tpl for template file
-
+const QString sspack=".sspack";//suffix sspack for participant submission file
 
 const QString ProbTypeName[6]={
     "custom",

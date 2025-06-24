@@ -21,7 +21,7 @@ void SubmissionInfo::reset() {
 }
 void SubmissionInfo::addcode(const QString& filename,const QString& filecontent) {
     QWidget* codewid=new QWidget(this);
-    codewid->setFixedSize(ui->tabWidget->size()-QSize({5,50}));
+    codewid->setFixedSize(ui->tabWidget->size()-QSize({5,30}));
     codewid->show();
     ui->tabWidget->addTab(codewid,filename);
     QPlainTextEdit* codetext=new QPlainTextEdit(filecontent,codewid);

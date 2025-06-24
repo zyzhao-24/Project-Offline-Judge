@@ -10,85 +10,83 @@ StudentEditor::StudentEditor(QWidget *parent)
     , ui(new Ui::StudentEditor)
 {
     ui->setupUi(this);
+    pdfview=new QPdfView(ui->PDF);
+    pdfview->setPageMode(QPdfView::PageMode::MultiPage);
+    pdfview->setZoomMode(QPdfView::ZoomMode::FitToWidth);
+    ui->PDF->setWidget(pdfview);
+    pdfdoc = new QPdfDocument(ui->PDF);
+    pdfview->setDocument(pdfdoc);
 }
 
 StudentEditor::~StudentEditor()
 {
+    delete pdfview;
+    delete pdfdoc;
     delete ui;
-    if (pdfview) {
-        delete pdfview;
+}
+
+void StudentEditor::refresh() {
+    ui->ID->setText(id);
+    ui->contestname->setText(contest->name);
+    if(contest->start_enabled){
+        ui->StartTime->setEnabled(true);
+        ui->StartTime->setDateTime(contest->start_time);
+    } else ui->StartTime->setEnabled(false);
+    if(contest->end_enabled){
+        ui->EndTime->setEnabled(true);
+        ui->EndTime->setDateTime(contest->end_time);
+    } else ui->EndTime->setEnabled(false);
+    ui->Problist->clear();
+    for(auto p = contest->problems.begin();p!=contest->problems.end();p++) {
+        ui->Problist->addItem(p->name);
     }
-    if (pdfdoc) {
-        delete pdfdoc;
+    if(!contest->problems.contains(curProb)) {
+        ui->probnametext->clear();
+        ui->timelimtext->clear();
+        ui->memlimtext->clear();
+        ui->probtypetext->clear();
+        pdfview->hide();
+    }
+    else {
+        ui->probnametext->setText(contest->problems[curProb].name);
+        ui->timelimtext->setText(QString::number(contest->problems[curProb].time_limit_ms));
+        ui->memlimtext->setText(QString::number(contest->problems[curProb].mem_limit_MiB));
+        ui->probtypetext->setText(ProbTypeName[int(contest->problems[curProb].type)]);
+        QBuffer buffer(&contest->problems[curProb].contentpdf);
+        buffer.open(QIODevice::ReadOnly);
+        pdfdoc->load(&buffer);
+        pdfview->setDocument(pdfdoc);
+        pdfview->show();
+        update();
     }
 }
 
 void StudentEditor::on_submitbtn_clicked(){
-    if(problem.name == ""){
-        QMessageBox::warning(this, "警告", "请选择作答题目。");
+    QDateTime start_time = contest->start_time;
+    QDateTime end_time = contest->end_time;
+    if(contest->start_enabled && start_time > QDateTime::currentDateTime()) {
+        QMessageBox::warning(NULL, "warning", tr("Contest has not started yet!"), QMessageBox::Yes, QMessageBox::Yes);
         return;
     }
-    else{
-        SubmitIDE* IDE = new SubmitIDE();
-        IDE->father = this;
-        IDE->problem = problem;
-        IDE->judgeinfo = &judgeinfo;
-        IDE->maindir = maindir;
-        IDE->show();
+    if(contest->end_enabled && QDateTime::currentDateTime() > end_time){
+        QMessageBox::warning(NULL, "warning", tr("Contest has already ended!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
     }
-}
 
-
-void StudentEditor::set_time(){
-    if(contest.start_enabled ){
-        ui->StartTime->setDateTime(contest.start_time);
+    if(!contest->problems.contains(curProb)) {
+        QMessageBox::warning(NULL, "warning", tr("Problem not selected!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
     }
-    if(contest.end_enabled){
-        ui->EndTime->setDateTime(contest.end_time);
+    else {
+        judgeinfo[curProb].id=id;
+        judgeinfo[curProb].pwd=pwd;
+        judgeinfo[curProb].problem=curProb;
+        IDE.father = this;
+        IDE.problem = contest->problems[curProb];
+        IDE.judgeinfo = &judgeinfo[curProb];
+        IDE.maindir = ctPath;
+        IDE.show();
     }
-}
-
-void StudentEditor::load_prob(){
-    for(auto p = contest.problems.begin();p!=contest.problems.end();p++){
-        ui->Problist->addItem(p->name);
-    }
-}
-
-void StudentEditor::set_name(){
-    ui->contestname->setText(contest.name);
-}
-void StudentEditor::view(){
-        if(pdfview) {
-            delete pdfview;
-        }
-        if(pdfdoc)
-        {
-            delete pdfdoc;
-        }
-        pdfview=new QPdfView(ui->PDF);
-        pdfview->setPageMode(QPdfView::PageMode::MultiPage);
-        pdfview->setZoomMode(QPdfView::ZoomMode::FitToWidth);
-        ui->PDF->setWidget(pdfview);
-        pdfdoc = new QPdfDocument(ui->PDF);
-        pdfview->setDocument(pdfdoc);
-        pdfview->hide();
-        if(ui->Problist->selectedItems().size()!=1) return;
-        QString prob_name=ui->Problist->selectedItems().constFirst()->text();
-        if(contest.problems.contains(prob_name)){
-            problem = contest.problems[prob_name];
-            // problem.toStudentPack();
-            QBuffer buffer(&problem.contentpdf);
-            buffer.open(QIODevice::ReadOnly);
-            pdfdoc->load(&buffer);
-            pdfview->setDocument(pdfdoc);
-            pdfview->show();
-        }
-        QMessageBox::warning(this, "成功", "PDF文档准备完成。");
-        pdfview->setDocument(pdfdoc);
-        pdfview->show();
-}
-void StudentEditor::on_viewbtn_clicked(){
-    view();
 }
 
 void StudentEditor::on_returnbtn_clicked(){
@@ -97,17 +95,23 @@ void StudentEditor::on_returnbtn_clicked(){
 }
 
 void StudentEditor::on_savebtn_clicked(){
-    judgeinfo.id = id;
-    judgeinfo.pwd = pwd;
-    submission.JsonSubmission();
-    QFile Submit(maindir + contest.name +" "+ submission.usrname + ".ans");
-    if(Submit.open(QIODevice::WriteOnly | QIODevice::Truncate)){
-        QJsonDocument studentfile;
-        studentfile.setObject(submission.SubmissionObj);
-        QTextStream stream2(&Submit);
-        stream2 <<(studentfile.toJson());
-        Submit.close();
+    QString sspPath=QFileDialog::getSaveFileName(this, tr("Save submission pack"), ctPath+id+sspack, tr("student submission pack (*.sspack)"));
+    QFile savef(sspPath);
+    if (!savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        QMessageBox::warning(NULL, "warning", tr("Failed while saving submission pack!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
     }
-    QMessageBox::information(nullptr, "信息提示", "保存答案成功");
+
+    QJsonDocument doc;
+    doc.setObject(JudgeInfo::packInfoList(judgeinfo.values()));
+    QTextStream stream(&savef);
+    stream << Encryption::encrypt_data(doc.toJson());
+    savef.close();
 }
 
+
+void StudentEditor::on_Problist_itemClicked(QListWidgetItem *item)
+{
+    curProb=item->text();
+    refresh();
+}

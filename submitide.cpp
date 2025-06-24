@@ -39,7 +39,7 @@ void SubmitIDE::on_testbtn_clicked(){
     judge.show();
     judge.prepareJudge(problem, judgeinfo->id,maindir,judgeinfo->pans);
     for(int caseid:problem.testdata.subtasks[0].cases)
-        judge.runJudge(problem,submission->id,submission->answers,caseid);
+        judge.runJudge(problem,judgeinfo->id,judgeinfo->pans,caseid);
     judge.startJudge();
 }
 

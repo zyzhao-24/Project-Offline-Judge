@@ -6,6 +6,7 @@ login::login(QWidget *parent)
     , ui(new Ui::login)
 {
     ui->setupUi(this);
+    ui->passwordline->setEchoMode(QLineEdit::Password);
 }
 
 login::~login()
@@ -34,10 +35,7 @@ void login::on_loginbtn_clicked(){
         password = ui->passwordline->text();
         if(contest.participants.contains(username)){
             QString pwd = contest.participants[username].pwd;
-            if(password == pwd) {
-                QMessageBox::warning(NULL, "warning", tr("Verification Success!"), QMessageBox::Yes, QMessageBox::Yes);
-            }
-            else {
+            if(password != pwd) {
                 QMessageBox::warning(NULL, "warning", tr("Wrong Password!"), QMessageBox::Yes, QMessageBox::Yes);
                 return;
             }
@@ -64,15 +62,15 @@ void login::on_loginbtn_clicked(){
         QMessageBox::warning(NULL, "warning", tr("Contest has already ended!"), QMessageBox::Yes, QMessageBox::Yes);
         return;
     }
+    contest.unpackFiles(sctPath);
     StudentEditor* Editor=new StudentEditor();
-    Editor->maindir = sctPath;
-    Editor->contest = contest;
-    Editor->show();
-    Editor->set_name();
-    Editor->set_time();
-    Editor->load_prob();
+    Editor->ctPath = sctPath;
+    Editor->contest = &contest;
+    Editor->father = father;
     Editor->id = username;
     Editor->pwd = password;
+    Editor->refresh();
+    Editor->show();
     this->hide();
 }
 
