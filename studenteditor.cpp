@@ -81,10 +81,10 @@ void StudentEditor::on_submitbtn_clicked(){
         judgeinfo[curProb].id=id;
         judgeinfo[curProb].pwd=pwd;
         judgeinfo[curProb].problem=curProb;
-        IDE.father = this;
         IDE.problem = contest->problems[curProb];
         IDE.judgeinfo = &judgeinfo[curProb];
-        IDE.maindir = ctPath;
+        IDE.ctPath = ctPath;
+        IDE.refresh();
         IDE.show();
     }
 }

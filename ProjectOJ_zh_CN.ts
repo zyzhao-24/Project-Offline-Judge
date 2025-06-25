@@ -282,9 +282,8 @@
 <context>
     <name>IDEGroupWidget</name>
     <message>
-        <location filename="idegroupwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>表单</translation>
+        <translation type="vanished">表单</translation>
     </message>
 </context>
 <context>
@@ -735,8 +734,12 @@
     </message>
     <message>
         <location filename="problemeditor.ui" line="676"/>
+        <source>Rename</source>
+        <translation>重命名</translation>
+    </message>
+    <message>
         <source>Modify</source>
-        <translation>修改</translation>
+        <translation type="vanished">修改</translation>
     </message>
     <message>
         <location filename="problemeditor.ui" line="834"/>
@@ -987,6 +990,7 @@
     </message>
     <message>
         <location filename="problemeditor.cpp" line="337"/>
+        <location filename="problemeditor.cpp" line="465"/>
         <source>Invalid template file name!(template file name should be the name of original code+&quot;.tpl&quot;, e.g. example.cpp.tpl)</source>
         <oldsource>Invalid template file name!(template file name should be the name of original code+&quot;.tpl&quot;),e.g. example.cpp.tpl</oldsource>
         <translation>代码模板文件名称非法！（合法的名称应当为源文件名称+“.tpl”，如example.cpp.tpl）</translation>
@@ -994,18 +998,21 @@
     <message>
         <location filename="problemeditor.cpp" line="344"/>
         <location filename="problemeditor.cpp" line="473"/>
+        <location filename="problemeditor.cpp" line="530"/>
         <source>File already exists!</source>
         <translation>文件已经存在！</translation>
     </message>
     <message>
         <location filename="problemeditor.cpp" line="348"/>
-        <location filename="problemeditor.cpp" line="469"/>
+        <location filename="problemeditor.cpp" line="478"/>
+        <location filename="problemeditor.cpp" line="526"/>
         <source>Invalid file name!</source>
         <translation>文件名不合法！</translation>
     </message>
     <message>
         <location filename="problemeditor.cpp" line="352"/>
         <location filename="problemeditor.cpp" line="426"/>
+        <location filename="problemeditor.cpp" line="455"/>
         <source>Invalid file type/category!</source>
         <translation>文件类别不合法！</translation>
     </message>
@@ -1015,22 +1022,34 @@
         <translation>仅选手提交文件类别允许添加代码模板文件！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="479"/>
+        <location filename="problemeditor.cpp" line="435"/>
+        <location filename="problemeditor.cpp" line="438"/>
+        <source>question</source>
+        <translation>询问</translation>
+    </message>
+    <message>
+        <location filename="problemeditor.cpp" line="435"/>
+        <location filename="problemeditor.cpp" line="438"/>
+        <source>Remove local file as well?</source>
+        <translation>是否同时移除本地文件？</translation>
+    </message>
+    <message>
+        <location filename="problemeditor.cpp" line="536"/>
         <source>Input file does not exist!</source>
         <translation>输入文件不存在！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="485"/>
+        <location filename="problemeditor.cpp" line="542"/>
         <source>Invalid file category!</source>
         <translation>文件类别非法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="489"/>
+        <location filename="problemeditor.cpp" line="546"/>
         <source>File in submission category not allowed in precompile stage!</source>
         <translation>需要选手提交的文件不能在预编译阶段作为源文件！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="494"/>
+        <location filename="problemeditor.cpp" line="551"/>
         <source>Input file duplicated!</source>
         <translation>源文件重复！</translation>
     </message>
@@ -1145,9 +1164,13 @@
 <context>
     <name>StudentEditor</name>
     <message>
-        <location filename="studenteditor.ui" line="26"/>
         <source>MainWindow</source>
-        <translation>主窗口</translation>
+        <translation type="vanished">主窗口</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.ui" line="26"/>
+        <source>Contest View</source>
+        <translation>查看比赛</translation>
     </message>
     <message>
         <location filename="studenteditor.ui" line="45"/>
@@ -1315,7 +1338,7 @@
         <translation>学生提交文件包 (*.sspack)</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="101"/>
+        <location filename="studenteditor.cpp" line="104"/>
         <source>Failed while saving submission pack!</source>
         <translation>提交文件包保存失败！</translation>
     </message>
@@ -1346,44 +1369,49 @@
 <context>
     <name>SubmitIDE</name>
     <message>
-        <location filename="submitide.ui" line="14"/>
         <source>Form</source>
-        <translation>表单</translation>
+        <translation type="vanished">表单</translation>
     </message>
     <message>
-        <location filename="submitide.ui" line="29"/>
         <source>Back To Home</source>
-        <translation>返回主页</translation>
+        <translation type="vanished">返回主页</translation>
     </message>
     <message>
-        <location filename="submitide.ui" line="45"/>
+        <location filename="submitide.ui" line="44"/>
         <source>IDE</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="submitide.ui" line="61"/>
         <source>Tab 1</source>
-        <translation>页面1</translation>
+        <translation type="vanished">页面1</translation>
     </message>
     <message>
-        <location filename="submitide.ui" line="76"/>
         <source>Tab 2</source>
-        <translation>页面2</translation>
+        <translation type="vanished">页面2</translation>
     </message>
     <message>
-        <location filename="submitide.ui" line="94"/>
+        <location filename="submitide.ui" line="26"/>
+        <source>Submit for Test</source>
+        <translation>提交测试</translation>
+    </message>
+    <message>
+        <location filename="submitide.ui" line="73"/>
         <source>Submit</source>
         <translation>提交</translation>
     </message>
     <message>
-        <location filename="submitide.ui" line="113"/>
+        <location filename="submitide.ui" line="92"/>
         <source>Test</source>
         <translation>测试</translation>
     </message>
     <message>
-        <location filename="submitide.ui" line="132"/>
         <source>Init</source>
-        <translation>初始化</translation>
+        <translation type="vanished">初始化</translation>
+    </message>
+    <message>
+        <location filename="submitide.cpp" line="122"/>
+        <source>Cannot submit problem before testing!</source>
+        <translation>在完成测试前无法提交代码！</translation>
     </message>
 </context>
 <context>

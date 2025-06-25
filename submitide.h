@@ -1,23 +1,12 @@
 #ifndef SUBMITIDE_H
 #define SUBMITIDE_H
 
-
-#include <QMainWindow>
+#include <QWidget>
 #include <QMessageBox>
-#include <QFileDialog>
-#include <QPdfView>
-#include <QPdfDocument>
-#include <QPaintDevice>
-#include <QPagedPaintDevice>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QListWidget>
-#include <QTableWidget>
-#include <QLineEdit>
-#include <QComboBox>
+#include <QPlainTextEdit>
+#include <QMutex>
 #include "ctsettings.h"
-#include "idehighlighter.h"
-#include "idegroupwidget.h"
+#include "texthighlighter.h"
 #include "judgingwidget.h"
 
 namespace Ui {
@@ -30,26 +19,27 @@ class SubmitIDE : public QWidget
 
 
 public:
-    explicit SubmitIDE(QWidget *parent = nullptr, Problem prob = Problem());
+    explicit SubmitIDE(QWidget *parent = nullptr);
     ~SubmitIDE();
-    QMainWindow * father = nullptr;
-    IDEHighlighter* highlighter;
-    Submission* submission;
-    JudgeInfo* judgeinfo;
+
+    JudgeInfo * judgeinfo;
+    JudgeInfo currentinfo;
     Problem problem;
     JudgingWidget judge;
-    QString maindir;
-    void submit();
+    QString ctPath;
+    QList<TextHighlighter*> highlighters;
+    QMap<QString, QPlainTextEdit*> editors;
+
+    QMutex testmutex;
+    bool tested = false;
+    void refresh();
+    void set_tested();
+    void runtest();
 
 private slots:
-    void on_returnbtn_clicked();
-
     void on_testbtn_clicked();
 
     void on_submitbtn_clicked();
-
-    void on_initbtn_clicked();
-
 
 private:
     Ui::SubmitIDE *ui;
