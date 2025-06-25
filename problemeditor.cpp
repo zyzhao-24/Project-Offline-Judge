@@ -432,15 +432,72 @@ void ProblemEditor::on_jutilsrembtn_clicked()
 
     if(category==Problem::Utility::FileCategory::resource||
         (category==Problem::Utility::FileCategory::testdata&&type!=Problem::Utility::FileType::plain) )
-        FileOp::remove(probPath+name);
+        if(QMessageBox::question(this, tr("question"), tr("Remove local file as well?"), QMessageBox::Yes|QMessageBox::No)==QMessageBox::Yes)
+            FileOp::remove(probPath+name);
     if(type==Problem::Utility::FileType::templ)
-        FileOp::remove(probPath+name+".tpl");
+        if(QMessageBox::question(this, tr("question"), tr("Remove local file as well?"), QMessageBox::Yes|QMessageBox::No)==QMessageBox::Yes)
+            FileOp::remove(probPath+name+".tpl");
     problem->utils.remove(name);
 
     loadUtils();
     problem->validationSuccess=false;
     ui->validationbtn_2->setChecked(true);
     ui->validationbtn->setChecked(false);
+    return;
+}
+
+void ProblemEditor::on_jutilsrenbtn_clicked()
+{
+    QString name=ui->jutilswid->currentItem()->text();
+    // invalid type/category filter
+    if(problem->utils[name].category==Problem::Utility::FileCategory::builtin||
+        problem->utils[name].filetype==Problem::Utility::FileType::snippet) {
+        QMessageBox::warning(NULL, "warning", tr("Invalid file type/category!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    Problem::Utility util=problem->utils.take(name);
+
+    QString newname=ui->filenametext->text();
+    // process template file name
+    if(util.filetype==Problem::Utility::FileType::templ) {
+        if(!name.endsWith(".tpl")) {
+            problem->utils[name]=util;
+            QMessageBox::warning(NULL, "warning", tr("Invalid template file name!(template file name should be the name of original code+\".tpl\", e.g. example.cpp.tpl)"), QMessageBox::Yes, QMessageBox::Yes);
+            return;
+        }
+        name.erase(name.end()-4,name.end());
+    }
+    // validate filename
+    if(problem->utils.contains(name)) {
+        problem->utils[name]=util;
+        QMessageBox::warning(NULL, "warning", tr("File already exists!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+    if(!StrVal::isValidFileName(name)) {
+        problem->utils[name]=util;
+        QMessageBox::warning(NULL, "warning", tr("Invalid file name!"), QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+
+    if(name!=newname) {
+        if(util.filetype==Problem::Utility::FileType::templ) FileOp::rename(probPath+name+templ,probPath+newname+templ,true);
+        if(util.category==Problem::Utility::FileCategory::resource||
+            (util.category==Problem::Utility::FileCategory::testdata&&util.filetype==Problem::Utility::FileType::code)) FileOp::rename(probPath+name,probPath+newname,true);
+        util.filename=newname;
+    }
+
+    Problem::Utility::FileCategory category=Problem::Utility::FileCategory(ui->categorycombo->currentIndex());
+    Problem::Utility::FileType type=Problem::Utility::FileType(ui->filetypecombo->currentIndex());
+    if(util.category==Problem::Utility::FileCategory::resource||
+        (util.category==Problem::Utility::FileCategory::testdata&&util.filetype==Problem::Utility::FileType::code))
+        if(category==Problem::Utility::FileCategory::resource||
+            (category==Problem::Utility::FileCategory::testdata&&type==Problem::Utility::FileType::code))
+        {
+            util.category=category;
+            util.filetype=type;
+        }
+    problem->utils[newname]=util;
+    loadUtils();
     return;
 }
 
@@ -588,10 +645,3 @@ void ProblemEditor::on_JudgeSettingBTN_clicked()
     connect(&judgeset,&JudgeSetting::ExitWin,this,&ProblemEditor::show);
     this->hide();
 }
-
-void ProblemEditor::on_jutilsmodbtn_clicked()
-{
-    CodeEditorWidget *codeedit=new CodeEditorWidget(ui->filenametext->text());
-    codeedit->show();
-}
-
