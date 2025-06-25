@@ -80,7 +80,7 @@ private slots:
 
     void on_jutilsrembtn_clicked();
 
-
+    void on_jutilsrenbtn_clicked();
 
     void on_phaserbtn_clicked();
 
@@ -93,11 +93,10 @@ private slots:
     void on_cplsettabwid_itemClicked(QTableWidgetItem *item);
 
     void on_TestDataBTN_clicked();
+
     void on_validationbtn_clicked();
 
     void on_validationbtn_2_clicked();
-
-    void on_jutilsmodbtn_clicked();
 
     void on_JudgeSettingBTN_clicked();
 
