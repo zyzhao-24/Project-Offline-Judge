@@ -16,7 +16,6 @@
 #include <QComboBox>
 #include <QWidget>
 #include "ctsettings.h"
-#include "packer.h"
 #include <QDateTime>
 #include "studenteditor.h"
 

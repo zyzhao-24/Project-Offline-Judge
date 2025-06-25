@@ -16,7 +16,6 @@
 #include <QDebug>
 #include "Qaesencryption/qaesencryption.h"
 #include <QByteArray>
-#include "packer.h"
 
 enum TResult {
     _ok = 0,
@@ -1134,28 +1133,6 @@ public:
         files=ContestObj["files"].toObject();
         return loadProblemArray(ProblemArray);
     }
-};
-class Submission{
-public:
-    Submission(){}
-    QString usrname="";//Student Basic info
-    QString id="";
-    QString pwd="";
-    QMap<QString,QString> answers;
-    QJsonObject SubmissionObj;//Final upload jsonfile
-    void JsonSubmission(){
-        QJsonObject submission;
-        submission.insert("usrname",usrname);
-        submission.insert("id",id);
-        submission.insert("pwd",pwd);
-        QJsonObject anss;
-        for(auto it = answers.begin();it!=answers.end();it++){
-            anss[it.key()] = it.value();
-        }
-        submission.insert("answer",anss);
-        SubmissionObj = submission;
-    }
-    //应该能够一次上传一个contest的多个问题的答案
 };
 class JudgeInfo {
 public:

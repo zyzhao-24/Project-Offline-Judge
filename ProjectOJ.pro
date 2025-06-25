@@ -20,15 +20,13 @@ SOURCES += \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
-    packer.cpp \
     problemeditor.cpp \
-    idegroupwidget.cpp \
-    idehighlighter.cpp \
     procexecinfowidget.cpp \
     studenteditor.cpp \
     submissioninfo.cpp \
     submitide.cpp \
-    testdataprocessor.cpp
+    testdataprocessor.cpp \
+    texthighlighter.cpp
 
 HEADERS += \
     Qaesencryption/aesni/aesni-enc-cbc.h \
@@ -47,9 +45,6 @@ HEADERS += \
     login.h \
     mainwindow.h \
     problemeditor.h \
-    idegroupwidget.h \
-    idehighlighter.h \
-    packer.h \
     procexecinfowidget.h \
     studenteditor.h \
     submissioninfo.h \
@@ -57,6 +52,7 @@ HEADERS += \
     procexelib.h \
     testdataprocessor.h \
     testlib/testlib.h \
+    texthighlighter.h \
     val_utils.h
 
 FORMS += \
@@ -73,7 +69,6 @@ FORMS += \
     studenteditor.ui \
     submissioninfo.ui \
     submitide.ui \
-    idegroupwidget.ui \
     testdataprocessor.ui
 
 TRANSLATIONS += \

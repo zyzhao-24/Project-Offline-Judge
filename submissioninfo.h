@@ -2,38 +2,13 @@
 #define SUBMISSIONINFO_H
 
 #include <QWidget>
-#include <QSyntaxHighlighter>
 
 #include "ctsettings.h"
+#include "texthighlighter.h"
 
 namespace Ui {
 class SubmissionInfo;
 }
-
-class SubmissionHighlighter : public QSyntaxHighlighter {
-    Q_OBJECT
-public:
-    SubmissionHighlighter(QTextDocument *parent=nullptr,const QString& suffix={});
-protected:
-    void highlightBlock(const QString& text) override;
-private:
-    struct HighlightingRule
-    {
-        QRegularExpression pattern;
-        QTextCharFormat format;
-    };
-    QList<HighlightingRule> highlightingRules;
-
-    QRegularExpression commentStartExpression;
-    QRegularExpression commentEndExpression;
-
-    QTextCharFormat keywordFormat;
-    QTextCharFormat macrosFormat;
-    QTextCharFormat singleLineCommentFormat;
-    QTextCharFormat multiLineCommentFormat;
-    QTextCharFormat quotationFormat;
-    QTextCharFormat functionFormat;
-};
 
 class SubmissionInfo : public QWidget
 {
@@ -47,7 +22,7 @@ public:
     void addcase(int caseid,TResult verdict,double score);
 private:
     Ui::SubmissionInfo *ui;
-    QList<SubmissionHighlighter*> highlighters;
+    QList<TextHighlighter*> highlighters;
 };
 
 #endif // SUBMISSIONINFO_H

@@ -15,7 +15,6 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include "ctsettings.h"
-#include "packer.h"
 #include "submitide.h"
 
 namespace Ui {

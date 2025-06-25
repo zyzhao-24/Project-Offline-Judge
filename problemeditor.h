@@ -17,7 +17,6 @@
 #include <QStandardItem>
 #include "ctsettings.h"
 #include "testdataprocessor.h"
-#include "codeeditorwidget.h"
 #include "judgesetting.h"
 const int max_cplsrc=4;
 
