@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>676</width>
+    <width>800</width>
     <height>568</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>676</width>
+    <width>800</width>
     <height>568</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>676</width>
+    <width>800</width>
     <height>568</height>
    </size>
   </property>
@@ -36,7 +36,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>381</width>
+     <width>501</width>
      <height>551</height>
     </rect>
    </property>
@@ -44,7 +44,7 @@
   <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
     <rect>
-     <x>400</x>
+     <x>520</x>
      <y>10</y>
      <width>271</width>
      <height>551</height>
@@ -81,7 +81,7 @@
     <number>16</number>
    </attribute>
    <attribute name="horizontalHeaderDefaultSectionSize">
-    <number>80</number>
+    <number>90</number>
    </attribute>
    <attribute name="horizontalHeaderHighlightSections">
     <bool>false</bool>
