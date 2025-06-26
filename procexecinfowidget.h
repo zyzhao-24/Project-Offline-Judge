@@ -18,11 +18,7 @@ public:
     Problem* problem=nullptr;
     void refresh();
 private slots:
-    void on_procnameTXT_editingFinished();
-
     void on_interactchkBox_checkStateChanged(const Qt::CheckState &arg1);
-
-    void on_paramsTXT_editingFinished();
 
     void on_IntercomboBox_currentTextChanged(const QString &arg1);
 

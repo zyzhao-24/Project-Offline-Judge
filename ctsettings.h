@@ -553,9 +553,9 @@ const QMap<QString,int> ProbTypeID = {
 class JudgeProcess {
 public:
     QMap<QString,QString> folder;
-    unsigned int pipecount;
+    unsigned int pipecount=0;
     struct process{
-        bool isInteractor;
+        bool isInteractor=false;
         QString interpreter;
         QString proc_name;
         int stdin_id=-1,stdout_id=-1;//not connected:-1,file:-2,pipe:0-(pipecount-1)
