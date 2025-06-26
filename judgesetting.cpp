@@ -145,6 +145,7 @@ void JudgeSetting::on_exeaddBTN_clicked()
     problem->judge_proc.execute_info.append(JudgeProcess::process());
     ProcExecInfoWidget* execinfowid=new ProcExecInfoWidget(this);
     execinfowid->exec_info=&problem->judge_proc.execute_info.back();
+    execinfowid->problem=problem;
     ui->tabWidget->addTab(execinfowid,tr("Process ")+QString::number(ui->tabWidget->count()+1));
 
 }
@@ -163,12 +164,7 @@ void JudgeSetting::on_chkaddBTN_clicked()
     QString inputFilename=ui->chkinputTXT->text();
     QString outputFilename=ui->chkoutputTXT->text();
     QString answerFilename=ui->chkansTXT->text();
-    JudgeProcess::ChkCmd *Chk=new JudgeProcess::ChkCmd();
-    Chk->checker=checkername;
-    Chk->answerFile=answerFilename;
-    Chk->inputFile=inputFilename;
-    Chk->outputFile=outputFilename;
-    problem->judge_proc.checkersCmds.append(*Chk);
+    problem->judge_proc.checkersCmds.append(JudgeProcess::ChkCmd{checkername,inputFilename,outputFilename,answerFilename});
     ui->checkerLWid->addItem(checkername+" "+inputFilename+" "+outputFilename+" "+answerFilename);
 }
 

@@ -28,11 +28,6 @@ void ProcExecInfoWidget::refresh() {
     ui->outfnamepipeTXT->setText(exec_info->stdout_file);
 }
 
-void ProcExecInfoWidget::on_procnameTXT_editingFinished()
-{
-    exec_info->proc_name=ui->procnameTXT->text();
-}
-
 
 void ProcExecInfoWidget::on_interactchkBox_checkStateChanged(const Qt::CheckState &arg1)
 {
@@ -40,13 +35,6 @@ void ProcExecInfoWidget::on_interactchkBox_checkStateChanged(const Qt::CheckStat
         exec_info->isInteractor=1;
     else exec_info->isInteractor=0;
 }
-
-
-void ProcExecInfoWidget::on_paramsTXT_editingFinished()
-{
-    exec_info->params=parseCombinedArgString(ui->paramsTXT->text());
-}
-
 
 void ProcExecInfoWidget::on_IntercomboBox_currentTextChanged(const QString &arg1)
 {
@@ -64,13 +52,13 @@ void ProcExecInfoWidget::on_refreshBTN_clicked()
     if(ui->innone->isChecked()) {
         exec_info->stdin_id=-1;
         exec_info->stdin_file="";
-    } else if(ui->infile) {
+    } else if(ui->infile->isChecked()) {
         exec_info->stdin_id=-2;
         exec_info->stdin_file=ui->infnamepipeTXT->text();
     } else {
         bool ok;
         exec_info->stdin_id=ui->infnamepipeTXT->text().toInt(&ok);
-        if(ok) {
+        if(ok && exec_info->stdin_id>=0 && exec_info->stdin_id<problem->judge_proc.pipecount) {
             exec_info->stdin_file=ui->infnamepipeTXT->text();
         } else {
             exec_info->stdin_id=-1;
@@ -80,13 +68,13 @@ void ProcExecInfoWidget::on_refreshBTN_clicked()
     if(ui->outnone->isChecked()) {
         exec_info->stdout_id=-1;
         exec_info->stdout_file="";
-    } else if(ui->outfile) {
+    } else if(ui->outfile->isChecked()) {
         exec_info->stdout_id=-2;
         exec_info->stdout_file=ui->outfnamepipeTXT->text();
     } else {
         bool ok;
         exec_info->stdout_id=ui->outfnamepipeTXT->text().toInt(&ok);
-        if(ok) {
+        if(ok && exec_info->stdout_id>=0 && exec_info->stdout_id<problem->judge_proc.pipecount) {
             exec_info->stdout_file=ui->outfnamepipeTXT->text();
         } else {
             exec_info->stdout_id=-1;
