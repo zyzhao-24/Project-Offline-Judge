@@ -24,6 +24,7 @@ public:
 
     JudgeInfo * judgeinfo;
     JudgeInfo currentinfo;
+    Contest* contest;
     Problem problem;
     JudgingWidget judge;
     QString ctPath;
@@ -35,7 +36,8 @@ public:
     void refresh();
     void set_tested();
     void runtest();
-
+protected:
+    void closeEvent(QCloseEvent *event);
 private slots:
     void on_testbtn_clicked();
 

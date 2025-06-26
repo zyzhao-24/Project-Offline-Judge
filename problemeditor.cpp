@@ -197,6 +197,12 @@ void ProblemEditor::update_cplsrc_option() {
                 it=utilslist.erase(it)-1;
                 continue;
             }
+        } else {
+            if(util.category==Problem::Utility::FileCategory::testdata)
+            {
+                it=utilslist.erase(it)-1;
+                continue;
+            }
         }
     }
     for(int index=0;index<max_cplsrc;index++) {

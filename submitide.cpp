@@ -100,7 +100,19 @@ void SubmitIDE::set_tested() {
     testmutex.unlock();
 }
 
-void SubmitIDE::on_testbtn_clicked(){
+void SubmitIDE::on_testbtn_clicked() {
+    QDateTime start_time = contest->start_time;
+    QDateTime end_time = contest->end_time;
+    if(contest->start_enabled && start_time > QDateTime::currentDateTime()) {
+        QMessageBox::warning(NULL, "warning", tr("Contest has not started yet!"), QMessageBox::Yes, QMessageBox::Yes);
+        this->close();
+        return;
+    }
+    if(contest->end_enabled && QDateTime::currentDateTime() > end_time){
+        QMessageBox::warning(NULL, "warning", tr("Contest has already ended!"), QMessageBox::Yes, QMessageBox::Yes);
+        this->close();
+        return;
+    }
     testmutex.lock();
     tested=false;
     testmutex.unlock();
@@ -114,7 +126,19 @@ void SubmitIDE::on_testbtn_clicked(){
     judge.startJudge();
 }
 
-void SubmitIDE::on_submitbtn_clicked(){
+void SubmitIDE::on_submitbtn_clicked() {
+    QDateTime start_time = contest->start_time;
+    QDateTime end_time = contest->end_time;
+    if(contest->start_enabled && start_time > QDateTime::currentDateTime()) {
+        QMessageBox::warning(NULL, "warning", tr("Contest has not started yet!"), QMessageBox::Yes, QMessageBox::Yes);
+        this->close();
+        return;
+    }
+    if(contest->end_enabled && QDateTime::currentDateTime() > end_time){
+        QMessageBox::warning(NULL, "warning", tr("Contest has already ended!"), QMessageBox::Yes, QMessageBox::Yes);
+        this->close();
+        return;
+    }
     testmutex.lock();
     bool testedstatus=tested;
     testmutex.unlock();
@@ -123,4 +147,9 @@ void SubmitIDE::on_submitbtn_clicked(){
         return;
     }
     *judgeinfo=currentinfo;
+    this->close();
+}
+
+void SubmitIDE::closeEvent(QCloseEvent* event) {
+    judge.close();
 }

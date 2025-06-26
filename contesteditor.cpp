@@ -114,6 +114,8 @@ void ContestEditor::save() {
 
 void ContestEditor::savestu() {
     QString studentdir = QFileDialog::getSaveFileName(nullptr,tr("Export Student Contest Setting File"),contest.name+sctinfo, tr("student contest info (*.sctinfo)"));
+    if(studentdir.isEmpty())
+        return;
     QFile all_savef(studentdir);
     if (!all_savef.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         QMessageBox::warning(NULL, "warning", tr("Failed while saving student contest settings!"), QMessageBox::Yes, QMessageBox::Yes);

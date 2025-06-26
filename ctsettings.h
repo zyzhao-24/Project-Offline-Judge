@@ -228,7 +228,8 @@ public:
     static QByteArray decrypt_bytearray(const QByteArray& enc_data) {
         QByteArray key=QCryptographicHash::hash(keyStr.toLocal8Bit(),QCryptographicHash::Sha256);
         QAESEncryption encry(QAESEncryption::AES_256, QAESEncryption::ECB, QAESEncryption::PKCS7);
-        return encry.decode(enc_data, key);
+        QByteArray dec_data_ba = encry.decode(enc_data, key);
+        return QAESEncryption::RemovePadding(dec_data_ba, QAESEncryption::PKCS7);
     }
 };
 

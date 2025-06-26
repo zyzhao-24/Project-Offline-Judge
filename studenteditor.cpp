@@ -82,6 +82,7 @@ void StudentEditor::on_submitbtn_clicked(){
         judgeinfo[curProb].pwd=pwd;
         judgeinfo[curProb].problem=curProb;
         IDE.problem = contest->problems[curProb];
+        IDE.contest = contest;
         IDE.judgeinfo = &judgeinfo[curProb];
         IDE.ctPath = ctPath;
         IDE.refresh();
@@ -91,6 +92,7 @@ void StudentEditor::on_submitbtn_clicked(){
 
 void StudentEditor::on_returnbtn_clicked(){
     father->show();
+    IDE.close();
     this->destroy();
 }
 
@@ -117,4 +119,8 @@ void StudentEditor::on_Problist_itemClicked(QListWidgetItem *item)
 {
     curProb=item->text();
     refresh();
+}
+
+void StudentEditor::closeEvent(QCloseEvent* event) {
+    IDE.close();
 }
