@@ -47,7 +47,8 @@ public:
     void set_time();
     void load_prob();
     void view();
-
+protected:
+    void closeEvent(QCloseEvent *event);
 private slots:
 
     void on_submitbtn_clicked();

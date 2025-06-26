@@ -203,55 +203,55 @@
         <translation>学生试题信息 (*.sctinfo)</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="119"/>
+        <location filename="contesteditor.cpp" line="121"/>
         <source>Failed while saving student contest settings!</source>
         <translation>保存学生试题设定失败！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="125"/>
+        <location filename="contesteditor.cpp" line="127"/>
         <source>Problem not validated: </source>
         <translation>试题测试数据未验证： </translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="187"/>
+        <location filename="contesteditor.cpp" line="189"/>
         <source>Import From csv</source>
         <translation>从csv文件导入</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="187"/>
-        <location filename="contesteditor.cpp" line="235"/>
+        <location filename="contesteditor.cpp" line="189"/>
+        <location filename="contesteditor.cpp" line="237"/>
         <source>comma seperated values (*.csv)</source>
         <translation>逗号分隔符文件(*.csv)</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="193"/>
+        <location filename="contesteditor.cpp" line="195"/>
         <source>Failed while reading csv file!</source>
         <translation>读取csv文件失败！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="224"/>
+        <location filename="contesteditor.cpp" line="226"/>
         <source>lines discarded!</source>
         <translation>行无效数据被忽略！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="235"/>
+        <location filename="contesteditor.cpp" line="237"/>
         <source>Export to csv</source>
         <translation>导出为csv</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="239"/>
+        <location filename="contesteditor.cpp" line="241"/>
         <source>Failed while writing csv file!</source>
         <translation>写入csv文件失败！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="266"/>
-        <location filename="contesteditor.cpp" line="289"/>
+        <location filename="contesteditor.cpp" line="268"/>
+        <location filename="contesteditor.cpp" line="291"/>
         <source>Invalid problem name!</source>
         <translation>试题名称非法！</translation>
     </message>
     <message>
-        <location filename="contesteditor.cpp" line="270"/>
-        <location filename="contesteditor.cpp" line="293"/>
+        <location filename="contesteditor.cpp" line="272"/>
+        <location filename="contesteditor.cpp" line="295"/>
         <source>Problem name already exists!</source>
         <translation>试题名称重复！</translation>
     </message>
@@ -421,7 +421,7 @@
     </message>
     <message>
         <location filename="judgesetting.cpp" line="64"/>
-        <location filename="judgesetting.cpp" line="148"/>
+        <location filename="judgesetting.cpp" line="149"/>
         <source>Process </source>
         <translation>进程 </translation>
     </message>
@@ -960,18 +960,18 @@
         <translation> 不存在！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="248"/>
+        <location filename="problemeditor.cpp" line="254"/>
         <source>Import from pdf</source>
         <translation>从pdf导入</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="248"/>
-        <location filename="problemeditor.cpp" line="262"/>
+        <location filename="problemeditor.cpp" line="254"/>
+        <location filename="problemeditor.cpp" line="268"/>
         <source>pdf files (*.pdf)</source>
         <translation>pdf文件 (*.pdf)</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="251"/>
+        <location filename="problemeditor.cpp" line="257"/>
         <source>PDF file does not exist!</source>
         <translation>PDF文件不存在！</translation>
     </message>
@@ -980,7 +980,7 @@
         <translation type="vanished">导入pdf失败！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="262"/>
+        <location filename="problemeditor.cpp" line="268"/>
         <source>Export to pdf</source>
         <translation>导出为pdf</translation>
     </message>
@@ -989,67 +989,67 @@
         <translation type="vanished">导出pdf失败！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="337"/>
-        <location filename="problemeditor.cpp" line="465"/>
+        <location filename="problemeditor.cpp" line="343"/>
+        <location filename="problemeditor.cpp" line="471"/>
         <source>Invalid template file name!(template file name should be the name of original code+&quot;.tpl&quot;, e.g. example.cpp.tpl)</source>
         <oldsource>Invalid template file name!(template file name should be the name of original code+&quot;.tpl&quot;),e.g. example.cpp.tpl</oldsource>
         <translation>代码模板文件名称非法！（合法的名称应当为源文件名称+“.tpl”，如example.cpp.tpl）</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="344"/>
-        <location filename="problemeditor.cpp" line="473"/>
-        <location filename="problemeditor.cpp" line="530"/>
+        <location filename="problemeditor.cpp" line="350"/>
+        <location filename="problemeditor.cpp" line="479"/>
+        <location filename="problemeditor.cpp" line="536"/>
         <source>File already exists!</source>
         <translation>文件已经存在！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="348"/>
-        <location filename="problemeditor.cpp" line="478"/>
-        <location filename="problemeditor.cpp" line="526"/>
+        <location filename="problemeditor.cpp" line="354"/>
+        <location filename="problemeditor.cpp" line="484"/>
+        <location filename="problemeditor.cpp" line="532"/>
         <source>Invalid file name!</source>
         <translation>文件名不合法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="352"/>
-        <location filename="problemeditor.cpp" line="426"/>
-        <location filename="problemeditor.cpp" line="455"/>
+        <location filename="problemeditor.cpp" line="358"/>
+        <location filename="problemeditor.cpp" line="432"/>
+        <location filename="problemeditor.cpp" line="461"/>
         <source>Invalid file type/category!</source>
         <translation>文件类别不合法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="356"/>
+        <location filename="problemeditor.cpp" line="362"/>
         <source>Template file only allowed for submission category!</source>
         <translation>仅选手提交文件类别允许添加代码模板文件！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="435"/>
-        <location filename="problemeditor.cpp" line="438"/>
+        <location filename="problemeditor.cpp" line="441"/>
+        <location filename="problemeditor.cpp" line="444"/>
         <source>question</source>
         <translation>询问</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="435"/>
-        <location filename="problemeditor.cpp" line="438"/>
+        <location filename="problemeditor.cpp" line="441"/>
+        <location filename="problemeditor.cpp" line="444"/>
         <source>Remove local file as well?</source>
         <translation>是否同时移除本地文件？</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="536"/>
+        <location filename="problemeditor.cpp" line="542"/>
         <source>Input file does not exist!</source>
         <translation>输入文件不存在！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="542"/>
+        <location filename="problemeditor.cpp" line="548"/>
         <source>Invalid file category!</source>
         <translation>文件类别非法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="546"/>
+        <location filename="problemeditor.cpp" line="552"/>
         <source>File in submission category not allowed in precompile stage!</source>
         <translation>需要选手提交的文件不能在预编译阶段作为源文件！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="551"/>
+        <location filename="problemeditor.cpp" line="557"/>
         <source>Input file duplicated!</source>
         <translation>源文件重复！</translation>
     </message>
@@ -1058,33 +1058,33 @@
         <translation type="vanished">仅资源文件类别下可添加代码片段！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="364"/>
+        <location filename="problemeditor.cpp" line="370"/>
         <source>Import from file</source>
         <translation>从文件导入</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="364"/>
+        <location filename="problemeditor.cpp" line="370"/>
         <source>all files (*.*)</source>
         <translation>所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="368"/>
-        <location filename="problemeditor.cpp" line="396"/>
+        <location filename="problemeditor.cpp" line="374"/>
+        <location filename="problemeditor.cpp" line="402"/>
         <source>Failed while importing file!</source>
         <translation>导入文件失败！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="374"/>
+        <location filename="problemeditor.cpp" line="380"/>
         <source>Failed while reading template file!</source>
         <translation>读取代码模板文件失败！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="381"/>
+        <location filename="problemeditor.cpp" line="387"/>
         <source>Invalid template file!</source>
         <translation>代码模板文件不合法！</translation>
     </message>
     <message>
-        <location filename="problemeditor.cpp" line="387"/>
+        <location filename="problemeditor.cpp" line="393"/>
         <source>Invalid snippet file!</source>
         <translation>代码片段文件不合法！</translation>
     </message>
@@ -1328,17 +1328,17 @@
         <translation>未选择作答的试题！</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="98"/>
+        <location filename="studenteditor.cpp" line="100"/>
         <source>Save submission pack</source>
         <translation>保存提交文件包</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="98"/>
+        <location filename="studenteditor.cpp" line="100"/>
         <source>student submission pack (*.sspack)</source>
         <translation>学生提交文件包 (*.sspack)</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="104"/>
+        <location filename="studenteditor.cpp" line="106"/>
         <source>Failed while saving submission pack!</source>
         <translation>提交文件包保存失败！</translation>
     </message>
@@ -1409,7 +1409,19 @@
         <translation type="vanished">初始化</translation>
     </message>
     <message>
-        <location filename="submitide.cpp" line="122"/>
+        <location filename="submitide.cpp" line="107"/>
+        <location filename="submitide.cpp" line="133"/>
+        <source>Contest has not started yet!</source>
+        <translation>比赛还没有开始！</translation>
+    </message>
+    <message>
+        <location filename="submitide.cpp" line="112"/>
+        <location filename="submitide.cpp" line="138"/>
+        <source>Contest has already ended!</source>
+        <translation>比赛已经结束！</translation>
+    </message>
+    <message>
+        <location filename="submitide.cpp" line="146"/>
         <source>Cannot submit problem before testing!</source>
         <translation>在完成测试前无法提交代码！</translation>
     </message>
