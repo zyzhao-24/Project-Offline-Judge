@@ -3,10 +3,9 @@
 
 #include <QWidget>
 #include <QMessageBox>
-#include <QPlainTextEdit>
 #include <QMutex>
 #include "ctsettings.h"
-#include "texthighlighter.h"
+#include "qcodeedit.h"
 #include "judgingwidget.h"
 
 namespace Ui {
@@ -28,8 +27,7 @@ public:
     Problem problem;
     JudgingWidget judge;
     QString ctPath;
-    QList<TextHighlighter*> highlighters;
-    QMap<QString, QPlainTextEdit*> editors;
+    QMap<QString, QCodeEdit*> editors;
 
     QMutex testmutex;
     bool tested = false;

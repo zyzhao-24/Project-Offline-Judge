@@ -12,20 +12,10 @@ SubmitIDE::SubmitIDE(QWidget *parent)
 
 SubmitIDE::~SubmitIDE()
 {
-    while(!highlighters.isEmpty()) {
-        TextHighlighter* highlighter=highlighters.back();
-        highlighters.pop_back();
-        delete highlighter;
-    }
     delete ui;
 }
 
 void SubmitIDE::refresh() {
-    while(!highlighters.isEmpty()) {
-        TextHighlighter* highlighter=highlighters.back();
-        highlighters.pop_back();
-        delete highlighter;
-    }
     editors.clear();
     currentinfo=*judgeinfo;
     ui->IDEGroup->clear();
@@ -36,15 +26,12 @@ void SubmitIDE::refresh() {
             codewid->setFixedSize(ui->IDEGroup->size()-QSize({5,30}));
             codewid->show();
             ui->IDEGroup->addTab(codewid,util.filename);
-            QPlainTextEdit* codetext=new QPlainTextEdit(currentinfo.pans[util.filename],codewid);
+            QString suffix="";
+            if(util.filename.contains("."))
+                suffix=util.filename.split(".").back();
+            QCodeEdit* codetext=new QCodeEdit(currentinfo.pans[util.filename],codewid,suffix);
             editors[util.filename]=codetext;
             codetext->setFixedSize(codewid->size());
-            codetext->setPlainText(currentinfo.pans[util.filename]);
-            codetext->setFont(QFont("Consolas", 10));
-            QFontMetrics metrics(codetext->font());
-            codetext->setTabStopDistance(4 * metrics.averageCharWidth());
-            if(util.filename.contains("."))
-                highlighters.push_back(new TextHighlighter(codetext->document(),util.filename.split(".").back()));
             codetext->show();
         }
         else if(util.category == Problem::Utility::FileCategory::submission &&
@@ -53,25 +40,20 @@ void SubmitIDE::refresh() {
             codewid->setFixedSize(ui->IDEGroup->size()-QSize({5,30}));
             codewid->show();
             ui->IDEGroup->addTab(codewid,util.filename);
-            QPlainTextEdit* codetext=new QPlainTextEdit(currentinfo.pans[util.filename],codewid);
-            editors[util.filename]=codetext;
-            codetext->setFixedSize(codewid->size());
-            codetext->setPlainText(currentinfo.pans[util.filename]);
-            codetext->setFont(QFont("Consolas", 10));
-            QFontMetrics metrics(codetext->font());
-            codetext->setTabStopDistance(4 * metrics.averageCharWidth());
-
+            QString suffix="";
             for(Problem::Utility tplutil : problem.utils)
                 if(tplutil.category == Problem::Utility::FileCategory::submission &&
                     tplutil.filetype == Problem::Utility::FileType::templ &&
                     tplutil.filename.contains(".")) {
-                QString templcontent=FileOp::read(ctPath+problem.name+".probdata/"+tplutil.filename+templ);
-                if(Codetpl::get_snippets(templcontent).contains(util.filename)) {
-                    highlighters.push_back(new TextHighlighter(codetext->document(),tplutil.filename.split(".").back()));
-                    break;
+                    QString templcontent=FileOp::read(ctPath+problem.name+".probdata/"+tplutil.filename+templ);
+                    if(Codetpl::get_snippets(templcontent).contains(util.filename)) {
+                        suffix=tplutil.filename.split(".").back();
+                        break;
+                    }
                 }
-            }
-
+            QCodeEdit* codetext=new QCodeEdit(currentinfo.pans[util.filename],codewid,suffix);
+            editors[util.filename]=codetext;
+            codetext->setFixedSize(codewid->size());
             codetext->show();
         }
         else if(util.category == Problem::Utility::FileCategory::submission &&
@@ -81,13 +63,9 @@ void SubmitIDE::refresh() {
             codewid->setFixedSize(ui->IDEGroup->size()-QSize({5,30}));
             codewid->show();
             ui->IDEGroup->addTab(codewid,get_filename_with_id(util.filename,caseid));
-            QPlainTextEdit* codetext=new QPlainTextEdit(currentinfo.pans[get_filename_with_id(util.filename,caseid)],codewid);
+            QCodeEdit* codetext=new QCodeEdit(currentinfo.pans[get_filename_with_id(util.filename,caseid)],codewid);
             editors[get_filename_with_id(util.filename,caseid)]=codetext;
             codetext->setFixedSize(codewid->size());
-            codetext->setPlainText(currentinfo.pans[get_filename_with_id(util.filename,caseid)]);
-            codetext->setFont(QFont("Consolas", 10));
-            QFontMetrics metrics(codetext->font());
-            codetext->setTabStopDistance(4 * metrics.averageCharWidth());
             codetext->show();
         }
     }
@@ -117,7 +95,7 @@ void SubmitIDE::on_testbtn_clicked() {
     tested=false;
     testmutex.unlock();
     for(QString filename:editors.keys()) {
-        currentinfo.pans[filename]=editors[filename]->toPlainText();
+        currentinfo.pans[filename]=editors[filename]->text();
     }
     judge.show();
     judge.prepareJudge(problem, currentinfo.id,ctPath,currentinfo.pans);

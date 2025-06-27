@@ -51,7 +51,15 @@ void StudentEditor::refresh() {
         ui->probnametext->setText(contest->problems[curProb].name);
         ui->timelimtext->setText(QString::number(contest->problems[curProb].time_limit_ms));
         ui->memlimtext->setText(QString::number(contest->problems[curProb].mem_limit_MiB));
-        ui->probtypetext->setText(ProbTypeName[int(contest->problems[curProb].type)]);
+        const QString ProbTypeTrName[6]={
+            tr("custom"),
+            tr( "traditional"),
+            tr("submit_answer"),
+            tr("fill_in"),
+            tr("interactive"),
+            tr("communicative")
+        };
+        ui->probtypetext->setText(ProbTypeTrName[int(contest->problems[curProb].type)]);
         QBuffer buffer(&contest->problems[curProb].contentpdf);
         buffer.open(QIODevice::ReadOnly);
         pdfdoc->load(&buffer);

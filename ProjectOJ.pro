@@ -11,7 +11,6 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     Qaesencryption/qaesencryption.cpp \
-    codeeditorwidget.cpp \
     contesteditor.cpp \
     dataconfigwidget.cpp \
     judgepanel.cpp \
@@ -22,6 +21,7 @@ SOURCES += \
     mainwindow.cpp \
     problemeditor.cpp \
     procexecinfowidget.cpp \
+    qcodeedit.cpp \
     studenteditor.cpp \
     submissioninfo.cpp \
     submitide.cpp \
@@ -34,7 +34,6 @@ HEADERS += \
     Qaesencryption/aesni/aesni-key-exp.h \
     Qaesencryption/aesni/aesni-key-init.h \
     Qaesencryption/qaesencryption.h \
-    codeeditorwidget.h \
     contesteditor.h \
     ctsettings.h \
     dataconfigwidget.h \
@@ -46,6 +45,7 @@ HEADERS += \
     mainwindow.h \
     problemeditor.h \
     procexecinfowidget.h \
+    qcodeedit.h \
     studenteditor.h \
     submissioninfo.h \
     submitide.h \
@@ -56,7 +56,6 @@ HEADERS += \
     val_utils.h
 
 FORMS += \
-    codeeditorwidget.ui \
     contesteditor.ui \
     dataconfigwidget.ui \
     judgepanel.ui \
@@ -90,13 +89,22 @@ RC_ICONS = favicon.ico
 CONFIG +=debug_and_release
 CONFIG(debug,debug|release){
     testlib.path = $${OUT_PWD}\\debug
+    qsci.path = $${OUT_PWD}\\debug
+    qsci.files = \
+    $${PWD}\\Qscintilla\\lib\\qscintilla2_qt6d.dll \
+    $${PWD}\\Qscintilla\\lib\\libqscintilla2_qt6d.a
 }else{
     testlib.path = $${OUT_PWD}\\release
+    qsci.path = $${OUT_PWD}\\release
+    qsci.files = \
+    $${PWD}\\Qscintilla\\lib\\qscintilla2_qt6.dll \
+    $${PWD}\\Qscintilla\\lib\\libqscintilla2_qt6.a
 }
 testlib.files =  $${PWD}\\testlib\\testlib.h
 
 INSTALLS += \
-    testlib
+    testlib \
+    qsci
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/QScintilla/lib/ -lqscintilla2_qt6
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/QScintilla/lib/ -lqscintilla2_qt6d
