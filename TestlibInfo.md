@@ -1,3 +1,4 @@
+# Testlib说明
 ## 以下是testlib.h可用于评测机的一些说明：
 
 ### Exit Code Information
@@ -103,6 +104,60 @@ int resultExitCode(TResult r) {
 }
 ```
 注意`_pc` verdict总分为200
+### Stderr输出说明
+使用testlib.h编写的程序如需要从``stderr``输出评测结果，则遵从以下格式：
+```Verdict Str + log```
+
+其中各评测结果对应的字符串如下：
+```c++
+//truncated code
+case _ok:
+    errorName = "ok ";
+    quitscrS(LightGreen, errorName);
+    break;
+case _wa:
+    errorName = "wrong answer ";
+    quitscrS(LightRed, errorName);
+    break;
+case _pe:
+    errorName = "wrong output format ";
+    quitscrS(LightRed, errorName);
+    break;
+case _fail:
+    errorName = "FAIL ";
+    quitscrS(LightRed, errorName);
+    break;
+case _dirt:
+    errorName = "wrong output format ";
+    quitscrS(LightCyan, errorName);
+    result = _pe;
+    break;
+case _points:
+    errorName = "points ";
+    quitscrS(LightYellow, errorName);
+    break;
+case _unexpected_eof:
+    errorName = "unexpected eof ";
+    quitscrS(LightCyan, errorName);
+    break;
+default:
+    if (result >= _partially) {
+        errorName = testlib_format_("partially correct (%d) ", pctype);
+        isPartial = true;
+        quitscrS(LightYellow, errorName);
+```
+对于``points``的评测结果，在``log``中以特定格式输出得分：
+```c++
+__testlib_points = __testlib_preparePoints(points);
+std::string stringPoints = removeDoubleTrailingZeroes(testlib_format_("%.10f", __testlib_points));
+
+std::string quitMessage;
+if (NULL == message || 0 == strlen(message))
+    quitMessage = stringPoints;
+else
+    quitMessage = stringPoints + " " + message;
+```
+## 以下是关于testlib.h组件的说明
 ### Generator
 1. 命令行：`<generator.exe> [params]`，参数params为自定义，可在程序内读取，同时也用于生成随机种子
 2. 正常结束的返回值为0，否则为FAIL_EXIT_CODE

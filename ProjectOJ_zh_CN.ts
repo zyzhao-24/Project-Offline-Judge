@@ -4,24 +4,12 @@
 <context>
     <name>CodeEditorWidget</name>
     <message>
-        <location filename="codeeditorwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>表单</translation>
+        <translation type="vanished">表单</translation>
     </message>
     <message>
-        <location filename="codeeditorwidget.ui" line="48"/>
         <source>Save</source>
-        <translation>保存</translation>
-    </message>
-    <message>
-        <location filename="codeeditorwidget.ui" line="64"/>
-        <source>C/C++</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="codeeditorwidget.ui" line="77"/>
-        <source>Python</source>
-        <translation></translation>
+        <translation type="vanished">保存</translation>
     </message>
 </context>
 <context>
@@ -1313,32 +1301,62 @@
         <translation>主页</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="68"/>
+        <location filename="studenteditor.cpp" line="55"/>
+        <source>custom</source>
+        <translation>自定义</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.cpp" line="56"/>
+        <source>traditional</source>
+        <translation>传统</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.cpp" line="57"/>
+        <source>submit_answer</source>
+        <translation>提交答案</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.cpp" line="58"/>
+        <source>fill_in</source>
+        <translation>编程填空</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.cpp" line="59"/>
+        <source>interactive</source>
+        <translation>交互</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.cpp" line="60"/>
+        <source>communicative</source>
+        <translation>通信</translation>
+    </message>
+    <message>
+        <location filename="studenteditor.cpp" line="76"/>
         <source>Contest has not started yet!</source>
         <translation>比赛还没有开始！</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="72"/>
+        <location filename="studenteditor.cpp" line="80"/>
         <source>Contest has already ended!</source>
         <translation>比赛已经结束！</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="77"/>
+        <location filename="studenteditor.cpp" line="85"/>
         <source>Problem not selected!</source>
         <translation>未选择作答的试题！</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="100"/>
+        <location filename="studenteditor.cpp" line="108"/>
         <source>Save submission pack</source>
         <translation>保存提交文件包</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="100"/>
+        <location filename="studenteditor.cpp" line="108"/>
         <source>student submission pack (*.sspack)</source>
         <translation>学生提交文件包 (*.sspack)</translation>
     </message>
     <message>
-        <location filename="studenteditor.cpp" line="106"/>
+        <location filename="studenteditor.cpp" line="114"/>
         <source>Failed while saving submission pack!</source>
         <translation>提交文件包保存失败！</translation>
     </message>
@@ -1409,19 +1427,19 @@
         <translation type="vanished">初始化</translation>
     </message>
     <message>
-        <location filename="submitide.cpp" line="107"/>
-        <location filename="submitide.cpp" line="133"/>
+        <location filename="submitide.cpp" line="85"/>
+        <location filename="submitide.cpp" line="111"/>
         <source>Contest has not started yet!</source>
         <translation>比赛还没有开始！</translation>
     </message>
     <message>
-        <location filename="submitide.cpp" line="112"/>
-        <location filename="submitide.cpp" line="138"/>
+        <location filename="submitide.cpp" line="90"/>
+        <location filename="submitide.cpp" line="116"/>
         <source>Contest has already ended!</source>
         <translation>比赛已经结束！</translation>
     </message>
     <message>
-        <location filename="submitide.cpp" line="146"/>
+        <location filename="submitide.cpp" line="124"/>
         <source>Cannot submit problem before testing!</source>
         <translation>在完成测试前无法提交代码！</translation>
     </message>
