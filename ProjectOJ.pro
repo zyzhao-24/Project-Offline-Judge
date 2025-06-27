@@ -97,3 +97,14 @@ testlib.files =  $${PWD}\\testlib\\testlib.h
 
 INSTALLS += \
     testlib
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/QScintilla/lib/ -lqscintilla2_qt6
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/QScintilla/lib/ -lqscintilla2_qt6d
+
+INCLUDEPATH += $$PWD/QScintilla/include
+DEPENDPATH += $$PWD/QScintilla/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/QScintilla/lib/libqscintilla2_qt6.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/QScintilla/lib/libqscintilla2_qt6d.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/QScintilla/lib/qscintilla2_qt6.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/QScintilla/lib/qscintilla2_qt6d.lib

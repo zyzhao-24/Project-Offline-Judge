@@ -1,4 +1,4 @@
- #ifndef CODEEDITORWIDGET_H
+#ifndef CODEEDITORWIDGET_H
 #define CODEEDITORWIDGET_H
 
 #include <QWidget>
