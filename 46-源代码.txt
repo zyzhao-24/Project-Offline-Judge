@@ -1,0 +1,4 @@
+Gitee仓库网址：
+https://gitee.com/zzyzzy111111/offline-judge-project/tree/master
+如果Gitee不能满足要求，Github网址如下：
+https://github.com/zyzhao-24/Project-Offline-Judge
